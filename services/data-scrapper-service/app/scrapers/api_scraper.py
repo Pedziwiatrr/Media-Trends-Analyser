@@ -1,4 +1,4 @@
-from base_scraper import BaseScraper
+from base_scraper import BaseScraper, Entry
 from abc import abstractmethod
 
 import requests
@@ -37,29 +37,31 @@ class ApiScraper(BaseScraper):
 
 class NYTScrapper(ApiScraper):
     def _extract_data(self, response):
-        for entry in response["results"]:
+        for result in response["results"]:
             try:
-                temp_data = dict()
-                temp_data["title"] = entry["title"]
-                temp_data["description"] = entry["abstract"]
-                temp_data["link"] = entry["url"]
-                temp_data["category"] = entry["des_facet"] + entry["org_facet"]
-                self.data.append(temp_data)
+                entry = {
+                    "title": result["title"],
+                    "description": result["abstract"],
+                    "url": result["url"],
+                    "category": result["des_facet"] + result["org_facet"],
+                }
+                self.data.append(Entry(**entry))
             except:
                 pass
 
 
 class BBCScraper(ApiScraper):
     def _extract_data(self, response):
-        for key, value in response.items():
-            if isinstance(value, list):
-                for entry in value:
+        for key, values in response.items():
+            if isinstance(values, list):
+                for value in values:
                     try:
-                        temp_data = dict()
-                        temp_data["title"] = entry["title"]
-                        temp_data["description"] = entry["summary"]
-                        temp_data["link"] = entry["news_link"]
-                        temp_data["category"] = [key]
-                        self.data.append(temp_data)
+                        entry = {
+                            "title": value["title"],
+                            "description": value["summary"],
+                            "url": value["news_link"],
+                            "category": [key],
+                        }
+                        self.data.append(Entry(**entry))
                     except:
                         pass

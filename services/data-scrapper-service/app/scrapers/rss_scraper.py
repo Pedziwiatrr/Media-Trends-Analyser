@@ -1,4 +1,4 @@
-from base_scraper import BaseScraper
+from base_scraper import BaseScraper, Entry
 
 import xml.etree.ElementTree as ET
 import requests
@@ -13,13 +13,14 @@ class RssScraper(BaseScraper):
         response = requests.get(temp_url)
         root = ET.fromstring(response.content)
         for item in root.iter("item"):
-            temp_data = dict()
-            temp_data["title"] = item.find(".//title").text
-            temp_data["description"] = item.find(".//description").text
-            temp_data["link"] = item.find(".//link").text
-            temp_data["category"] = [
-                category.text
-                for category in item.findall(".//category")
-                if category.text
-            ]
-            self.data.append(temp_data)
+            entry = {
+                "title": item.find(".//title").text,
+                "description": item.find(".//description").text,
+                "url": item.find(".//link").text,
+                "category": [
+                    category.text
+                    for category in item.findall(".//category")
+                    if category.text
+                ],
+            }
+            self.data.append(Entry(**entry))
