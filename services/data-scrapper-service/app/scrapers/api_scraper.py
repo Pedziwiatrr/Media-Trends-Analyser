@@ -15,14 +15,51 @@ class ApiScraper(BaseScraper):
     def collect_data(self, category: str = None) -> None:
         """ """
         temp_url = self.url % category if category else self.url
-        response = requests.get(temp_url)
+
         try:
+            response = requests.get(temp_url)
+            # response.raise_for_status()
             response = response.json()
-        except:
-            pass
-        if response.get("status") not in ("OK", 200):
-            raise Exception("API connection error")
+        except requests.RequestException as e:
+            raise Exception(f"Request failed for {temp_url}: {e}") from e
+        except ValueError as e:
+            raise Exception("Response is not valid JSON") from e
+
+        status = response.get("status")
+        if status not in ("OK", 200):
+            raise Exception(f"API error status: {status}")
+
         self._extract_data(response)
 
     @abstractmethod
     def _extract_data(self, response): ...
+
+
+class NYTScrapper(ApiScraper):
+    def _extract_data(self, response):
+        for entry in response["results"]:
+            try:
+                temp_data = dict()
+                temp_data["title"] = entry["title"]
+                temp_data["description"] = entry["abstract"]
+                temp_data["link"] = entry["url"]
+                temp_data["category"] = entry["des_facet"] + entry["org_facet"]
+                self.data.append(temp_data)
+            except:
+                pass
+
+
+class BBCScraper(ApiScraper):
+    def _extract_data(self, response):
+        for key, value in response.items():
+            if isinstance(value, list):
+                for entry in value:
+                    try:
+                        temp_data = dict()
+                        temp_data["title"] = entry["title"]
+                        temp_data["description"] = entry["summary"]
+                        temp_data["link"] = entry["news_link"]
+                        temp_data["category"] = [key]
+                        self.data.append(temp_data)
+                    except:
+                        pass
