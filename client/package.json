@@ -6,10 +6,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "jest",
-    "lint": "eslint",
     "prepare": "husky",
-    "knip": "knip"
+    "lint": "eslint",
+    "prettier:check": "prettier --check .",
+    "prettier:write": "prettier --write .",
+    "knip": "knip",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "check": "npm run lint && npm run prettier:write && npm run knip && npm run test && npm run build",
+    "validate": "npm run lint && npm run knip && npm run test"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "npx eslint --fix",
