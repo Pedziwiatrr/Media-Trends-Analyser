@@ -38,19 +38,17 @@ export default function Home() {
   return (
     <main className={`min-h-screen p-8 ${inter.className} bg-black`}>
       <header className="mb-8 text-center">
-        <h1 className="text-4xl font-extrabold text-white">
+        <h1 className="text-5xl font-extrabold text-white">
           Media Trends Analyser
         </h1>
       </header>
 
       <section className="mb-10">
-        <h2 className="text-xl font-semibold text-gray-200 mb-4">
-          Choose time period & data sources
-        </h2>
+        <h2 className="text-2xl font-semibold text-gray-200 mb-4"></h2>
 
         <div className="flex flex-col gap-6 p-6 bg-gray-900 rounded-xl shadow-2xl border border-gray-700">
           <div className="pt-4 border-t border-gray-800">
-            <h3 className="text-base font-semibold text-white mb-2">
+            <h3 className="text-xl font-semibold text-white mb-2">
               Data Sources:
             </h3>
             <div className="flex flex-wrap gap-x-6 gap-y-2">
@@ -65,7 +63,7 @@ export default function Home() {
                     onChange={() => handleSourceChange(source)}
                     className="form-checkbox h-4 w-4 text-blue-600 bg-gray-700 border-gray-600 rounded"
                   />
-                  <span className="ml-2 text-sm">{source}</span>
+                  <span className="ml-2 text-lg">{source}</span>
                 </label>
               ))}
             </div>
@@ -74,7 +72,7 @@ export default function Home() {
             <div className="flex flex-col flex-grow">
               <label
                 htmlFor="startDate"
-                className="text-sm font-medium text-gray-400 mb-1"
+                className="text-lg font-medium text-gray-400 mb-1"
               >
                 From:
               </label>
@@ -84,14 +82,14 @@ export default function Home() {
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="p-2 border border-gray-500 rounded-md focus:border-gray-600 focus:ring focus:ring-gray-500 focus:ring-opacity-50 bg-gray-800 text-white"
+                className="p-2 border border-gray-500 rounded-md focus:border-gray-600 focus:ring focus:ring-gray-500 focus:ring-opacity-50 bg-gray-700 text-white"
               />
             </div>
 
             <div className="flex flex-col flex-grow">
               <label
                 htmlFor="endDate"
-                className="text-sm font-medium text-gray-400 mb-1"
+                className="text-lg font-medium text-gray-400 mb-1"
               >
                 To:
               </label>
@@ -101,7 +99,7 @@ export default function Home() {
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="p-2 border border-gray-500 rounded-md focus:border-gray-500 focus:ring focus:ring-gray-500 focus:ring-opacity-50 bg-gray-800 text-white"
+                className="p-2 border border-gray-500 rounded-md focus:border-gray-500 focus:ring focus:ring-gray-500 focus:ring-opacity-50 bg-gray-700 text-white"
               />
             </div>
 
@@ -118,7 +116,7 @@ export default function Home() {
 
       <section>
         <div className="bg-gray-900 p-6 rounded-xl shadow-2xl border border-gray-700 min-h-[500px]">
-          <h2 className="text-2xl font-bold text-white mb-4">Report</h2>
+          <h2 className="text-3xl font-bold text-white mb-4">Report</h2>
           <p className="text-gray-400">Summary placeholder</p>
         </div>
       </section>
