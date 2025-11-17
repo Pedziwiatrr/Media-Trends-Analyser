@@ -13,15 +13,24 @@ class AgentSettings(BaseSettings):
         "Sport",
         "Culture"
     ]
+    sources: list[str] = [
+        "RSS",
+        "Reddit",
+        "BBC",
+        "New York Times"
+    ]
 
     @property
     def daily_summary_prompt(self):
         categories_str = ', '.join(self.article_categories)
+        sources_str = ', '.join(self.sources)
 
         return f"""
             Based on the following articles, generate a summary in JSON format:
             
             {{articles}}
+            
+            You must include all sources from the following list, even if some sources have no articles: {sources_str}
             
             Return JSON with the following fields:
             - summaries: a dict where each key is a source name and each value is a detailed summary 
