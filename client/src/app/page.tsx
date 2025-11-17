@@ -11,14 +11,13 @@ export default function Home() {
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
   const [selectedSources, setSelectedSources] = useState<string[]>(dataSources);
+  const [reportSummary, setReportSummary] = useState('Select time period.');
 
-  const handleGenerateReport = () => {
-    console.log('Report for: ', {
-      startDate,
-      endDate,
-      sources: selectedSources,
-    });
-  };
+  const sourcesList =
+    selectedSources.length > 0
+      ? selectedSources.join(', ')
+      : 'No data source selected.';
+  const summaryMessage = `Selected dates: ${startDate} - ${endDate}. Selected data sources: ${sourcesList}.`;
 
   const handleSourceChange = (source: string) => {
     setSelectedSources((prevSources) => {
@@ -34,6 +33,22 @@ export default function Home() {
 
   const isButtonDisabled =
     !startDate || !endDate || selectedSources.length === 0;
+
+  const handleGenerateReport = () => {
+    console.log('Report for: ', {
+      startDate,
+      endDate,
+      sources: selectedSources,
+    });
+
+    const sourcesList =
+      selectedSources.length > 0
+        ? selectedSources.join(', ')
+        : 'No data source selected.';
+    const summaryMessage = `Selected dates: ${startDate} - ${endDate}. Selected data sources: ${sourcesList}.`;
+
+    setReportSummary(summaryMessage);
+  };
 
   return (
     <main className={`min-h-screen p-8 ${inter.className} bg-black`}>
@@ -117,7 +132,7 @@ export default function Home() {
       <section>
         <div className="bg-gray-900 p-6 rounded-xl shadow-2xl border border-gray-700 min-h-[500px]">
           <h2 className="text-3xl font-bold text-white mb-4">Report</h2>
-          <p className="text-gray-400">Summary placeholder</p>
+          <p className="text-gray-400">{reportSummary}</p>
         </div>
       </section>
     </main>
