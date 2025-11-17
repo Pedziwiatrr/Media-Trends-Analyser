@@ -32,9 +32,11 @@ class SummaryAgent:
 
         json_summary = json.loads(self.generate_content(prompt, config))
 
+        print(json_summary)
+
         return DailySummary(
             date=summary_date,
-            summary=json_summary["summary"],
+            summary=json_summary["summaries"],
             categories=json_summary["categories"],
             references=json_summary["references"]
         )
