@@ -64,7 +64,7 @@ export default function Home() {
       <section className="mb-10">
         <h2 className="text-2xl font-semibold text-gray-200 mb-4"></h2>
 
-        <div className="flex flex-col gap-6 p-6 bg-gray-900 rounded-xl shadow-2xl border border-gray-700">
+        <div className="flex flex-col gap-6 p-6 bg-gray-900 rounded-xl shadow-2xl border border-gray-700 mx-auto max-w-5xl">
           <div className="pt-4 border-t border-gray-800">
             <h3 className="text-xl font-semibold text-white mb-2">
               Data Sources:
@@ -86,8 +86,8 @@ export default function Home() {
               ))}
             </div>
           </div>
-          <div className="flex flex-col sm:flex-row gap-4 items-end border-b border-gray-800 pb-6">
-            <div className="flex flex-col flex-grow">
+          <div className="flex flex-col sm:flex-row gap-4 items-end border-b border-gray-800 pb-6 mx-auto max-w-4xl w-full">
+            <div className="flex flex-col w-40">
               <label
                 htmlFor="startDate"
                 className="text-lg font-medium text-gray-400 mb-1"
@@ -104,7 +104,7 @@ export default function Home() {
               />
             </div>
 
-            <div className="flex flex-col flex-grow">
+            <div className="flex flex-col w-40">
               <label
                 htmlFor="endDate"
                 className="text-lg font-medium text-gray-400 mb-1"
@@ -123,7 +123,7 @@ export default function Home() {
 
             <button
               onClick={handleGenerateReport}
-              className="w-full sm:w-auto px-6 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-lg hover:bg-blue-700 transition duration-200 disabled:bg-gray-700"
+              className="w-full sm:w-auto px-6 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-lg hover:bg-blue-700 transition duration-200 disabled:bg-gray-700 ml-auto self-end"
               disabled={isButtonDisabled}
             >
               Generate Report
@@ -132,7 +132,7 @@ export default function Home() {
         </div>
       </section>
 
-      <nav className="flex mb-6 border-b border-gray-700">
+      <nav className="flex mb-6 border-b border-gray-700 mx-auto max-w-4xl">
         <button
           onClick={() => setActiveTab('report')}
           className={`px-4 py-2 text-lg transition duration-150 ${
