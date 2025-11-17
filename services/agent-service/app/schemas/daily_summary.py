@@ -4,6 +4,6 @@ from pydantic import BaseModel, HttpUrl, Field
 
 class DailySummary(BaseModel):
     date: date
-    summary: str
-    categories: dict[str, int] = Field(default_factory=dict)
-    references: list[HttpUrl] = Field(default_factory=list)
+    summaries: dict[str, str] = Field(default_factory=dict)
+    categories: dict[str, dict[str, int]] = Field(default_factory=dict)
+    references: dict[str, list[HttpUrl]] = Field(default_factory=list)
