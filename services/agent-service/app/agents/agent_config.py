@@ -24,9 +24,14 @@ class AgentSettings(BaseSettings):
             {{articles}}
             
             Return JSON with the following fields:
-            - summary: a detailed summary (at least 5-7 sentences) describing the main events, topics, and trends of the day based on all articles.
-            - categories: list of article count per category (keys: {categories_str})
-            - references: list of 3-5 URLs to the most important articles of the day
+            - summaries: a dict where each key is a source name and each value is a detailed summary 
+              (at least 5–7 sentences) describing the main events, topics, and trends covered by articles 
+              from that specific source.
+            - categories: a dict where each key is a source name and each value 
+              is another dict containing category counts for that specific source 
+              (keys: {categories_str})
+            - references: a dict where each key is a source name and each value is a list of 
+              3–5 URLs to the most important articles from that specific source.
             
             Return only JSON, without additional info.
         """
