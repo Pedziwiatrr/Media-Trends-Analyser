@@ -13,12 +13,6 @@ export default function Home() {
   const [selectedSources, setSelectedSources] = useState<string[]>(dataSources);
   const [reportSummary, setReportSummary] = useState('Select time period.');
 
-  const sourcesList =
-    selectedSources.length > 0
-      ? selectedSources.join(', ')
-      : 'No data source selected.';
-  const summaryMessage = `Selected dates: ${startDate} - ${endDate}. Selected data sources: ${sourcesList}.`;
-
   const handleSourceChange = (source: string) => {
     setSelectedSources((prevSources) => {
       const isCurrentlySelected = prevSources.includes(source);
