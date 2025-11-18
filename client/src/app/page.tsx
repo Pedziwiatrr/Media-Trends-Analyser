@@ -7,6 +7,7 @@ import { Button } from '@/components/Button';
 import { Checkbox } from '@/components/Checkbox';
 import { DateInput } from '@/components/DateInput';
 import { Box } from '@/components/Box';
+import { TabButton } from '@/components/TabButton';
 
 const dataSources = ['X', 'Reddit', 'RSS Feeds', 'BBC', 'New York Times'];
 
@@ -16,6 +17,9 @@ export default function Home() {
   const [selectedSources, setSelectedSources] = useState<string[]>(dataSources);
   const [reportSummary, setReportSummary] = useState('Select time period.');
   const [activeTab, setActiveTab] = useState<'report' | 'analytics'>('report');
+
+  const isButtonDisabled =
+    !startDate || !endDate || selectedSources.length === 0;
 
   const handleSourceChange = (source: string) => {
     setSelectedSources((prevSources) => {
@@ -28,9 +32,6 @@ export default function Home() {
       }
     });
   };
-
-  const isButtonDisabled =
-    !startDate || !endDate || selectedSources.length === 0;
 
   const handleGenerateReport = () => {
     console.log('Report for: ', {
@@ -48,11 +49,6 @@ export default function Home() {
     setReportSummary(summaryMessage);
     setActiveTab('report');
   };
-
-  const activeTabStyle =
-    'border-b-2 border-blue-500 text-blue-500 font-semibold';
-  const inactiveTabStyle =
-    'border-b-2 border-transparent text-gray-400 hover:text-white';
 
   return (
     <main className={`min-h-screen p-8 bg-black`}>
@@ -101,22 +97,18 @@ export default function Home() {
       </Box>
 
       <nav className="flex mb-6 border-b border-gray-700 mx-auto max-w-4xl justify-center">
-        <button
+        <TabButton
+          isActive={activeTab === 'report'}
           onClick={() => setActiveTab('report')}
-          className={`px-4 py-2 text-lg transition duration-150 ${
-            activeTab === 'report' ? activeTabStyle : inactiveTabStyle
-          }`}
         >
           Report
-        </button>
-        <button
+        </TabButton>
+        <TabButton
+          isActive={activeTab === 'analytics'}
           onClick={() => setActiveTab('analytics')}
-          className={`px-4 py-2 text-lg transition duration-150 ${
-            activeTab === 'analytics' ? activeTabStyle : inactiveTabStyle
-          }`}
         >
           Trend Analytics
-        </button>
+        </TabButton>
       </nav>
 
       <section>
