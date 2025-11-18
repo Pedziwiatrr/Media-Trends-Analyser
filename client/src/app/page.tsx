@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google';
 import ReportTab from '../components/reportTab';
 import AnalyticsTab from '../components/analyticsTab';
 import { Button } from '@/components/Button';
+import { Checkbox } from '@/components/Checkbox';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -63,25 +64,17 @@ export default function Home() {
       </header>
 
       <section className="mb-10">
-        <h2 className="text-2xl font-semibold text-gray-200 mb-4"></h2>
-
         <div className="flex flex-col gap-6 p-6 bg-gray-900 rounded-xl shadow-2xl border border-gray-700 mx-auto max-w-6xl">
           <div className="pt-4 border-t border-gray-800">
-            <h3 className="text-xl font-semibold text-white mb-2"></h3>
             <div className="flex flex-wrap gap-x-6 gap-y-2 justify-center">
-              {dataSources.map((source) => (
-                <label
-                  key={source}
-                  className="inline-flex items-center text-gray-300"
+              {dataSources.map((source, index) => (
+                <Checkbox
+                  key={source + index}
+                  checked={selectedSources.includes(source)}
+                  onChange={() => handleSourceChange(source)}
                 >
-                  <input
-                    type="checkbox"
-                    checked={selectedSources.includes(source)}
-                    onChange={() => handleSourceChange(source)}
-                    className="form-checkbox h-6 w-6 text-blue-600 bg-gray-700 border-gray-600 rounded"
-                  />
-                  <span className="ml-2 text-lg">{source}</span>
-                </label>
+                  {source}
+                </Checkbox>
               ))}
             </div>
           </div>
