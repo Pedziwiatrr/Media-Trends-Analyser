@@ -1,6 +1,6 @@
 import { Box } from '@/components/Box';
-import { CategoryPieChart } from '@/components/PieChart/CategoryPieChart';
-import { CategoryTrendChart } from '@/components/BarChart/CategoryTrendChart';
+import { CategoryPieChart } from '@/components/charts/PieChart/CategoryPieChart';
+import { CategoryTrendChart } from '@/components/charts/LineChart/CategoryTrendChart';
 
 type CategoryData = {
   name: string;
