@@ -144,11 +144,3 @@ export const mockTrendData = [
     Culture: 20,
   },
 ];
-
-export const mockCategoryData = [
-  { name: 'Technology', value: 1115 },
-  { name: 'Politics', value: 645 },
-  { name: 'Economy', value: 420 },
-  { name: 'Sport', value: 675 },
-  { name: 'Culture', value: 885 },
-];

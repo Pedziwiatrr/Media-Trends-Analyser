@@ -8,9 +8,21 @@ import { Checkbox } from '@/components/Checkbox';
 import { DateInput } from '@/components/DateInput';
 import { Box } from '@/components/Box';
 import { TabButton } from '@/components/TabButton';
-import { mockCategoryData, mockTrendData } from '@/data/mocks';
+import { mockTrendData } from '@/data/mocks';
 
 const dataSources = ['X', 'Reddit', 'RSS Feeds', 'BBC', 'New York Times'];
+
+const calculatePieData = (data: any[]) => {
+  const totals: { [key: string]: number } = {};
+  data.forEach((point) => {
+    Object.keys(point).forEach((key) => {
+      if (key !== 'date') {
+        totals[key] = (totals[key] || 0) + Number(point[key]);
+      }
+    });
+  });
+  return Object.entries(totals).map(([name, value]) => ({ name, value }));
+};
 
 export default function Home() {
   const [startDate, setStartDate] = useState<string>('');
@@ -20,8 +32,9 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<'report' | 'analytics'>('report');
 
   const [filteredTrendData, setFilteredTrendData] = useState(mockTrendData);
-  const [calculatedCategoryData, setCalculatedCategoryData] =
-    useState(mockCategoryData);
+  const [calculatedCategoryData, setCalculatedCategoryData] = useState(
+    calculatePieData(mockTrendData)
+  );
 
   const todayDate = new Date().toISOString().slice(0, 10);
 
@@ -45,23 +58,8 @@ export default function Home() {
       return item.date >= startDate && item.date <= endDate;
     });
 
-    const totals: { [key: string]: number } = {};
-
-    filteredData.forEach((point) => {
-      Object.keys(point).forEach((key) => {
-        if (key !== 'date') {
-          totals[key] = (totals[key] || 0) + Number(point[key]);
-        }
-      });
-    });
-
-    const newPieData = Object.entries(totals).map(([name, value]) => ({
-      name,
-      value,
-    }));
-
     setFilteredTrendData(filteredData);
-    setCalculatedCategoryData(newPieData);
+    setCalculatedCategoryData(calculatePieData(filteredData));
 
     const sourcesList =
       selectedSources.length > 0
