@@ -18,6 +18,8 @@ export default function Home() {
   const [reportSummary, setReportSummary] = useState('Select time period.');
   const [activeTab, setActiveTab] = useState<'report' | 'analytics'>('report');
 
+  const todayDate = new Date().toISOString().slice(0, 10);
+
   const isButtonDisabled =
     !startDate || !endDate || selectedSources.length === 0;
 
@@ -76,6 +78,7 @@ export default function Home() {
             id="startData"
             label="From:"
             value={startDate}
+            max={todayDate}
             onChange={(e) => setStartDate(e.target.value)}
           />
 
@@ -83,6 +86,7 @@ export default function Home() {
             id="endDate"
             label="To:"
             value={endDate}
+            max={todayDate}
             onChange={(e) => setEndDate(e.target.value)}
           />
 
