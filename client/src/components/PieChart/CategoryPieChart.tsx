@@ -9,7 +9,7 @@ import {
   Tooltip,
 } from 'recharts';
 
-const COLORS = ['#57B9FF', '#008000', '#FFA500', '#FF0000', '#800080'];
+const COLORS = ['#3B82F6', '#22C55E', '#F59E0B', '#EF4444', '#8B5CF6'];
 
 type CategoryData = {
   name: string;
