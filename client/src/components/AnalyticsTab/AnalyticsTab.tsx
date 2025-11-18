@@ -1,14 +1,5 @@
-'use client';
-
 import { Box } from '@/components/Box';
-import {
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-  Legend,
-  Tooltip,
-} from 'recharts';
+import { CategoryPieChart } from '@/components/PieChart/CategoryPieChart';
 
 type CategoryData = {
   name: string;
@@ -21,8 +12,6 @@ type AnalyticsTabProps = {
   selectedSources: string[];
   categoryData: CategoryData[];
 };
-
-const COLORS = ['#0000FF', '#008000', '#FFA500', '#FF0000', '#800080'];
 
 export function AnalyticsTab({
   startDate,
@@ -45,30 +34,7 @@ export function AnalyticsTab({
         Selected data sources: {sourcesText}.
       </p>
 
-      <div className="w-full h-[400px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
-            <Pie
-              data={categoryData}
-              cx="50%"
-              cy="50%"
-              labelLine={false}
-              outerRadius={150}
-              fill="#CCCCCC"
-              dataKey="value"
-            >
-              {categoryData.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-            <Tooltip />
-            <Legend verticalAlign="bottom" height={36} />
-          </PieChart>
-        </ResponsiveContainer>
-      </div>
+      <CategoryPieChart data={categoryData} />
     </Box>
   );
 }
