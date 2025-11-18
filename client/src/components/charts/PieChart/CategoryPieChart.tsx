@@ -9,7 +9,7 @@ import {
   Tooltip,
 } from 'recharts';
 
-const COLORS = ['#3B82F6', '#22C55E', '#F59E0B', '#EF4444', '#8B5CF6'];
+import { CHART_COLORS } from '@/constants/chartColors';
 
 type CategoryData = {
   name: string;
@@ -37,7 +37,7 @@ export function CategoryPieChart({ data }: CategoryPieChartProps) {
             {data.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
+                fill={CHART_COLORS[index % CHART_COLORS.length]}
               />
             ))}
           </Pie>

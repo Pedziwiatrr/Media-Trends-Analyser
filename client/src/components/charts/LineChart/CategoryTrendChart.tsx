@@ -11,7 +11,7 @@ import {
   Tooltip,
 } from 'recharts';
 
-const COLORS = ['#3B82F6', '#22C55E', '#F59E0B', '#EF4444', '#8B5CF6'];
+import { CHART_COLORS } from '@/constants/chartColors';
 
 type TrendDataPoint = {
   date: string;
@@ -58,7 +58,7 @@ export function CategoryTrendChart({
             <Line
               key={category}
               dataKey={category}
-              stroke={COLORS[index % COLORS.length]}
+              stroke={CHART_COLORS[index % CHART_COLORS.length]}
             />
           ))}{' '}
         </LineChart>{' '}
