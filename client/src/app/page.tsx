@@ -8,6 +8,7 @@ import { Checkbox } from '@/components/Checkbox';
 import { DateInput } from '@/components/DateInput';
 import { Box } from '@/components/Box';
 import { TabButton } from '@/components/TabButton';
+import { mockCategoryData } from '@/data/mocks';
 
 const dataSources = ['X', 'Reddit', 'RSS Feeds', 'BBC', 'New York Times'];
 
@@ -122,6 +123,7 @@ export default function Home() {
             startDate={startDate}
             endDate={endDate}
             selectedSources={selectedSources}
+            categoryData={mockCategoryData}
           />
         )}
       </section>
