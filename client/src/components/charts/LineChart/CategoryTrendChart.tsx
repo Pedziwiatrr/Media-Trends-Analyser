@@ -29,9 +29,7 @@ export function CategoryTrendChart({
 }: CategoryTrendChartProps) {
   return (
     <div className="w-full h-[400px] mt-8">
-      {' '}
       <ResponsiveContainer width="100%" height="100%">
-        {' '}
         <LineChart
           data={data}
           margin={{
@@ -53,16 +51,16 @@ export function CategoryTrendChart({
             itemStyle={{ color: '#FFFFFF' }}
             labelStyle={{ color: '#FFFFFF' }}
           />
-          <Legend />{' '}
+          <Legend />
           {categories.map((category, index) => (
             <Line
               key={category}
               dataKey={category}
               stroke={CHART_COLORS[index % CHART_COLORS.length]}
             />
-          ))}{' '}
-        </LineChart>{' '}
-      </ResponsiveContainer>{' '}
+          ))}
+        </LineChart>
+      </ResponsiveContainer>
     </div>
   );
 }
