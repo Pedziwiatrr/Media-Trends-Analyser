@@ -1,13 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { Inter } from 'next/font/google';
 import ReportTab from '../components/reportTab';
 import AnalyticsTab from '../components/analyticsTab';
 import { Button } from '@/components/Button';
 import { Checkbox } from '@/components/Checkbox';
-
-const inter = Inter({ subsets: ['latin'] });
+import { DateInput } from '@/components/DateInput';
 
 const dataSources = ['X', 'Reddit', 'RSS Feeds', 'BBC', 'New York Times'];
 
@@ -56,7 +54,7 @@ export default function Home() {
     'border-b-2 border-transparent text-gray-400 hover:text-white';
 
   return (
-    <main className={`min-h-screen p-8 ${inter.className} bg-black`}>
+    <main className={`min-h-screen p-8 bg-black`}>
       <header className="mb-8 text-center">
         <h1 className="text-5xl font-extrabold text-white">
           Media Trends Analyser
@@ -75,40 +73,21 @@ export default function Home() {
             </Checkbox>
           ))}
         </div>
+
         <div className="flex flex-col sm:flex-row gap-4 items-end border-b border-gray-800 pb-6 mx-auto max-w-4xl w-full">
-          <div className="flex flex-col w-40">
-            <label
-              htmlFor="startDate"
-              className="text-lg font-medium text-gray-400 mb-1"
-            >
-              From:
-            </label>
+          <DateInput
+            id="startData"
+            label="From:"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+          />
 
-            <input
-              id="startDate"
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              className="p-2 border border-gray-500 rounded-md focus:border-gray-600 focus:ring focus:ring-gray-500 focus:ring-opacity-50 bg-gray-700 text-white"
-            />
-          </div>
-
-          <div className="flex flex-col w-40">
-            <label
-              htmlFor="endDate"
-              className="text-lg font-medium text-gray-400 mb-1"
-            >
-              To:
-            </label>
-
-            <input
-              id="endDate"
-              type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              className="p-2 border border-gray-500 rounded-md focus:border-gray-500 focus:ring focus:ring-gray-500 focus:ring-opacity-50 bg-gray-700 text-white"
-            />
-          </div>
+          <DateInput
+            id="endDate"
+            label="To:"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+          />
 
           <Button
             onClick={handleGenerateReport}
