@@ -1,11 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { Inter } from 'next/font/google';
-import ReportTab from '../components/reportTab';
-import AnalyticsTab from '../components/analyticsTab';
-
-const inter = Inter({ subsets: ['latin'] });
+import { ReportTab } from '@/components/ReportTab';
+import { AnalyticsTab } from '@/components/AnalyticsTab';
+import { Button } from '@/components/Button';
+import { Checkbox } from '@/components/Checkbox';
+import { DateInput } from '@/components/DateInput';
+import { Box } from '@/components/Box';
+import { TabButton } from '@/components/TabButton';
 
 const dataSources = ['X', 'Reddit', 'RSS Feeds', 'BBC', 'New York Times'];
 
@@ -15,6 +17,11 @@ export default function Home() {
   const [selectedSources, setSelectedSources] = useState<string[]>(dataSources);
   const [reportSummary, setReportSummary] = useState('Select time period.');
   const [activeTab, setActiveTab] = useState<'report' | 'analytics'>('report');
+
+  const todayDate = new Date().toISOString().slice(0, 10);
+
+  const isButtonDisabled =
+    !startDate || !endDate || selectedSources.length === 0;
 
   const handleSourceChange = (source: string) => {
     setSelectedSources((prevSources) => {
@@ -27,9 +34,6 @@ export default function Home() {
       }
     });
   };
-
-  const isButtonDisabled =
-    !startDate || !endDate || selectedSources.length === 0;
 
   const handleGenerateReport = () => {
     console.log('Report for: ', {
@@ -48,105 +52,67 @@ export default function Home() {
     setActiveTab('report');
   };
 
-  const activeTabStyle =
-    'border-b-2 border-blue-500 text-blue-500 font-semibold';
-  const inactiveTabStyle =
-    'border-b-2 border-transparent text-gray-400 hover:text-white';
-
   return (
-    <main className={`min-h-screen p-8 ${inter.className} bg-black`}>
+    <main className={`min-h-screen p-8 bg-black`}>
       <header className="mb-8 text-center">
         <h1 className="text-5xl font-extrabold text-white">
           Media Trends Analyser
         </h1>
       </header>
 
-      <section className="mb-10">
-        <h2 className="text-2xl font-semibold text-gray-200 mb-4"></h2>
-
-        <div className="flex flex-col gap-6 p-6 bg-gray-900 rounded-xl shadow-2xl border border-gray-700 mx-auto max-w-6xl">
-          <div className="pt-4 border-t border-gray-800">
-            <h3 className="text-xl font-semibold text-white mb-2"></h3>
-            <div className="flex flex-wrap gap-x-6 gap-y-2 justify-center">
-              {dataSources.map((source) => (
-                <label
-                  key={source}
-                  className="inline-flex items-center text-gray-300"
-                >
-                  <input
-                    type="checkbox"
-                    checked={selectedSources.includes(source)}
-                    onChange={() => handleSourceChange(source)}
-                    className="form-checkbox h-6 w-6 text-blue-600 bg-gray-700 border-gray-600 rounded"
-                  />
-                  <span className="ml-2 text-lg">{source}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-4 items-end border-b border-gray-800 pb-6 mx-auto max-w-4xl w-full">
-            <div className="flex flex-col w-40">
-              <label
-                htmlFor="startDate"
-                className="text-lg font-medium text-gray-400 mb-1"
-              >
-                From:
-              </label>
-
-              <input
-                id="startDate"
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                className="p-2 border border-gray-500 rounded-md focus:border-gray-600 focus:ring focus:ring-gray-500 focus:ring-opacity-50 bg-gray-700 text-white"
-              />
-            </div>
-
-            <div className="flex flex-col w-40">
-              <label
-                htmlFor="endDate"
-                className="text-lg font-medium text-gray-400 mb-1"
-              >
-                To:
-              </label>
-
-              <input
-                id="endDate"
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                className="p-2 border border-gray-500 rounded-md focus:border-gray-500 focus:ring focus:ring-gray-500 focus:ring-opacity-50 bg-gray-700 text-white"
-              />
-            </div>
-
-            <button
-              onClick={handleGenerateReport}
-              className="w-full sm:w-auto px-6 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-lg hover:bg-blue-700 transition duration-200 disabled:bg-gray-700 ml-auto self-end"
-              disabled={isButtonDisabled}
+      <Box className="flex flex-col gap-6 mb-10">
+        <div className="flex flex-wrap gap-x-6 gap-y-2 justify-center pt-4 border-t border-gray-800">
+          {dataSources.map((source, index) => (
+            <Checkbox
+              key={source + index}
+              checked={selectedSources.includes(source)}
+              onChange={() => handleSourceChange(source)}
             >
-              Generate Report
-            </button>
-          </div>
+              {source}
+            </Checkbox>
+          ))}
         </div>
-      </section>
+
+        <div className="flex flex-col sm:flex-row gap-4 items-end border-b border-gray-800 pb-6 mx-auto max-w-4xl w-full">
+          <DateInput
+            id="startData"
+            label="From:"
+            value={startDate}
+            max={todayDate}
+            onChange={(e) => setStartDate(e.target.value)}
+          />
+
+          <DateInput
+            id="endDate"
+            label="To:"
+            value={endDate}
+            max={todayDate}
+            onChange={(e) => setEndDate(e.target.value)}
+          />
+
+          <Button
+            onClick={handleGenerateReport}
+            className="w-full sm:w-auto ml-auto self-end"
+            disabled={isButtonDisabled}
+          >
+            Generate Report
+          </Button>
+        </div>
+      </Box>
 
       <nav className="flex mb-6 border-b border-gray-700 mx-auto max-w-4xl justify-center">
-        <button
+        <TabButton
+          isActive={activeTab === 'report'}
           onClick={() => setActiveTab('report')}
-          className={`px-4 py-2 text-lg transition duration-150 ${
-            activeTab === 'report' ? activeTabStyle : inactiveTabStyle
-          }`}
         >
           Report
-        </button>
-        <button
+        </TabButton>
+        <TabButton
+          isActive={activeTab === 'analytics'}
           onClick={() => setActiveTab('analytics')}
-          className={`px-4 py-2 text-lg transition duration-150 ${
-            activeTab === 'analytics' ? activeTabStyle : inactiveTabStyle
-          }`}
         >
           Trend Analytics
-        </button>
+        </TabButton>
       </nav>
 
       <section>
