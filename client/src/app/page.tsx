@@ -8,16 +8,17 @@ import { Checkbox } from '@/components/Checkbox';
 import { DateInput } from '@/components/DateInput';
 import { Box } from '@/components/Box';
 import { TabButton } from '@/components/TabButton';
-import { mockTrendData } from '@/data/mocks';
+import { mockTrendData, type TrendData } from '@/data/mocks';
 
 const dataSources = ['X', 'Reddit', 'RSS Feeds', 'BBC', 'New York Times'];
 
-const calculatePieData = (data: any[]) => {
+const calculatePieData = (data: TrendData[]) => {
   const totals: { [key: string]: number } = {};
   data.forEach((point) => {
     Object.keys(point).forEach((key) => {
+      const typedKey = key as keyof TrendData;
       if (key !== 'date') {
-        totals[key] = (totals[key] || 0) + Number(point[key]);
+        totals[key] = (totals[key] || 0) + Number(point[typedKey]);
       }
     });
   });

@@ -1,4 +1,13 @@
-export const mockTrendData = [
+export type TrendData = {
+  date: string;
+  Technology: number;
+  Politics: number;
+  Economy: number;
+  Sport: number;
+  Culture: number;
+};
+
+export const mockTrendData: TrendData[] = [
   {
     date: '2025-11-01',
     Technology: 50,
