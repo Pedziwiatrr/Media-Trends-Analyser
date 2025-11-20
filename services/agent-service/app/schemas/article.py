@@ -10,5 +10,6 @@ class Article(BaseModel):
     description: str
     source: str
 
-    def for_daily_summary(self):
+    @property
+    def full_description(self):
         return f"title: {self.title}, description: {self.description}, url: {self.url}, source: {self.source}"
