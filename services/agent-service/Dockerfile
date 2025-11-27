@@ -18,8 +18,5 @@ ENV PATH="/.venv/bin:${PATH}"
 
 EXPOSE $PORT
 
-RUN useradd app
 
-USER app
-
-CMD [ "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080", "--reload" ]
+CMD [ "uv", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080", "--reload" ]
