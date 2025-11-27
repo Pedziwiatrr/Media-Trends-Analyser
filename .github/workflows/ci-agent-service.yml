@@ -28,8 +28,7 @@ jobs:
           pip install uv
           uv venv
           source .venv/bin/activate
-          uv pip install ruff pytest
-          uv lock
+          uv add ruff pytest
           uv sync
         
       - name: Run Linter
