@@ -33,12 +33,12 @@ jobs:
         
       - name: Run Linter
         working-directory: ${{ env.SERVICE_DIR }}
-        run: ruff check app/
+        run: uv run ruff check app/
 
       - name: Run formatter
         working-directory: ${{ env.SERVICE_DIR }}
-        run: ruff format app/
+        run: uv run ruff format app/
 
       - name: Run Unit Tests
         working-directory: ${{ env.SERVICE_DIR }}
-        run: pytest tests/*
+        run: uv run pytest tests/*
