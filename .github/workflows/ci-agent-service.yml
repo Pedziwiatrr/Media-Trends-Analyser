@@ -26,6 +26,8 @@ jobs:
         working-directory: ${{ env.SERVICE_DIR }}
         run: |
           pip install uv
+          uv venv
+          source .vevn/bin/activate
           uv pip install ruff pytest
           uv lock
           uv sync
