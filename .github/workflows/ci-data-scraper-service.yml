@@ -1,4 +1,4 @@
-name: CI Agent-Service
+name: CI Data-Scraper-Service
 
 on:
   push:
