@@ -112,7 +112,11 @@ class SummaryAgent:
         )
 
     def get_periodic_summary(
-        self, daily_summaries: list[DailySummary], sources: list[str], start_date: date, end_date: date
+        self,
+        daily_summaries: list[DailySummary],
+        sources: list[str],
+        start_date: date,
+        end_date: date,
     ):
         periodic_summary_chain = (
             self.periodic_summary_prompt
