@@ -29,22 +29,33 @@ class SummaryAgent:
             """
             Based on the following articles, generate a summary in JSON format:\
             {articles}\
-            You must include all sources from the following list {sources}, without additional
-            keys like "no source", "default" etc.\
+            You must include all sources and categories from the following lists,
+            without additional keys like "no source", "default" etc.\
+            - Allowed Sources: {sources}
+            - Allowed Categories: {categories}\
             
             Language: english\
             
             Return JSON with the following fields:\
-            - summaries: a dict where each key is a source name and each value is a detailed summary 
-              (at least 5–7 sentences) describing the main events, topics, and trends covered by articles 
-              from that specific source.\
-            - categories: a dict where each key is a source name and each value 
-              is another dict containing category counts for that specific source, if none return 0 for each category 
-              (keys: {categories})\
-            - references: a dict where each key is a source name and each value is a list of 
-              3–5 the most important articles URLs from that specific source.\
+            - summaries: a dict where keys are source names. The value must be a nested dictionary
+              where keys are category names and values are detailed summaries (5-7 sentences) of the
+              articles from that source that belong to the specific category\
+            - categories: a dict where keys are source names. The value must be a nested dictionary
+              containing article counts for each allowed category\
+            - references: a dict where keys are soucre names. The value must be a nested dictionary
+              where keys are category names and values are lists of source URLs corresponding strictly
+              to the articles summarized in the category.\
             
-            Return only JSON, without additional info.
+            Constraints:
+            - You must include keys for every source listed in allowed sources.
+            - Inside each source, you must include keys for every category listed in allowed categories.
+    
+            - Handling empty data (if a category has no articles for a source):
+              - In "summaries": set the value to an empty string "".
+              - In "categories": set the value to 0.
+              - In "references": set the value to an empty list [].
+            
+            Return only JSON, without additional text.
         """
         )
 
