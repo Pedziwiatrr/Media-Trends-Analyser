@@ -8,8 +8,22 @@ import { Checkbox } from '@/components/Checkbox';
 import { DateInput } from '@/components/DateInput';
 import { Box } from '@/components/Box';
 import { TabButton } from '@/components/TabButton';
+import { mockTrendData, type TrendData } from '@/data/mocks';
 
 const dataSources = ['X', 'Reddit', 'RSS Feeds', 'BBC', 'New York Times'];
+
+const calculatePieData = (data: TrendData[]) => {
+  const totals: { [key: string]: number } = {};
+  data.forEach((point) => {
+    Object.keys(point).forEach((key) => {
+      const typedKey = key as keyof TrendData;
+      if (key !== 'date') {
+        totals[key] = (totals[key] || 0) + Number(point[typedKey]);
+      }
+    });
+  });
+  return Object.entries(totals).map(([name, value]) => ({ name, value }));
+};
 
 export default function Home() {
   const [startDate, setStartDate] = useState<string>('');
@@ -17,6 +31,11 @@ export default function Home() {
   const [selectedSources, setSelectedSources] = useState<string[]>(dataSources);
   const [reportSummary, setReportSummary] = useState('Select time period.');
   const [activeTab, setActiveTab] = useState<'report' | 'analytics'>('report');
+
+  const [filteredTrendData, setFilteredTrendData] = useState(mockTrendData);
+  const [calculatedCategoryData, setCalculatedCategoryData] = useState(
+    calculatePieData(mockTrendData)
+  );
 
   const todayDate = new Date().toISOString().slice(0, 10);
 
@@ -36,11 +55,12 @@ export default function Home() {
   };
 
   const handleGenerateReport = () => {
-    console.log('Report for: ', {
-      startDate,
-      endDate,
-      sources: selectedSources,
+    const filteredData = mockTrendData.filter((item) => {
+      return item.date >= startDate && item.date <= endDate;
     });
+
+    setFilteredTrendData(filteredData);
+    setCalculatedCategoryData(calculatePieData(filteredData));
 
     const sourcesList =
       selectedSources.length > 0
@@ -49,7 +69,7 @@ export default function Home() {
     const summaryMessage = `Selected dates: ${startDate} - ${endDate}. Selected data sources: ${sourcesList}.`;
 
     setReportSummary(summaryMessage);
-    setActiveTab('report');
+    setActiveTab('analytics');
   };
 
   return (
@@ -79,7 +99,15 @@ export default function Home() {
             label="From:"
             value={startDate}
             max={todayDate}
-            onChange={(e) => setStartDate(e.target.value)}
+            onChange={(e) => {
+              const newStart = e.target.value;
+              if (endDate && newStart > endDate) {
+                setStartDate(endDate);
+                setEndDate(newStart);
+              } else {
+                setStartDate(newStart);
+              }
+            }}
           />
 
           <DateInput
@@ -87,7 +115,15 @@ export default function Home() {
             label="To:"
             value={endDate}
             max={todayDate}
-            onChange={(e) => setEndDate(e.target.value)}
+            onChange={(e) => {
+              const newEnd = e.target.value;
+              if (startDate && newEnd < startDate) {
+                setEndDate(startDate);
+                setStartDate(newEnd);
+              } else {
+                setEndDate(newEnd);
+              }
+            }}
           />
 
           <Button
@@ -122,6 +158,8 @@ export default function Home() {
             startDate={startDate}
             endDate={endDate}
             selectedSources={selectedSources}
+            categoryData={calculatedCategoryData}
+            trendData={filteredTrendData}
           />
         )}
       </section>
