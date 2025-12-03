@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.database.database import get_db
-from app.models import DailySummary
+from app.models import DailySummary, Article, ViewDailySummary
 from app.schemas import DailySummaryCreate, DailySummaryResponse
+from datetime import date
+
 
 router = APIRouter(prefix="/daily_summaries")
 
@@ -23,9 +25,40 @@ def create_daily_summary(
             detail=f"Daily summary for {summary_data.date} already exists",
         )
 
-    db_summary = DailySummary(**summary_data.model_dump())
+    references_data = summary_data.references
+
+    db_summary = DailySummary(**summary_data.model_dump(exclude={"references"}))
     db.add(db_summary)
+    db.flush()
+
+    if references_data:
+        for source_name, categories_dict in references_data.items():
+            for category_name, article_ids in categories_dict.items():
+                if article_ids:
+                    db.query(Article).filter(Article.id.in_(article_ids)).update(
+                        {
+                            Article.daily_summary_id: db_summary.id,
+                            Article.category: category_name,
+                        },
+                        synchronize_session=False,
+                    )
     db.commit()
     db.refresh(db_summary)
 
+    db_summary.references = references_data
+
     return db_summary
+
+
+@router.get("/date/{summary_date}", response_model=DailySummaryResponse)
+def get_daily_summary_by_date(summary_date: date, db: Session = Depends(get_db)):
+    summary = (
+        db.query(ViewDailySummary).filter(ViewDailySummary.date == summary_date).first()
+    )
+
+    if not summary:
+        raise HTTPException(status_code=404, detail="Summary not found")
+
+    summary.id = summary.summary_id
+
+    return summary
