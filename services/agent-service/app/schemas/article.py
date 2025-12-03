@@ -12,7 +12,7 @@ class Article(BaseModel):
 
     @property
     def full_description(self):
-        return f"title: {self.title}, description: {self.description}, url: {self.url}, source: {self.source}"
+        return f"id: {self.id}, title: {self.title}, description: {self.description}, url: {self.url}, source: {self.source}"
 
 
 class ArticleResponse(BaseModel):

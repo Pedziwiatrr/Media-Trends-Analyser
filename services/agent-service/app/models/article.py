@@ -1,5 +1,5 @@
-from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import Text, DateTime, Integer
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import Text, DateTime, Integer, ForeignKey
 from datetime import datetime
 from .base import Base
 
@@ -15,6 +15,10 @@ class Article(Base):
     title: Mapped[str | None] = mapped_column(Text, nullable=True)
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
     source: Mapped[str | None] = mapped_column(Text, nullable=True)
+    category: Mapped[str | None] = mapped_column(Text, nullable=True)
+
+    daily_summary_id: Mapped[int | None] = mapped_column(ForeignKey("daily_summary.id"))
+    daily_summary: Mapped["DailySummary"] = relationship(back_populates="articles")
 
     def __repr__(self) -> str:
         return f"Article(id={self.id}, title={self.title})"
