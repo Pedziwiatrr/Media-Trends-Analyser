@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ReportTab } from '@/components/ReportTab';
+import { MainReport } from './MainReport';
 import { AnalyticsTab } from '@/components/AnalyticsTab';
 import { Button } from '@/components/Button';
 import { Checkbox } from '@/components/Checkbox';
@@ -152,7 +152,7 @@ export default function Home() {
       </nav>
 
       <section>
-        {activeTab === 'report' && <ReportTab reportSummary={reportSummary} />}
+        {activeTab === 'report' && <MainReport reportSummary={reportSummary} />}
         {activeTab === 'analytics' && (
           <AnalyticsTab
             startDate={startDate}
