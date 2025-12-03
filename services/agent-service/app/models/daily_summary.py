@@ -12,7 +12,8 @@ class DailySummary(Base):
     date: Mapped[date] = mapped_column(Date, unique=True, nullable=False)
     summaries: Mapped[dict] = mapped_column(JSONB)
     categories: Mapped[dict] = mapped_column(JSONB)
-    references: Mapped[dict] = mapped_column(JSONB)
+
+    articles: Mapped[list["Article"]] = relationship(back_populates="daily_summary")
 
     def __repr__(self) -> str:
         return f"DailySummary(id={self.id}, date={self.date})"

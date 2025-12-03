@@ -19,14 +19,14 @@ class DailySummary(BaseModel):
     # Key 1: Source name
     # Key 2: Category name
     # Value: List of URLs
-    references: dict[str, dict[str, list[str]]] = Field(default_factory=dict)
+    references: dict[str, dict[str, list[int]]] = Field(default_factory=dict)
 
 
 class DailySummaryCreate(BaseModel):
     date: date
-    summaries: dict
-    categories: dict
-    references: dict
+    summaries: dict[str, dict[str, str]]
+    categories: dict[str, dict[str, int]]
+    references: dict[str, dict[str, list[int]]]
 
 
 class DailySummaryResponse(BaseModel):
@@ -34,6 +34,6 @@ class DailySummaryResponse(BaseModel):
 
     id: int
     date: date
-    summaries: dict
-    categories: dict
-    references: dict
+    summaries: dict[str, dict[str, str]]
+    categories: dict[str, dict[str, int]]
+    references: dict[str, dict[str, list]]
