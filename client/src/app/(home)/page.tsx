@@ -2,18 +2,35 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/Button';
-import { Checkbox } from '@/components/Checkbox';
 import { DateInput } from '@/components/DateInput';
 import { Box } from '@/components/Box';
 import { Report } from './Report';
 import { Loader2 } from 'lucide-react';
+import { SourceSelector } from '@/components/SourceSelector/SourceSelector';
+import { CategorySelector } from '@/components/CategorySelector/CategorySelector';
 
-const dataSources = ['Reddit', 'RSS Feeds', 'BBC', 'New York Times'];
+const dataSources = ['Reddit', 'RSS Feeds', 'BBC', 'NY Times'];
+const dataCategories = [
+  'Technology',
+  'Politics',
+  'Economy',
+  'Sport',
+  'Culture',
+];
 
 export default function Home() {
-  const [startDate, setStartDate] = useState<string>('');
-  const [endDate, setEndDate] = useState<string>('');
   const [selectedSources, setSelectedSources] = useState<string[]>(dataSources);
+  const [selectedCategories, setSelectedCategories] =
+    useState<string[]>(dataCategories);
+
+  const getToday = () => new Date().toISOString().split('T')[0];
+  const getYesterday = () => {
+    const date = new Date();
+    date.setDate(date.getDate() - 1);
+    return date.toISOString().split('T')[0];
+  };
+  const [startDate, setStartDate] = useState<string>(getYesterday());
+  const [endDate, setEndDate] = useState<string>(getToday());
 
   const [loading, setLoading] = useState<boolean>(false);
   const [reportVisible, setReportVisible] = useState<boolean>(false);
@@ -31,6 +48,18 @@ export default function Home() {
         return prevSources.filter((s) => s !== source);
       } else {
         return [...prevSources, source];
+      }
+    });
+  };
+
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategories((prevCategories) => {
+      const isCurrentlySelected = prevCategories.includes(category);
+
+      if (isCurrentlySelected) {
+        return prevCategories.filter((c) => c !== category);
+      } else {
+        return [...prevCategories, category];
       }
     });
   };
@@ -55,21 +84,32 @@ export default function Home() {
 
       <Box className="flex flex-col gap-6 mb-10">
         <div className="flex flex-wrap gap-x-6 gap-y-2 justify-center pt-4 border-t border-gray-800">
-          {dataSources.map((source, index) => (
-            <Checkbox
-              key={source + index}
+          {dataSources.map((source) => (
+            <SourceSelector
+              key={source}
+              source={source}
               checked={selectedSources.includes(source)}
               onChange={() => handleSourceChange(source)}
-            >
-              {source}
-            </Checkbox>
+            />
           ))}
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 items-end border-b border-gray-800 pb-6 mx-auto max-w-4xl w-full">
+        <div className="flex flex-wrap gap-x-4 gap-y-2 justify-center">
+          {dataCategories.map((category) => (
+            <CategorySelector
+              key={category}
+              category={category}
+              checked={selectedCategories.includes(category)}
+              onChange={() => handleCategoryChange(category)}
+            />
+          ))}
+        </div>
+
+        <div className="justify-center flex flex-col sm:flex-row items-end border-b border-gray-800 pb-6 mx-auto max-w-4xl w-full">
           <DateInput
             id="startData"
             label="From:"
+            className="sm:mr-4"
             value={startDate}
             max={todayDate}
             onChange={(e) => {
@@ -86,6 +126,7 @@ export default function Home() {
           <DateInput
             id="endDate"
             label="To:"
+            className="sm:mr-8"
             value={endDate}
             max={todayDate}
             onChange={(e) => {
@@ -101,7 +142,7 @@ export default function Home() {
 
           <Button
             onClick={handleGenerateReport}
-            className="w-full sm:w-auto ml-auto self-end flex justify-center items-center gap-2"
+            className="w-full sm:w-auto self-end"
             disabled={isButtonDisabled}
           >
             {loading ? (
