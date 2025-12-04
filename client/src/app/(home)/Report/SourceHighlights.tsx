@@ -85,7 +85,7 @@ export function SourceHighlights({
       title="Source Breakdown"
       icon={<Radio className="w-5 h-5 text-indigo-400" />}
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {activeHighlights.map(([source, text]) => (
           <SourceCard
             key={source}

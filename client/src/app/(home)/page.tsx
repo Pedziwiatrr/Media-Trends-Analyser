@@ -75,7 +75,7 @@ export default function Home() {
   };
 
   return (
-    <main className={`min-h-screen p-8 bg-black`}>
+    <main className={`w-full p-8 bg-black`}>
       <header className="mb-8 text-center">
         <h1 className="text-5xl font-extrabold text-white">
           Media Trends Analyser
