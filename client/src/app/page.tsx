@@ -9,8 +9,16 @@ import { Box } from '@/components/Box';
 import { TabButton } from '@/components/TabButton';
 import { mockTrendData, type TrendData } from '@/data/mocks';
 import { SourceSelector } from '@/components/SourceSelector/SourceSelector';
+import { CategorySelector } from '@/components/CategorySelector/CategorySelector';
 
 const dataSources = ['Reddit', 'RSS Feeds', 'BBC', 'New York Times'];
+const dataCategories = [
+  'Technology',
+  'Politics',
+  'Economy',
+  'Sport',
+  'Culture',
+];
 
 const calculatePieData = (data: TrendData[]) => {
   const totals: { [key: string]: number } = {};
@@ -29,6 +37,8 @@ export default function Home() {
   const [selectedSources, setSelectedSources] = useState<string[]>(dataSources);
   const [reportSummary, setReportSummary] = useState('Select time period.');
   const [activeTab, setActiveTab] = useState<'report' | 'analytics'>('report');
+  const [selectedCategories, setSelectedCategories] =
+    useState<string[]>(dataCategories);
 
   const getToday = () => new Date().toISOString().split('T')[0];
   const getYesterday = () => {
@@ -57,6 +67,18 @@ export default function Home() {
         return prevSources.filter((s) => s !== source);
       } else {
         return [...prevSources, source];
+      }
+    });
+  };
+
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategories((prevCategories) => {
+      const isCurrentlySelected = prevCategories.includes(category);
+
+      if (isCurrentlySelected) {
+        return prevCategories.filter((c) => c !== category);
+      } else {
+        return [...prevCategories, category];
       }
     });
   };
@@ -95,6 +117,17 @@ export default function Home() {
               source={source}
               checked={selectedSources.includes(source)}
               onChange={() => handleSourceChange(source)}
+            />
+          ))}
+        </div>
+
+        <div className="flex flex-wrap gap-x-4 gap-y-2 justify-center">
+          {dataCategories.map((category) => (
+            <CategorySelector
+              key={category}
+              category={category}
+              checked={selectedCategories.includes(category)}
+              onChange={() => handleCategoryChange(category)}
             />
           ))}
         </div>
