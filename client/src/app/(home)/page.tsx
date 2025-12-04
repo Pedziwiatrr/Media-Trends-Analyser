@@ -6,6 +6,7 @@ import { Checkbox } from '@/components/Checkbox';
 import { DateInput } from '@/components/DateInput';
 import { Box } from '@/components/Box';
 import { Report } from './Report';
+import { Loader2 } from 'lucide-react';
 
 const dataSources = ['Reddit', 'RSS Feeds', 'BBC', 'New York Times'];
 
@@ -13,12 +14,14 @@ export default function Home() {
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
   const [selectedSources, setSelectedSources] = useState<string[]>(dataSources);
-  const [reportVisible, setReportVisible] = useState<boolean>(true);
+
+  const [loading, setLoading] = useState<boolean>(false);
+  const [reportVisible, setReportVisible] = useState<boolean>(false);
 
   const todayDate = new Date().toISOString().slice(0, 10);
 
   const isButtonDisabled =
-    !startDate || !endDate || selectedSources.length === 0;
+    !startDate || !endDate || selectedSources.length === 0 || loading;
 
   const handleSourceChange = (source: string) => {
     setSelectedSources((prevSources) => {
@@ -33,8 +36,13 @@ export default function Home() {
   };
 
   const handleGenerateReport = () => {
-    console.log('clicked');
-    setReportVisible(true);
+    setLoading(true);
+    setReportVisible(false);
+
+    setTimeout(() => {
+      setLoading(false);
+      setReportVisible(true);
+    }, 2000);
   };
 
   return (
@@ -93,15 +101,32 @@ export default function Home() {
 
           <Button
             onClick={handleGenerateReport}
-            className="w-full sm:w-auto ml-auto self-end"
+            className="w-full sm:w-auto ml-auto self-end flex justify-center items-center gap-2"
             disabled={isButtonDisabled}
           >
-            Generate Report
+            {loading ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Processing...
+              </>
+            ) : (
+              'Generate Report'
+            )}
           </Button>
         </div>
       </Box>
 
-      {reportVisible && (
+      {loading && (
+        <div className="w-full flex flex-col items-center justify-center py-20 animate-in fade-in duration-500">
+          <Loader2 className="w-12 h-12 text-indigo-500 animate-spin mb-4" />
+          <h3 className="text-xl font-medium text-white">Analyzing Data...</h3>
+          <p className="text-gray-400 text-sm mt-2">
+            Aggregating trends from selected sources
+          </p>
+        </div>
+      )}
+
+      {!loading && reportVisible && (
         <Report
           startDate={startDate}
           endDate={endDate}
