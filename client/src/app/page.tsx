@@ -11,7 +11,7 @@ import { mockTrendData, type TrendData } from '@/data/mocks';
 import { SourceSelector } from '@/components/SourceSelector/SourceSelector';
 import { CategorySelector } from '@/components/CategorySelector/CategorySelector';
 
-const dataSources = ['Reddit', 'RSS Feeds', 'BBC', 'New York Times'];
+const dataSources = ['Reddit', 'RSS Feeds', 'BBC', 'NY Times'];
 const dataCategories = [
   'Technology',
   'Politics',
