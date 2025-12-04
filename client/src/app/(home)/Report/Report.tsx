@@ -6,6 +6,7 @@ import { KeyInsights } from './KeyInsights';
 import { SourceHighlights } from './SourceHighlights';
 import { SectionWrapper } from '@/components/SectionWrapper';
 import { FileText } from 'lucide-react';
+import { EventTimeline } from './EventTimeline';
 
 type ReportProps = {
   startDate: string;
@@ -32,6 +33,8 @@ export function Report({ startDate, endDate, selectedSources }: ReportProps) {
       <KeyInsights insights={data.key_insights} />
 
       <SourceHighlights highlights={data.source_highlights} />
+
+      <EventTimeline timeline={data.event_timeline} />
 
       <Charts
         startDate={startDate}

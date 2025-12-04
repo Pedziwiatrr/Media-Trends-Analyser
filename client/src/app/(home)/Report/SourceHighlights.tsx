@@ -80,10 +80,6 @@ export function SourceHighlights({ highlights }: SourceHighlightsProps) {
               key={source}
               className={`relative overflow-hidden rounded-xl border p-6 text-left transition-all hover:scale-[1.01] ${style.bg} ${style.border}`}
             >
-              <div
-                className={`absolute -top-10 -right-10 w-32 h-32 bg-linear-to-br from-white/5 to-transparent rounded-full blur-2xl`}
-              />
-
               <div className="flex items-center gap-3 mb-4 relative z-10">
                 <div
                   className={`p-2 rounded-lg bg-black/50 border border-white/5 ${style.color}`}
