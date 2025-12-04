@@ -132,10 +132,11 @@ export default function Home() {
           ))}
         </div>
 
-        <div className="justify-center flex flex-col sm:flex-row gap-4 items-end border-b border-gray-800 pb-6 mx-auto max-w-4xl w-full">
+        <div className="justify-center flex flex-col sm:flex-row items-end border-b border-gray-800 pb-6 mx-auto max-w-4xl w-full">
           <DateInput
             id="startData"
             label="From:"
+            className="sm:mr-4"
             value={startDate}
             max={todayDate}
             onChange={(e) => {
@@ -152,6 +153,7 @@ export default function Home() {
           <DateInput
             id="endDate"
             label="To:"
+            className="sm:mr-8"
             value={endDate}
             max={todayDate}
             onChange={(e) => {
