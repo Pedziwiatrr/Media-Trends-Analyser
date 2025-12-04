@@ -145,14 +145,7 @@ export default function Home() {
             className="w-full sm:w-auto self-end"
             disabled={isButtonDisabled}
           >
-            {loading ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                Processing...
-              </>
-            ) : (
-              'Generate Report'
-            )}
+            {loading ? 'Processing...' : 'Generate Report'}
           </Button>
         </div>
       </Box>
