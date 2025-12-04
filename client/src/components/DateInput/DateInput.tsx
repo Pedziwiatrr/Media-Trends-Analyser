@@ -59,7 +59,7 @@ export function DateInput({
           type="date"
           value={value}
           onChange={onChange}
-          className="text-lgflex-1 p-2 min-w-0 border border-gray-500 bg-gray-700 text-white text-center focus:ring-0 focus:outline-none [color-scheme:dark]"
+          className="flex-1 p-2 min-w-0 border border-gray-500 bg-gray-700 text-white text-center focus:ring-0 focus:outline-none [color-scheme:dark]"
           {...props}
         />
 
