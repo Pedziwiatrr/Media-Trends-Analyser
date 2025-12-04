@@ -26,11 +26,18 @@ const calculatePieData = (data: TrendData[]) => {
 };
 
 export default function Home() {
-  const [startDate, setStartDate] = useState<string>('');
-  const [endDate, setEndDate] = useState<string>('');
   const [selectedSources, setSelectedSources] = useState<string[]>(dataSources);
   const [reportSummary, setReportSummary] = useState('Select time period.');
   const [activeTab, setActiveTab] = useState<'report' | 'analytics'>('report');
+
+  const getToday = () => new Date().toISOString().split('T')[0];
+  const getYesterday = () => {
+    const date = new Date();
+    date.setDate(date.getDate() - 1);
+    return date.toISOString().split('T')[0];
+  };
+  const [startDate, setStartDate] = useState<string>(getYesterday());
+  const [endDate, setEndDate] = useState<string>(getToday());
 
   const [filteredTrendData, setFilteredTrendData] = useState(mockTrendData);
   const [calculatedCategoryData, setCalculatedCategoryData] = useState(
