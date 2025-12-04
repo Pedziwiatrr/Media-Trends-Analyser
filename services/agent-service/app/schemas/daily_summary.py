@@ -3,7 +3,6 @@ from pydantic import BaseModel, Field, ConfigDict
 
 
 class DailySummary(BaseModel):
-    id: int
     date: date
 
     # Key 1: Source name
@@ -19,14 +18,14 @@ class DailySummary(BaseModel):
     # Key 1: Source name
     # Key 2: Category name
     # Value: List of URLs
-    references: dict[str, dict[str, list[int]]] = Field(default_factory=dict)
+    references: dict[str, dict[str, list]] = Field(default_factory=dict)
 
 
 class DailySummaryCreate(BaseModel):
     date: date
     summaries: dict[str, dict[str, str]]
     categories: dict[str, dict[str, int]]
-    references: dict[str, dict[str, list[int]]]
+    references: dict[str, dict[str, list]]
 
 
 class DailySummaryResponse(BaseModel):

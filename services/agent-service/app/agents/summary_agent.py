@@ -82,8 +82,10 @@ class SummaryAgent:
 
             Return JSON with the following fields:\
             - main_summary: a narrative (8–12 sentences) synthesizing the main themes and events across the period.\
-            - categories_timeline: a dict where keys are category names and values are lists of integers
-              representing total daily counts (summed across all sources).\
+            - categories_timeline: a list of objects, where each object represents one day and contains:\
+              * date: the date in YYYY-MM-DD format\
+              * one field per category (e.g., Technology, Politics, Economy, Sport, Culture) with the total count for that day (summed across all sources)\
+              Example: [{{ "date": "2025-11-01", "Technology": 50, "Politics": 30, "Economy": 20, "Sport": 40, "Culture": 60 }}, {{ "date": "2025-11-02", ... }}]\
             - category_totals: a dict with total counts per category for the entire period.\
             - trends: A dictionary containing three specific lists:\
                 * rising: Topics that are gaining momentum or frequency over the period.\
@@ -117,10 +119,8 @@ class SummaryAgent:
                 "categories": self.summary_categories,
             }
         )
-        self.daily_summary_id += 1
 
         return DailySummary(
-            id=self.daily_summary_id,
             date=summary_date,
             summaries=output["summaries"],
             categories=output["categories"],
@@ -170,4 +170,5 @@ class SummaryAgent:
             key_insights=output["key_insights"],
             source_highlights=output["source_highlights"],
             event_timeline=output["event_timeline"],
+            references=output["references"],
         )
