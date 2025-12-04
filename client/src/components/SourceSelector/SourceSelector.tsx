@@ -60,11 +60,11 @@ export function SourceSelector({
             : {}
         }
         className={`
-        flex items-center justify-center w-18 h-14 rounded-xl border transition-all duration-300
+        flex items-center justify-center w-18 h-14 rounded-xl border transition-all duration-300 [&_path]:transition-colors
         ${
           checked
             ? 'scale-105 opacity-100 [&_path]:fill-white'
-            : 'bg-transparent border-gray-700 opacity-50 grayscale group-hover:opacity-80 group-hover:grayscale-0'
+            : 'bg-transparent border-gray-700 opacity-50 [&_path]:fill-gray-400 group-hover:opacity-80 group-hover:[&_path]:fill-gray-200'
         }
       `}
       >
