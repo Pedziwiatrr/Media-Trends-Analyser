@@ -132,7 +132,7 @@ export default function Home() {
           ))}
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 items-end border-b border-gray-800 pb-6 mx-auto max-w-4xl w-full">
+        <div className="justify-center flex flex-col sm:flex-row gap-4 items-end border-b border-gray-800 pb-6 mx-auto max-w-4xl w-full">
           <DateInput
             id="startData"
             label="From:"
@@ -167,7 +167,7 @@ export default function Home() {
 
           <Button
             onClick={handleGenerateReport}
-            className="w-full sm:w-auto ml-auto self-end"
+            className="w-full sm:w-auto self-end"
             disabled={isButtonDisabled}
           >
             Generate Report
