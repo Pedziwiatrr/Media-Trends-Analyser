@@ -29,11 +29,11 @@ const icons: Record<string, ReactNode> = {
     </svg>
   ),
 };
-interface SourceSelectorProps {
+type SourceSelectorProps = {
   source: string;
   checked: boolean;
   onChange: () => void;
-}
+};
 
 export function SourceSelector({
   source,

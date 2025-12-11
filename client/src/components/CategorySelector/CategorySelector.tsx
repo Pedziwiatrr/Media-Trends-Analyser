@@ -1,10 +1,10 @@
 import React from 'react';
 
-interface CategorySelectorProps {
+type CategorySelectorProps = {
   category: string;
   checked: boolean;
   onChange: () => void;
-}
+};
 
 export const CategorySelector = ({
   category,
