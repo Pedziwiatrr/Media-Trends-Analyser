@@ -39,7 +39,11 @@ export default function Home() {
   const todayDate = new Date().toISOString().slice(0, 10);
 
   const isButtonDisabled =
-    !startDate || !endDate || selectedSources.length === 0 || loading;
+    !startDate ||
+    !endDate ||
+    !selectedSources.length ||
+    !selectedCategories.length ||
+    loading;
 
   const handleSourceChange = (source: string) => {
     setSelectedSources((prevSources) => {
