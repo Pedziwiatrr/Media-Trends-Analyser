@@ -147,7 +147,7 @@ export function ControlPanel({ children }: ControlPanelProps) {
 
           <Button
             onClick={handleGenerateReport}
-            className="w-full sm:w-auto self-end"
+            className="w-full sm:w-auto sm:min-w-[190px] self-end"
             disabled={isButtonDisabled}
           >
             {isPending ? 'Processing...' : 'Generate Report'}
