@@ -13,8 +13,8 @@ env:
   SERVICE_DIR: services/data-scraper-service
 
 jobs:
-  run_basic_ci:
-    runs-on: ubuntu-latest
+  run_ci:
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
