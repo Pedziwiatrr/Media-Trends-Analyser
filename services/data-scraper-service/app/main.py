@@ -8,4 +8,4 @@ app.include_router(data_router)
 
 @app.get("/")
 async def scrapper_service():
-    return {"service": "data-scrapper"}
+    return {"service": "data-scraper"}
