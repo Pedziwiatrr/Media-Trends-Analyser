@@ -61,10 +61,10 @@ export function EventTimeline({ timeline }: EventTimelineProps) {
       icon={<CalendarClock className="w-5 h-5 text-sky-400" />}
     >
       <div className="flex flex-col gap-4">
-        {sortedDates.length !== 1 && (
+        {sortedDates.length > 1 && (
           <div
             ref={scrollRef}
-            className="flex items-center justify-start px-4 pt-4 pb-12 overflow-x-auto custom-scrollbar scroll-smooth"
+            className="flex items-start justify-start p-4 overflow-x-auto custom-scrollbar scroll-smooth"
           >
             {sortedDates.map((date, index) => {
               let delay = 0;
@@ -112,11 +112,11 @@ function TimelineNode({
   const dateObj = new Date(date);
 
   return (
-    <div className="flex items-center relative shrink-0">
+    <div className="flex items-start relative shrink-0">
       <button
         data-date={date}
         onClick={onClick}
-        className="group relative z-10 flex flex-col items-center gap-2 w-16 shrink-0 focus:outline-none"
+        className="group relative z-10 flex flex-col items-center gap-3 w-16 shrink-0 focus:outline-none"
       >
         <div
           className={`w-4 h-4 rounded-full border-2 transition-all duration-300 ${
@@ -129,7 +129,7 @@ function TimelineNode({
         />
 
         <span
-          className={`text-xs font-mono font-medium whitespace-nowrap transition-colors absolute top-8 ${
+          className={`text-xs font-mono font-medium whitespace-nowrap transition-colors ${
             isActive
               ? 'text-sky-400'
               : 'text-gray-500 group-hover:text-gray-300'
@@ -143,7 +143,7 @@ function TimelineNode({
       </button>
 
       {!isLast && (
-        <div className="w-32 h-0.5 relative -mx-8 z-0">
+        <div className="w-32 h-0.5 relative -mx-8 z-0 mt-[7px]">
           <div className="absolute inset-0 bg-gray-800 rounded-full" />
 
           <div
