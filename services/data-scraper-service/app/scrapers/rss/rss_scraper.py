@@ -1,14 +1,15 @@
-from base_scraper import BaseScraper, Entry
+from app.scrapers.base_scraper import BaseScraper, Entry
 
 import xml.etree.ElementTree as ET
 import requests
 
 
 class RssScraper(BaseScraper):
-    def collect_data(self, category: str = None) -> None:
+    def collect_data(self, category: str = None) -> list:
         """
         ...
         """
+        data = []
         temp_url = self.url % category if category else self.url
         response = requests.get(temp_url)
         root = ET.fromstring(response.content)
@@ -23,4 +24,5 @@ class RssScraper(BaseScraper):
                     if category.text
                 ],
             }
-            self.data.append(Entry(**entry))
+            data.append(Entry(**entry))
+        return data

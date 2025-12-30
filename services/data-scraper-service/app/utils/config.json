@@ -1,6 +1,7 @@
-[
-    {
-        "Bankier": {
+{
+    "bankier": {
+        "title": "Bankier",
+        "endpoint": {
             "base_url": "https://www.bankier.pl/rss/%s",
             "categories": [
                 "wiadomosci.xml",
@@ -9,21 +10,23 @@
         },
         "type": "rss"
     },
-    {
-        "naTemat": {
+    "natemat": {
+        "title": "naTemat",
+        "endpoint": {
             "base_url": "https://natemat.pl/rss/wszystkie",
             "categories": []
         },
         "type": "rss"
     },
-    {
-        "Defence24": {
+    "Defence24": {
+        "title": "Defence24",
+        "endpoint": {
             "base_url": "https://defence24.pl/_rss",
             "categories": []
         },
         "type": "rss"
     },
-    {
+    "spidersweb": {
         "title": "SpidersWeb",
         "endpoint": {
             "base_url": "https://spidersweb.pl/api/post/feed/feed-gn",
@@ -31,7 +34,7 @@
         },
         "type": "rss"
     },
-    {
+    "moneypl": {
         "title": "Money.pl",
         "endpoint": {
             "base_url": "https://www.money.pl/rss/",
@@ -39,7 +42,7 @@
         },
         "type": "rss"
     },
-    {
+    "businessinsider": {
         "title": "BusinessInsider",
         "endpoint": {
             "base_url": "https://businessinsider.com.pl/.feed",
@@ -47,7 +50,7 @@
         },
         "type": "rss"
     },
-    {
+    "nextgazeta": {
         "title": "nextGazeta",
         "endpoint": {
             "base_url": "https://next.gazeta.pl/pub/next/rssnext.htm",
@@ -55,7 +58,7 @@
         },
         "type": "rss"
     },
-    {
+    "tvn24": {
         "title": "TVN24",
         "endpoint": {
             "base_url": "https://www.tvn24.pl/%s",
@@ -68,7 +71,7 @@
         },
         "type": "rss"
     },
-    {
+    "gazetawyborcza": {
         "title": "GazetaWyborcza",
         "endpoint": {
             "base_url": "http://rss.gazeta.pl/pub/rss/%s",
@@ -79,7 +82,7 @@
         },
         "type": "rss"
     },
-    {
+    "interia": {
         "title": "Interia",
         "endpoint": {
             "base_url": "http://%s.interia.pl/feed",
@@ -91,7 +94,7 @@
         },
         "type": "rss"
     },
-    {
+    "natematKategorie": {
         "title": "naTemat",
         "endpoint": {
             "base_url": "http://www.rmf24.pl/%s/feed",
@@ -104,7 +107,7 @@
         },
         "type": "rss"
     },
-    {
+    "nytRss": {
         "title": "NewYorkTimes",
         "endpoint": {
             "base_url": "https://rss.nytimes.com/services/xml/rss/nyt/%s.xml",
@@ -172,7 +175,7 @@
         },
         "type": "rss"
     },
-    {
+    "nytTopStories": {
         "title": "NewYorkTimes Top Stories",
         "endpoint": {
             "base_url": "https://api.nytimes.com/svc/topstories/v2/%s.json?api-key=",
@@ -205,9 +208,10 @@
                 "world"
             ]
         },
-        "type": "api"
+        "type": "api",
+        "classType": "NYTScrapper"
     },
-    {
+    "bbc": {
         "title": "BBC",
         "endpoint": {
             "base_url": "https://bbc-news-api.vercel.app/%s?lang=english",
@@ -216,6 +220,7 @@
                 "news"
             ]
         },
-        "type": "api"
+        "type": "api",
+        "classType": "BBCScraper"
     }
-]
+}

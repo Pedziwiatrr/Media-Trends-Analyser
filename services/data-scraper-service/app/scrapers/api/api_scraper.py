@@ -1,7 +1,15 @@
-from base_scraper import BaseScraper, Entry
+from app.scrapers.base_scraper import BaseScraper, Entry
 from abc import abstractmethod
 
+from functools import wraps
 import requests
+
+API_SCRAPERS = {}
+
+
+def save_scrapers(cls):
+    API_SCRAPERS[cls.__qualname__] = cls
+    return cls
 
 
 class ApiScraper(BaseScraper):
@@ -12,7 +20,7 @@ class ApiScraper(BaseScraper):
             self.api_key = api_key
             self.url += self.api_key
 
-    def collect_data(self, category: str = None) -> None:
+    def collect_data(self, category: str = None) -> list:
         """ """
         temp_url = self.url % category if category else self.url
 
@@ -29,14 +37,17 @@ class ApiScraper(BaseScraper):
         if status not in ("OK", 200):
             raise Exception(f"API error status: {status}")
 
-        self._extract_data(response)
+        return self._extract_data(response)
 
     @abstractmethod
     def _extract_data(self, response): ...
 
 
+@save_scrapers
 class NYTScrapper(ApiScraper):
+
     def _extract_data(self, response):
+        data = []
         for result in response["results"]:
             try:
                 entry = {
@@ -45,13 +56,17 @@ class NYTScrapper(ApiScraper):
                     "url": result["url"],
                     "category": result["des_facet"] + result["org_facet"],
                 }
-                self.data.append(Entry(**entry))
+                data.append(Entry(**entry))
             except:
                 pass
+        return data
 
 
+@save_scrapers
 class BBCScraper(ApiScraper):
+
     def _extract_data(self, response):
+        data = []
         for key, values in response.items():
             if isinstance(values, list):
                 for value in values:
@@ -62,6 +77,7 @@ class BBCScraper(ApiScraper):
                             "url": value["news_link"],
                             "category": [key],
                         }
-                        self.data.append(Entry(**entry))
+                        data.append(Entry(**entry))
                     except:
                         pass
+        return data
