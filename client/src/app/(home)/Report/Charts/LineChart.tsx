@@ -21,14 +21,16 @@ type TrendDataPoint = {
 type CategoryTrendChartProps = {
   data: TrendDataPoint[];
   categories: string[];
+  disableAnimation?: boolean;
 };
 
 export function CategoryTrendChart({
   data,
   categories,
+  disableAnimation = false,
 }: CategoryTrendChartProps) {
   return (
-    <div className="w-full h-[400px]">
+    <div className="w-full h-100">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart
           data={data}
@@ -88,6 +90,7 @@ export function CategoryTrendChart({
                 fill: CHART_COLORS[index % CHART_COLORS.length],
               }}
               activeDot={{ r: 6 }}
+              isAnimationActive={!disableAnimation}
             />
           ))}
         </LineChart>

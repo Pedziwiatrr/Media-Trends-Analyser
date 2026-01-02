@@ -50,6 +50,7 @@ export function Report({
         endDate={endDate}
         categoryData={data.category_totals}
         trendData={data.categories_timeline}
+        isExport={isExport}
       />
     </Box>
   );

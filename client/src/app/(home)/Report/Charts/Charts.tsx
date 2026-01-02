@@ -23,6 +23,7 @@ type ChartsProps = {
   endDate: string;
   categoryData: CategoryData;
   trendData: TrendData[];
+  isExport?: boolean;
 };
 
 const convertPieData = (data: CategoryData) => {
@@ -37,6 +38,7 @@ export function Charts({
   endDate,
   categoryData,
   trendData,
+  isExport = false,
 }: ChartsProps) {
   const categories = convertPieData(categoryData);
   const categoryNames = categories.map((c) => c.name);
@@ -60,7 +62,7 @@ export function Charts({
         </div>
 
         <div className="md:col-span-2 bg-black/20 rounded-xl border border-white/5 p-4">
-          <CategoryPieChart data={categories} />
+          <CategoryPieChart data={categories} disableAnimation={isExport} />
         </div>
       </div>
 
@@ -79,7 +81,11 @@ export function Charts({
         </div>
 
         <div className="w-full bg-black/20 rounded-xl border border-white/5 p-4">
-          <CategoryTrendChart data={trendData} categories={categoryNames} />
+          <CategoryTrendChart
+            data={trendData}
+            categories={categoryNames}
+            disableAnimation={isExport}
+          />
         </div>
       </div>
     </SectionWrapper>

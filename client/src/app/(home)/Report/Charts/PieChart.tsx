@@ -18,11 +18,15 @@ type CategoryData = {
 
 type CategoryPieChartProps = {
   data: CategoryData[];
+  disableAnimation?: boolean;
 };
 
-export function CategoryPieChart({ data }: CategoryPieChartProps) {
+export function CategoryPieChart({
+  data,
+  disableAnimation = false,
+}: CategoryPieChartProps) {
   return (
-    <div className="w-full h-[300px] md:h-[400px]">
+    <div className="w-full h-75 md:h-100">
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
@@ -34,6 +38,7 @@ export function CategoryPieChart({ data }: CategoryPieChartProps) {
             paddingAngle={4}
             dataKey="value"
             stroke="none"
+            isAnimationActive={!disableAnimation}
           >
             {data.map((entry, index) => (
               <Cell
