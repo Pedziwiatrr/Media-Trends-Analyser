@@ -1,6 +1,5 @@
 import { Box } from '@/components/Box';
 import { Charts } from './Charts';
-import data from '@/data/periodic_summary.json';
 import { TrendAnalysis } from './TrendAnalysis';
 import { KeyInsights } from './KeyInsights';
 import { SourceHighlights } from './SourceHighlights';
@@ -13,11 +12,19 @@ type ReportProps = {
   data: ReportData;
   startDate: string;
   endDate: string;
+  isExport?: boolean;
 };
 
-export function Report({ startDate, endDate }: ReportProps) {
+export function Report({
+  data,
+  startDate,
+  endDate,
+  isExport = false,
+}: ReportProps) {
   return (
-    <Box className="flex flex-col gap-12 min-h-[500px] text-center">
+    <Box
+      className={`flex flex-col gap-12 text-center ${isExport ? 'p-8 min-h-0' : 'min-h-125'}`}
+    >
       <SectionWrapper
         title="Executive Summary"
         icon={<FileText className="w-5 h-5 text-blue-400" />}
@@ -36,7 +43,7 @@ export function Report({ startDate, endDate }: ReportProps) {
         references={data.references}
       />
 
-      <EventTimeline timeline={data.event_timeline} />
+      <EventTimeline timeline={data.event_timeline} isExport={isExport} />
 
       <Charts
         startDate={startDate}

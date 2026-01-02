@@ -1,13 +1,16 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { CalendarClock, ChevronRight } from 'lucide-react';
 import { SectionWrapper } from '@/components/SectionWrapper';
 import { Box } from '@/components/Box';
 
 type EventTimelineProps = {
   timeline: Record<string, string>;
+  isExport?: boolean;
 };
+
+type PrintableReportProps = EventTimelineProps & { dates: string[] };
 
 type TimelineNodeProps = {
   date: string;
@@ -25,7 +28,7 @@ type TimelineContentProps = {
 
 const ANIMATION_DURATION = 150;
 
-export function EventTimeline({ timeline }: EventTimelineProps) {
+export function EventTimeline({ timeline, isExport }: EventTimelineProps) {
   const sortedDates = Object.keys(timeline).sort();
   const [selectedDate, setSelectedDate] = useState(sortedDates[0]);
   const [prevIndex, setPrevIndex] = useState(0);
@@ -36,13 +39,12 @@ export function EventTimeline({ timeline }: EventTimelineProps) {
   const handleNodeClick = (date: string) => {
     setPrevIndex(selectedIndex);
     setSelectedDate(date);
-  };
 
-  useEffect(() => {
     if (scrollRef.current) {
       const selectedButton = scrollRef.current.querySelector(
-        `[data-date="${selectedDate}"]`
+        `[data-date="${date}"]`
       );
+
       if (selectedButton) {
         selectedButton.scrollIntoView({
           behavior: 'smooth',
@@ -51,9 +53,13 @@ export function EventTimeline({ timeline }: EventTimelineProps) {
         });
       }
     }
-  }, [selectedDate]);
+  };
 
   const direction = selectedIndex >= prevIndex ? 'forward' : 'backward';
+
+  if (isExport) {
+    return <PrintableTimeline timeline={timeline} dates={sortedDates} />;
+  }
 
   return (
     <SectionWrapper
@@ -101,6 +107,39 @@ export function EventTimeline({ timeline }: EventTimelineProps) {
   );
 }
 
+function PrintableTimeline({ timeline, dates }: PrintableReportProps) {
+  return (
+    <SectionWrapper
+      title="Event Timeline"
+      icon={<CalendarClock className="w-5 h-5 text-sky-400" />}
+    >
+      <div className="flex flex-col gap-8">
+        {dates.map((date) => (
+          <div
+            key={date}
+            className="border-l-2 border-sky-500/30 pl-4 pb-2 break-inside-avoid"
+          >
+            <h4 className="text-lg font-bold text-sky-400 mb-2">
+              {new Date(date).toLocaleDateString('en-GB', {
+                weekday: 'long',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </h4>
+            <ul className="flex flex-col gap-2">
+              {timeline[date].split(';').map((sentence, index) => (
+                <li key={index} className="text-gray-300 text-sm">
+                  • {sentence.trim()}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </SectionWrapper>
+  );
+}
+
 function TimelineNode({
   date,
   isActive,
@@ -143,7 +182,7 @@ function TimelineNode({
       </button>
 
       {!isLast && (
-        <div className="w-32 h-0.5 relative -mx-8 z-0 mt-[7px]">
+        <div className="w-32 h-0.5 relative -mx-8 z-0 mt-1.75">
           <div className="absolute inset-0 bg-gray-800 rounded-full" />
 
           <div
