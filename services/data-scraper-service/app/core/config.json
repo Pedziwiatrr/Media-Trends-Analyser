@@ -2,10 +2,10 @@
     "bankier": {
         "title": "Bankier.pl",
         "endpoint": {
-            "base_url": "https://www.bankier.pl/rss/%s",
+            "base_url": "https://www.bankier.pl/rss/%s.xml",
             "categories": [
-                "wiadomosci.xml",
-                "finanse.xml"
+                "wiadomosci",
+                "finanse"
             ]
         },
         "type": "RssScraper"
@@ -18,7 +18,7 @@
         },
         "type": "RssScraper"
     },
-    "Defence24": {
+    "defence24": {
         "title": "Defence24",
         "endpoint": {
             "base_url": "https://defence24.pl/_rss",
@@ -61,12 +61,10 @@
     "tvn24": {
         "title": "TVN24",
         "endpoint": {
-            "base_url": "https://www.tvn24.pl/%s",
+            "base_url": "https://www.tvn24.pl/%s.xml",
             "categories": [
-                "najnowsze.xml",
-                "najwazniejsze.xml",
-                "internet-hi-tech-media,40.xml",
-                "wiadomosci-z-kraju,3.xml"
+                "najnowsze",
+                "najwazniejsze"
             ]
         },
         "type": "RssScraper"
@@ -74,10 +72,10 @@
     "gazetawyborcza": {
         "title": "GazetaWyborcza",
         "endpoint": {
-            "base_url": "http://rss.gazeta.pl/pub/rss/%s",
+            "base_url": "http://rss.gazeta.pl/pub/rss/%s.xml",
             "categories": [
-                "gazetawyborcza_kraj.xml",
-                "gazetawyborcza_swiat.xml"
+                "gazetawyborcza_kraj",
+                "gazetawyborcza_swiat"
             ]
         },
         "type": "RssScraper"
@@ -93,122 +91,6 @@
             ]
         },
         "type": "RssScraper"
-    },
-    "natematKategorie": {
-        "title": "naTemat",
-        "endpoint": {
-            "base_url": "http://www.rmf24.pl/%s/feed",
-            "categories": [
-                "fakty/polska",
-                "fakty/swiat",
-                "ekonomia",
-                "nauka"
-            ]
-        },
-        "type": "RssScraper"
-    },
-    "nytRss": {
-        "title": "NewYorkTimes",
-        "endpoint": {
-            "base_url": "https://rss.nytimes.com/services/xml/rss/nyt/%s.xml",
-            "categories": [
-                "Africa",
-                "Americas",
-                "ArtandDesign",
-                "Arts",
-                "AsiaPacific",
-                "Automobiles",
-                "Baseball",
-                "Books/Review",
-                "Business",
-                "Climate",
-                "CollegeBasketball",
-                "CollegeFootball",
-                "Dance",
-                "Dealbook",
-                "DiningandWine",
-                "Economy",
-                "Education",
-                "EnergyEnvironment",
-                "Europe",
-                "FashionandStyle",
-                "Golf",
-                "Health",
-                "Hockey",
-                "HomePage",
-                "Jobs",
-                "Lens",
-                "MediaandAdvertising",
-                "MiddleEast",
-                "MostEmailed",
-                "MostShared",
-                "MostViewed",
-                "Movies",
-                "Music",
-                "NYRegion",
-                "Obituaries",
-                "PersonalTech",
-                "Politics",
-                "ProBasketball",
-                "ProFootball",
-                "RealEstate",
-                "Science",
-                "SmallBusiness",
-                "Soccer",
-                "Space",
-                "Sports",
-                "SundayBookReview",
-                "Sunday-Review",
-                "Technology",
-                "Television",
-                "Tennis",
-                "Theater",
-                "TMagazine",
-                "Travel",
-                "Upshot",
-                "US",
-                "Weddings",
-                "Well",
-                "World",
-                "YourMoney"
-            ]
-        },
-        "type": "RssScraper"
-    },
-    "nytTopStories": {
-        "title": "NewYorkTimes Top Stories",
-        "endpoint": {
-            "base_url": "https://api.nytimes.com/svc/topstories/v2/%s.json?api-key=",
-            "categories": [
-                "arts",
-                "automobiles",
-                "books/review",
-                "business",
-                "fashion",
-                "food",
-                "health",
-                "home",
-                "insider",
-                "magazine",
-                "movies",
-                "nyregion",
-                "obituaries",
-                "opinion",
-                "politics",
-                "realestate",
-                "science",
-                "sports",
-                "sundayreview",
-                "technology",
-                "theater",
-                "t-magazine",
-                "travel",
-                "upshot",
-                "us",
-                "world"
-            ]
-        },
-        "type": "NYTScrapper"
     },
     "bbc": {
         "title": "BBC",
