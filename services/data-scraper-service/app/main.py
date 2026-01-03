@@ -14,14 +14,14 @@ async def value_error_handler(request: Request, exception: ValueError):
 
 
 @app.exception_handler(RuntimeError)
-async def value_error_handler(request: Request, exception: RuntimeError):
+async def runtime_error_handler(request: Request, exception: RuntimeError):
     return JSONResponse(
         status_code=500, content={"detail": "Internal configuration error"}
     )
 
 
 @app.exception_handler(Exception)
-async def value_error_handler(request: Request, exception: Exception):
+async def exception_error_handler(request: Request, exception: Exception):
     return JSONResponse(
         status_code=502, content={"detail": "Error communicating with external source"}
     )
