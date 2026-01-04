@@ -4,8 +4,6 @@ import type { ReportData } from '@/types/report';
 import { useRef } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import { ControlPanel } from './ControlPanel';
-import { Button } from '@/components/Button';
-import { Printer } from 'lucide-react';
 import { Report } from './Report';
 
 type ClientWrapperProps = {
@@ -32,21 +30,12 @@ export function ClientWrapper({
     <ControlPanel key={searchParamsKey}>
       {reportData && (
         <>
-          <div className="flex justify-end mb-6">
-            <Button
-              onClick={handlePrint}
-              className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 transition-colors"
-            >
-              <Printer className="w-4 h-4" />
-              Export PDF
-            </Button>
-          </div>
-
           <Report
             data={reportData}
             startDate={startDate}
             endDate={endDate}
             isExport={false}
+            onPrint={handlePrint}
           />
 
           <div className="hidden">
@@ -55,15 +44,6 @@ export function ClientWrapper({
               className="bg-[#030712] text-white p-8 print:block print:w-full"
               style={{ minHeight: '100vh' }}
             >
-              <div className="mb-8 border-b border-gray-800 pb-6">
-                <h1 className="text-3xl font-bold mb-2">
-                  Trend Analysis Report
-                </h1>
-                <p className="text-gray-400">
-                  Period: {startDate} to {endDate}
-                </p>
-              </div>
-
               <Report
                 data={reportData}
                 startDate={startDate}
