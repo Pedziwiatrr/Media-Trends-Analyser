@@ -56,10 +56,16 @@ body {
     size: auto;
     margin: 0mm;
   }
+
+  html,
   body {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
     background-color: #030712 !important;
+    height: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
   nav,

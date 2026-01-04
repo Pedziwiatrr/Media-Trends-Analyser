@@ -52,7 +52,8 @@ export function ClientWrapper({
           <div className="hidden">
             <div
               ref={printRef}
-              className="bg-[#030712] text-white p-8 print:block"
+              className="bg-[#030712] text-white p-8 print:block print:w-full"
+              style={{ minHeight: '100vh' }}
             >
               <div className="mb-8 border-b border-gray-800 pb-6">
                 <h1 className="text-3xl font-bold mb-2">
@@ -62,6 +63,7 @@ export function ClientWrapper({
                   Period: {startDate} to {endDate}
                 </p>
               </div>
+
               <Report
                 data={reportData}
                 startDate={startDate}
