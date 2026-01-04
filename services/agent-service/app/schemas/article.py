@@ -9,10 +9,11 @@ class Article(BaseModel):
     title: str
     description: str
     source: str
+    categories: list[str] | None = None
 
     @property
     def full_description(self):
-        return f"id: {self.id}, title: {self.title}, description: {self.description}, url: {self.url}, source: {self.source}"
+        return f"id: {self.id}, title: {self.title}, description: {self.description}, url: {self.url}, source: {self.source}, categories: {self.categories}"
 
 
 class ArticleResponse(BaseModel):
@@ -24,3 +25,4 @@ class ArticleResponse(BaseModel):
     title: str | None
     description: str | None
     source: str | None
+    categories: list[str] | None

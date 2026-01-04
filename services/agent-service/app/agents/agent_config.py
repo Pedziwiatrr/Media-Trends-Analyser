@@ -8,5 +8,6 @@ class AgentSettings(BaseSettings):
         "Economy",
         "Sport",
         "Culture",
+        "Society",
     ]
     sources: list[str] = ["RSS", "Reddit", "BBC", "New York Times"]

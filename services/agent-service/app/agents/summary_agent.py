@@ -29,10 +29,21 @@ class SummaryAgent:
             """
             Based on the following articles, generate a summary in JSON format:\
             {articles}\
+            
+            Each article contains:
+            - id: unique identifier
+            - title: article title
+            - description: article content
+            - url: article link
+            - source: news source name
+            - categories: optional category information (if available)
+            
             You must include all sources and categories from the following lists,
             without additional keys like "no source", "default" etc.\
             - Allowed Sources: {sources}
             - Allowed Categories: {categories}\
+            
+            If an article has 'categories', use it as additional context for categorization.
             
             Language: english\
             

@@ -53,6 +53,7 @@ def get_daily_summary(
             title=a.title,
             description=a.description,
             source=a.source,
+            categories=a.categories
         )
         for a in articles_valid
     ]
