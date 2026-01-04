@@ -143,17 +143,31 @@ class SummaryAgent:
 
         for summary in daily_summaries:
             summary.summaries = {
-                src: {c: v for c, v in data.items() if c in categories}
+                src: {
+                    category: value
+                    for category, value in data.items()
+                    if category in categories
+                }
                 for src, data in summary.summaries.items()
                 if src in sources
             }
+
             summary.categories = {
-                src: {c: v for c, v in data.items() if c in categories}
+                src: {
+                    category: value
+                    for category, value in data.items()
+                    if category in categories
+                }
                 for src, data in summary.categories.items()
                 if src in sources
             }
+
             summary.references = {
-                src: {c: v for c, v in data.items() if c in categories}
+                src: {
+                    category: value
+                    for category, value in data.items()
+                    if category in categories
+                }
                 for src, data in summary.references.items()
                 if src in sources
             }
