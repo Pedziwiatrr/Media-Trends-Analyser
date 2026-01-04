@@ -3,6 +3,9 @@ from sqlalchemy import Date, Integer
 from sqlalchemy.dialects.postgresql import JSONB
 from datetime import date
 from .base import Base
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from .article import Article
 
 
 class DailySummary(Base):
