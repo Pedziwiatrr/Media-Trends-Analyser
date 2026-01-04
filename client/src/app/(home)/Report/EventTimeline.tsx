@@ -107,39 +107,6 @@ export function EventTimeline({ timeline, isExport }: EventTimelineProps) {
   );
 }
 
-function PrintableTimeline({ timeline, dates }: PrintableReportProps) {
-  return (
-    <SectionWrapper
-      title="Event Timeline"
-      icon={<CalendarClock className="w-5 h-5 text-sky-400" />}
-    >
-      <div className="flex flex-col gap-8">
-        {dates.map((date) => (
-          <div
-            key={date}
-            className="border-l-2 border-sky-500/30 pl-4 pb-2 break-inside-avoid"
-          >
-            <h4 className="text-lg font-bold text-sky-400 mb-2">
-              {new Date(date).toLocaleDateString('en-GB', {
-                weekday: 'long',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </h4>
-            <ul className="flex flex-col gap-2">
-              {timeline[date].split(';').map((sentence, index) => (
-                <li key={index} className="text-gray-300 text-sm">
-                  • {sentence.trim()}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-    </SectionWrapper>
-  );
-}
-
 function TimelineNode({
   date,
   isActive,
@@ -233,5 +200,38 @@ function TimelineContent({ date, content }: TimelineContentProps) {
         </ul>
       </div>
     </Box>
+  );
+}
+
+function PrintableTimeline({ timeline, dates }: PrintableReportProps) {
+  return (
+    <SectionWrapper
+      title="Event Timeline"
+      icon={<CalendarClock className="w-5 h-5 text-sky-400" />}
+    >
+      <div className="flex flex-col">
+        {dates.map((date) => (
+          <div
+            key={date}
+            className="border-l-2 border-sky-500/30 pl-4 pb-2 my-4 break-inside-avoid"
+          >
+            <h4 className="text-lg font-bold text-sky-400 mb-2">
+              {new Date(date).toLocaleDateString('en-GB', {
+                weekday: 'long',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </h4>
+            <ul className="flex flex-col gap-2">
+              {timeline[date].split(';').map((sentence, index) => (
+                <li key={index} className="text-gray-300 text-sm">
+                  • {sentence.trim()}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </SectionWrapper>
   );
 }

@@ -21,9 +21,11 @@ export function Report({
   endDate,
   isExport = false,
 }: ReportProps) {
+  const printStyle = 'print:break-before-page print:mt-4';
+
   return (
     <Box
-      className={`flex flex-col gap-12 text-center ${isExport ? 'p-8 min-h-0' : 'min-h-125'}`}
+      className={`flex flex-col gap-12 text-center ${isExport ? '' : 'min-h-125'}`}
     >
       <SectionWrapper
         title="Executive Summary"
@@ -34,25 +36,35 @@ export function Report({
         </p>
       </SectionWrapper>
 
-      <TrendAnalysis trends={data.trends} />
+      <div className={printStyle}>
+        <TrendAnalysis trends={data.trends} />
+      </div>
 
-      <KeyInsights insights={data.key_insights} />
+      <div className={printStyle}>
+        <KeyInsights insights={data.key_insights} />
+      </div>
 
-      <SourceHighlights
-        highlights={data.source_highlights}
-        references={data.references}
-        isExport={isExport}
-      />
+      <div className={printStyle}>
+        <SourceHighlights
+          highlights={data.source_highlights}
+          references={data.references}
+          isExport={isExport}
+        />
+      </div>
 
-      <EventTimeline timeline={data.event_timeline} isExport={isExport} />
+      <div className={printStyle}>
+        <EventTimeline timeline={data.event_timeline} isExport={true} />
+      </div>
 
-      <Charts
-        startDate={startDate}
-        endDate={endDate}
-        categoryData={data.category_totals}
-        trendData={data.categories_timeline}
-        isExport={isExport}
-      />
+      <div className={printStyle}>
+        <Charts
+          startDate={startDate}
+          endDate={endDate}
+          categoryData={data.category_totals}
+          trendData={data.categories_timeline}
+          isExport={isExport}
+        />
+      </div>
     </Box>
   );
 }
