@@ -103,7 +103,7 @@ export function ControlPanel({ children }: ControlPanelProps) {
   return (
     <>
       <Box className="flex flex-col gap-6 mb-10">
-        <div className="flex flex-wrap gap-x-6 gap-y-2 justify-center pt-4 border-t border-gray-800">
+        <div className="flex flex-wrap gap-x-6 gap-y-2 justify-center pt-4">
           {dataSources.map((source) => (
             <SourceSelector
               key={source}
@@ -125,7 +125,7 @@ export function ControlPanel({ children }: ControlPanelProps) {
           ))}
         </div>
 
-        <div className="justify-center flex flex-col sm:flex-row items-end border-b border-gray-800 pb-6 mx-auto max-w-4xl w-full">
+        <div className="justify-center flex flex-col sm:flex-row items-end pb-4 mx-auto max-w-4xl w-full">
           <DateInput
             id="startData"
             label="From:"
@@ -147,7 +147,7 @@ export function ControlPanel({ children }: ControlPanelProps) {
 
           <Button
             onClick={handleGenerateReport}
-            className="w-full sm:w-auto sm:min-w-[190px] self-end"
+            className="w-full sm:w-auto sm:min-w-47.5 self-end"
             disabled={isButtonDisabled}
           >
             {isPending ? 'Processing...' : 'Generate Report'}
