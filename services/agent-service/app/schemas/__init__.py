@@ -1,6 +1,6 @@
 from .article import Article, ArticleResponse
 from .daily_summary import DailySummary, DailySummaryCreate, DailySummaryResponse
-from .periodic_summary import PeriodicSummary
+from .periodic_summary import PeriodicSummary, PeriodicSummaryResponse
 
 
 __all__ = [
@@ -10,4 +10,5 @@ __all__ = [
     "DailySummaryCreate",
     "DailySummaryResponse",
     "PeriodicSummary",
+    "PeriodicSummaryResponse",
 ]
