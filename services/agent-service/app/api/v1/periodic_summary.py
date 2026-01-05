@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
 from datetime import date
 from app.database.database import get_db
-from app.models import ViewDailySummary
-from app.schemas import PeriodicSummary, DailySummaryResponse
+from app.models import ViewDailySummary, Article
+from app.schemas import PeriodicSummary, PeriodicSummaryResponse, DailySummaryResponse
 from langchain_google_genai import ChatGoogleGenerativeAI
 from app.agents.summary_agent import SummaryAgent
 from app.agents.agent_config import AgentSettings
@@ -11,7 +11,7 @@ from app.agents.agent_config import AgentSettings
 router = APIRouter(prefix="/periodic_summary")
 
 
-@router.get("/", response_model=PeriodicSummary)
+@router.get("/", response_model=PeriodicSummaryResponse)
 def get_periodic_summary(
     start: date = Query(...),
     end: date = Query(...),
@@ -53,5 +53,19 @@ def get_periodic_summary(
         start_date=start,
         end_date=end,
     )
+
+    if periodic_summary.references:
+        all_ids = []
+        for source_refs in periodic_summary.references.values():
+            all_ids.extend(source_refs)
+
+        articles = db.query(Article).filter(Article.id.in_(all_ids)).all()
+        id_to_url = {article.id: article.url for article in articles}
+
+        for source_name, ref_list in periodic_summary.references.items():
+            periodic_summary.references[source_name] = [
+                id_to_url.get(article_id, article_id)
+                for article_id in ref_list
+            ]
 
     return periodic_summary
