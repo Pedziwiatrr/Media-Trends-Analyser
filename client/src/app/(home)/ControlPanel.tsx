@@ -1,6 +1,11 @@
 'use client';
 
-import { useState, useTransition, type ReactNode } from 'react';
+import {
+  useState,
+  useTransition,
+  type ReactNode,
+  type ChangeEvent,
+} from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 
@@ -9,6 +14,8 @@ import { DateInput } from '@/components/DateInput';
 import { Box } from '@/components/Box';
 import { SourceSelector } from '@/components/SourceSelector';
 import { CategorySelector } from '@/components/CategorySelector';
+
+const MIN_DATA_DATE = '2026-01-01';
 
 const dataSources = ['Reddit', 'RSS Feeds', 'BBC', 'NY Times'];
 const dataCategories = [
@@ -55,7 +62,7 @@ export function ControlPanel({ children }: ControlPanelProps) {
     searchParams.get('to') || getToday()
   );
 
-  const todayDate = new Date().toISOString().slice(0, 10);
+  const todayDate = getToday();
 
   const isButtonDisabled =
     !startDate ||
@@ -78,6 +85,26 @@ export function ControlPanel({ children }: ControlPanelProps) {
         ? prev.filter((c) => c !== category)
         : [...prev, category]
     );
+  };
+
+  const handleStartDateChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const newStart = event.target.value;
+
+    if (newStart < MIN_DATA_DATE) return;
+
+    setStartDate(newStart);
+
+    if (endDate && newStart > endDate) {
+      setEndDate(newStart);
+    }
+  };
+
+  const handleEndDateChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const newEnd = event.target.value;
+
+    if (newEnd < MIN_DATA_DATE) return;
+
+    setEndDate(newEnd);
   };
 
   const handleGenerateReport = () => {
@@ -127,12 +154,13 @@ export function ControlPanel({ children }: ControlPanelProps) {
 
         <div className="justify-center flex flex-col sm:flex-row items-end pb-4 mx-auto max-w-4xl w-full">
           <DateInput
-            id="startData"
+            id="startDate"
             label="From:"
             className="sm:mr-4"
             value={startDate}
-            max={endDate || todayDate}
-            onChange={(event) => setStartDate(event.target.value)}
+            min={MIN_DATA_DATE}
+            max={todayDate}
+            onChange={handleStartDateChange}
           />
 
           <DateInput
@@ -140,9 +168,9 @@ export function ControlPanel({ children }: ControlPanelProps) {
             label="To:"
             className="sm:mr-8"
             value={endDate}
-            min={startDate}
+            min={startDate || MIN_DATA_DATE}
             max={todayDate}
-            onChange={(event) => setEndDate(event.target.value)}
+            onChange={handleEndDateChange}
           />
 
           <Button
