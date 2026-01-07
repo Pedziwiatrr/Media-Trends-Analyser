@@ -19,7 +19,6 @@ const MIN_DATA_DATE = '2026-01-01';
 
 const dataSources = [
   'Reddit',
-  'RSS Feeds',
   'BBC',
   'NY Times',
   'Source 1',
