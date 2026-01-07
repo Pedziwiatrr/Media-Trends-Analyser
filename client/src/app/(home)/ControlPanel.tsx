@@ -174,7 +174,7 @@ export function ControlPanel({ children }: ControlPanelProps) {
 
         <div className="h-px w-full max-w-2xl mx-auto bg-gray-800/60" />
 
-        <div className="flex flex-col md:flex-row items-end md:items-center justify-center gap-6 w-full pt-1">
+        <div className="flex flex-col md:flex-row items-end justify-center gap-6 w-full pt-1">
           <DateInput
             id="startDate"
             label="From date"
@@ -195,7 +195,7 @@ export function ControlPanel({ children }: ControlPanelProps) {
 
           <Button
             onClick={handleGenerateReport}
-            className="w-full md:w-auto md:min-w-48 h-10 text-base shadow-lg shadow-indigo-500/20"
+            className="w-full md:w-auto md:min-w-60 h-12 text-lg shadow-lg shadow-indigo-500/20 flex items-center justify-center"
             disabled={isButtonDisabled}
           >
             {isPending ? 'Processing...' : 'Generate Report'}
