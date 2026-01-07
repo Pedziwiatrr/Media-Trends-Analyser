@@ -17,13 +17,22 @@ import { CategorySelector } from '@/components/CategorySelector';
 
 const MIN_DATA_DATE = '2026-01-01';
 
-const dataSources = ['Reddit', 'RSS Feeds', 'BBC', 'NY Times'];
+const dataSources = [
+  'Reddit',
+  'RSS Feeds',
+  'BBC',
+  'NY Times',
+  'Source 1',
+  'Source 2',
+  'Source 3',
+];
 const dataCategories = [
   'Technology',
   'Politics',
   'Economy',
   'Sport',
   'Culture',
+  'Society',
 ];
 
 const getToday = () => new Date().toISOString().split('T')[0];
