@@ -25,6 +25,16 @@ const dataSources = [
   'Source 2',
   'Source 3',
 ];
+
+const sourceRegions: Record<string, 'global' | 'pl'> = {
+  Reddit: 'global',
+  BBC: 'global',
+  'NY Times': 'global',
+  'Source 1': 'pl',
+  'Source 2': 'pl',
+  'Source 3': 'pl',
+};
+
 const dataCategories = [
   'Technology',
   'Politics',
@@ -147,6 +157,7 @@ export function ControlPanel({ children }: ControlPanelProps) {
               <SourceSelector
                 key={source}
                 source={source}
+                region={sourceRegions[source]}
                 checked={selectedSources.includes(source)}
                 onChange={() => handleSourceChange(source)}
               />
