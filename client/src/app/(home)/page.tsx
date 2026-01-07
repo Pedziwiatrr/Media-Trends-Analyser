@@ -1,5 +1,4 @@
-import { ControlPanel } from './ControlPanel';
-import { Report } from './Report';
+import { ClientWrapper } from './ClientWrapper';
 import { fetchReportData } from './api';
 import { HeaderLogo } from '@/components/HeaderLogo';
 
@@ -17,19 +16,19 @@ export default async function Home({ searchParams }: HomeProps) {
   const hasFilters = Object.keys(params).length > 0;
   const reportData = hasFilters ? await fetchReportData(params) : null;
 
+  const startDate = typeof params.from === 'string' ? params.from : '';
+  const endDate = typeof params.to === 'string' ? params.to : '';
+
   return (
     <main className="w-full p-8">
       <HeaderLogo />
 
-      <ControlPanel key={paramsKey}>
-        {reportData && (
-          <Report
-            data={reportData}
-            startDate={typeof params.from === 'string' ? params.from : ''}
-            endDate={typeof params.to === 'string' ? params.to : ''}
-          />
-        )}
-      </ControlPanel>
+      <ClientWrapper
+        reportData={reportData ?? null}
+        startDate={startDate}
+        endDate={endDate}
+        searchParamsKey={paramsKey}
+      />
     </main>
   );
 }

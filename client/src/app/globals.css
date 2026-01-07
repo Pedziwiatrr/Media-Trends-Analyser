@@ -50,3 +50,28 @@ body {
     scrollbar-color: #374151 transparent;
   }
 }
+
+@media print {
+  @page {
+    size: auto;
+    margin: 0mm;
+  }
+
+  html,
+  body {
+    background-color: #030712 !important;
+    height: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  nav,
+  header,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+}

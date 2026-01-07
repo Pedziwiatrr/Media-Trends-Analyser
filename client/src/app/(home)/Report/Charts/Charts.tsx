@@ -23,6 +23,7 @@ type ChartsProps = {
   endDate: string;
   categoryData: CategoryData;
   trendData: TrendData[];
+  isExport?: boolean;
 };
 
 const convertPieData = (data: CategoryData) => {
@@ -37,6 +38,7 @@ export function Charts({
   endDate,
   categoryData,
   trendData,
+  isExport = false,
 }: ChartsProps) {
   const categories = convertPieData(categoryData);
   const categoryNames = categories.map((c) => c.name);
@@ -45,7 +47,7 @@ export function Charts({
     <SectionWrapper
       title="Data Visualization"
       icon={<ChartColumn className="w-6 h-6 text-green-600" />}
-      className="flex flex-col gap-12"
+      className="flex flex-col gap-12 print:gap-6 print:break-inside-avoid"
     >
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
         <div className="md:col-span-1 flex flex-col gap-2 text-left">
@@ -60,13 +62,13 @@ export function Charts({
         </div>
 
         <div className="md:col-span-2 bg-black/20 rounded-xl border border-white/5 p-4">
-          <CategoryPieChart data={categories} />
+          <CategoryPieChart data={categories} isExport={isExport} />
         </div>
       </div>
 
-      <div className="w-full h-px bg-gray-800" />
+      <div className="w-full h-px bg-gray-800 print:hidden" />
 
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6 print:gap-4">
         <div className="flex flex-col gap-1 text-left">
           <div className="flex items-center gap-2 text-white font-bold text-xl">
             <Activity className="w-5 h-5 text-sky-400" />
@@ -79,7 +81,11 @@ export function Charts({
         </div>
 
         <div className="w-full bg-black/20 rounded-xl border border-white/5 p-4">
-          <CategoryTrendChart data={trendData} categories={categoryNames} />
+          <CategoryTrendChart
+            data={trendData}
+            categories={categoryNames}
+            isExport={isExport}
+          />
         </div>
       </div>
     </SectionWrapper>
