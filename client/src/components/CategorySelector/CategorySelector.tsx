@@ -14,7 +14,7 @@ export const CategorySelector = ({
   return (
     <label
       className={`
-        cursor-pointer px-6 py-2 text-base rounded-full border transition-all duration-300 select-none transform
+        cursor-pointer px-5 py-1.5 text-base rounded-full border transition-all duration-300 select-none transform
         ${
           checked
             ? 'scale-100 font-bold border-indigo-600 bg-indigo-600 text-white shadow-lg shadow-indigo-500/20'
