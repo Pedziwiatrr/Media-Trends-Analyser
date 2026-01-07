@@ -61,13 +61,13 @@ export function SourceSelector({
 
       {region === 'pl' && (
         <svg
-          viewBox="0 0 16 12"
-          className={`absolute top-2 right-2 w-3 h-3 rounded-[1px] ${
+          viewBox="0 0 10 10"
+          className={`absolute top-2 right-2 w-3.5 h-3.5 rounded-full ${
             checked ? 'opacity-100' : 'opacity-60 grayscale'
           }`}
         >
-          <rect width="16" height="6" fill="#fff" />
-          <rect y="6" width="16" height="6" fill="#DC143C" />
+          <path d="M0 0h10v5H0z" fill="#fff" />
+          <path d="M0 5h10v5H0z" fill="#DC143C" />
         </svg>
       )}
 
