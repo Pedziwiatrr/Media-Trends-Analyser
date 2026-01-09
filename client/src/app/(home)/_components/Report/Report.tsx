@@ -53,21 +53,10 @@ export function Report({
         )}
       </div>
 
-      <SectionWrapper
-        title="Executive Summary"
-        icon={<FileText className="w-5 h-5 text-blue-400" />}
-      >
-        <p className="text-gray-300 leading-relaxed text-start text-lg">
-          {data.main_summary}
-        </p>
-      </SectionWrapper>
+      <KeyInsights insights={data.key_insights} />
 
       <div className={printStyle}>
         <TrendAnalysis trends={data.trends} />
-      </div>
-
-      <div className={printStyle}>
-        <KeyInsights insights={data.key_insights} />
       </div>
 
       <div className={printStyle}>
@@ -91,6 +80,15 @@ export function Report({
           isExport={isExport}
         />
       </div>
+
+      <SectionWrapper
+        title="Executive Summary"
+        icon={<FileText className="w-5 h-5 text-blue-400" />}
+      >
+        <p className="text-gray-300 leading-relaxed text-start text-lg">
+          {data.main_summary}
+        </p>
+      </SectionWrapper>
     </Box>
   );
 }
