@@ -60,7 +60,7 @@ function SourceCard({ source, text, urls }: SourceCardProps) {
 
   const cardRef = useRef<HTMLDivElement>(null);
 
-  const style = SOURCES[source] || SOURCES['Default'];
+  const style = SOURCES[source] || SOURCES.default;
   const Icon = style.icon;
 
   useEffect(() => {

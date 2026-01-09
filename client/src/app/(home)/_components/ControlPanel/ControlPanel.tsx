@@ -14,26 +14,9 @@ import { DateInput } from '@/components/DateInput';
 import { Box } from '@/components/Box';
 import { SourceSelector } from '@/components/SourceSelector';
 import { CategorySelector } from '@/components/CategorySelector';
+import { type Source, SOURCES } from '@/constants/sources';
 
 const MIN_DATA_DATE = '2026-01-01';
-
-const dataSources = [
-  'Reddit',
-  'BBC',
-  'NY Times',
-  'Source 1',
-  'Source 2',
-  'Source 3',
-];
-
-const sourceRegions: Record<string, 'global' | 'pl'> = {
-  Reddit: 'global',
-  BBC: 'global',
-  'NY Times': 'global',
-  'Source 1': 'pl',
-  'Source 2': 'pl',
-  'Source 3': 'pl',
-};
 
 const dataCategories = [
   'Technology',
@@ -57,6 +40,10 @@ type ControlPanelProps = {
 };
 
 export function ControlPanel({ children }: ControlPanelProps) {
+  const sourcesNames = Object.keys(SOURCES).filter(
+    (source) => source !== 'default'
+  );
+
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -64,7 +51,7 @@ export function ControlPanel({ children }: ControlPanelProps) {
 
   const [selectedSources, setSelectedSources] = useState<string[]>(() => {
     const fromUrl = searchParams.getAll('source');
-    return fromUrl.length > 0 ? fromUrl : dataSources;
+    return fromUrl.length > 0 ? fromUrl : sourcesNames;
   });
 
   const [selectedCategories, setSelectedCategories] = useState<string[]>(() => {
@@ -153,15 +140,18 @@ export function ControlPanel({ children }: ControlPanelProps) {
             Sources
           </div>
           <div className="flex flex-wrap gap-4 justify-center">
-            {dataSources.map((source) => (
-              <SourceSelector
-                key={source}
-                source={source}
-                region={sourceRegions[source]}
-                checked={selectedSources.includes(source)}
-                onChange={() => handleSourceChange(source)}
-              />
-            ))}
+            {sourcesNames.map((rawSource) => {
+              const source = rawSource as Source;
+
+              return (
+                <SourceSelector
+                  key={source}
+                  source={source}
+                  checked={selectedSources.includes(source)}
+                  onChange={() => handleSourceChange(source)}
+                />
+              );
+            })}
           </div>
         </div>
 
