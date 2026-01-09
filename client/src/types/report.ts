@@ -1,3 +1,5 @@
+import { type Source } from '@/constants/sources';
+
 export type ReportData = {
   main_summary: string;
   categories_timeline: Array<{
@@ -11,7 +13,7 @@ export type ReportData = {
     emerging: string[];
   };
   key_insights: string[];
-  source_highlights: Record<string, string>;
+  source_highlights: Record<Source, string>;
   event_timeline: Record<string, string>;
-  references: Record<string, string[]>;
+  references: Record<Source, string[]>;
 };

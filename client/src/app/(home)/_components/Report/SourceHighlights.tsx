@@ -2,27 +2,18 @@
 
 import { useState, useEffect, useRef } from 'react';
 import {
-  MessageCircle,
-  Rss,
-  Globe,
-  Newspaper,
   Radio,
   ExternalLink,
   ChevronDown,
   ChevronUp,
   Link2,
-  type LucideProps,
 } from 'lucide-react';
-import type { ForwardRefExoticComponent, RefAttributes } from 'react';
 import { SectionWrapper } from '@/components/SectionWrapper';
+import { type Source, SOURCES } from '@/constants/sources';
 
-type Highlights = {
-  [key: string]: string;
-};
+type Highlights = Record<Source, string>;
 
-type References = {
-  [key: string]: string[];
-};
+type References = Record<Source, string[]>;
 
 type SourceHighlightsProps = {
   highlights: Highlights;
@@ -30,47 +21,10 @@ type SourceHighlightsProps = {
   isExport?: boolean;
 };
 
-const SOURCE_STYLES: Record<
-  string,
-  {
-    icon: ForwardRefExoticComponent<
-      Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>
-    >;
-    color: string;
-    border: string;
-    bg: string;
-  }
-> = {
-  Reddit: {
-    icon: MessageCircle,
-    color: 'text-orange-400',
-    border: 'border-orange-500/20',
-    bg: 'bg-orange-500/10',
-  },
-  RSS: {
-    icon: Rss,
-    color: 'text-yellow-400',
-    border: 'border-yellow-500/20',
-    bg: 'bg-yellow-500/10',
-  },
-  BBC: {
-    icon: Globe,
-    color: 'text-rose-500',
-    border: 'border-rose-600/20',
-    bg: 'bg-rose-500/10',
-  },
-  'New York Times': {
-    icon: Newspaper,
-    color: 'text-zinc-100',
-    border: 'border-zinc-600/30',
-    bg: 'bg-zinc-800/50',
-  },
-  Default: {
-    icon: Radio,
-    color: 'text-blue-400',
-    border: 'border-blue-500/20',
-    bg: 'bg-blue-500/10',
-  },
+type SourceCardProps = {
+  source: Source;
+  text: string;
+  urls: string[];
 };
 
 export function SourceHighlights({
@@ -91,9 +45,9 @@ export function SourceHighlights({
         {activeHighlights.map(([source, text]) => (
           <SourceCard
             key={source}
-            source={source}
+            source={source as Source}
             text={text}
-            urls={isExport ? [] : references[source] || []}
+            urls={isExport ? [] : references[source as Source] || []}
           />
         ))}
       </div>
@@ -101,20 +55,12 @@ export function SourceHighlights({
   );
 }
 
-function SourceCard({
-  source,
-  text,
-  urls,
-}: {
-  source: string;
-  text: string;
-  urls: string[];
-}) {
+function SourceCard({ source, text, urls }: SourceCardProps) {
   const [showLinks, setShowLinks] = useState(false);
 
   const cardRef = useRef<HTMLDivElement>(null);
 
-  const style = SOURCE_STYLES[source] || SOURCE_STYLES['Default'];
+  const style = SOURCES[source] || SOURCES['Default'];
   const Icon = style.icon;
 
   useEffect(() => {
@@ -134,10 +80,7 @@ function SourceCard({
   }, [showLinks]);
 
   return (
-    <div
-      ref={cardRef}
-      className={`relative flex flex-col rounded-xl border transition-all ${style.border}`}
-    >
+    <div ref={cardRef} className="relative flex flex-col rounded-xl">
       <div
         className={`absolute inset-0 rounded-xl overflow-hidden ${style.bg} pointer-events-none`}
       >
@@ -145,12 +88,8 @@ function SourceCard({
       </div>
 
       <div className="relative z-10 p-6 pb-4 grow">
-        <div className="flex items-center gap-3 mb-4">
-          <div
-            className={`p-2 rounded-lg bg-black/50 border border-white/5 ${style.color}`}
-          >
-            <Icon className="w-6 h-6" />
-          </div>
+        <div className="flex items-center gap-5 px-2 mb-4">
+          {Icon}
           <h4 className={`text-xl font-bold ${style.color}`}>{source}</h4>
         </div>
 
