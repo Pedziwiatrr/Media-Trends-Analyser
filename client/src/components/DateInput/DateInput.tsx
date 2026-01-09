@@ -41,7 +41,7 @@ export function DateInput({
         {label}
       </label>
 
-      <div className="flex items-stretch shadow-lg shadow-indigo-500/10">
+      <div className="flex items-stretch">
         <button
           type="button"
           onClick={() => adjustDate(-1)}
@@ -73,7 +73,7 @@ export function DateInput({
           value={value}
           min={min}
           onChange={onChange}
-          className="flex-1 h-12 min-w-0 border border-indigo-500/30 bg-slate-800 text-indigo-100 text-base font-medium focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none [color-scheme:dark] flex items-center justify-center cursor-pointer"
+          className="flex-1 h-12 min-w-0 border border-indigo-500/30 bg-slate-800 text-indigo-100 text-base font-medium focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none scheme-dark flex items-center justify-center cursor-pointer"
           {...props}
         />
 

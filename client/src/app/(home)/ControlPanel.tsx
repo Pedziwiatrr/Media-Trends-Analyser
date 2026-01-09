@@ -147,7 +147,7 @@ export function ControlPanel({ children }: ControlPanelProps) {
 
   return (
     <>
-      <Box className="flex flex-col gap-5 mb-8 max-w-5xl mx-auto px-6 py-6">
+      <Box className="flex flex-col gap-5 mb-8 max-w-5xl mx-auto p-6 pb-8">
         <div className="flex flex-col gap-3 items-center">
           <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
             Sources
@@ -165,7 +165,7 @@ export function ControlPanel({ children }: ControlPanelProps) {
           </div>
         </div>
 
-        <div className="h-px w-full max-w-2xl mx-auto bg-gray-800/60" />
+        <div className="h-px w-full max-w-3xl mx-auto bg-gray-800/60" />
 
         <div className="flex flex-col gap-3 items-center">
           <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
@@ -183,7 +183,7 @@ export function ControlPanel({ children }: ControlPanelProps) {
           </div>
         </div>
 
-        <div className="h-px w-full max-w-2xl mx-auto bg-gray-800/60" />
+        <div className="h-px w-full max-w-3xl mx-auto bg-gray-800/60" />
 
         <div className="flex flex-col md:flex-row items-end justify-center gap-6 w-full pt-1">
           <DateInput
