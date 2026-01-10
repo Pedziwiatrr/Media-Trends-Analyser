@@ -1,5 +1,5 @@
-import { CategoryPieChart } from './PieChart';
-import { CategoryTrendChart } from './LineChart';
+import { CategoryPieChart } from '@/components/charts/PieChart';
+import { CategoryTrendChart } from '@/components/charts/LineChart';
 import { SectionWrapper } from '@/components/SectionWrapper';
 import { ChartColumn, PieChart as PieIcon, Activity } from 'lucide-react';
 import { type Category } from '@/constants/categories';
