@@ -119,7 +119,7 @@ export function ControlPanel({ children }: ControlPanelProps) {
       if (newQueryString === currentQueryString) {
         router.refresh();
       } else {
-        router.push(`/?${newQueryString}`, { scroll: false });
+        router.push(`/periodic?${newQueryString}`, { scroll: false });
       }
     });
   };

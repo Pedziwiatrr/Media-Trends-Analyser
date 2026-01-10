@@ -6,10 +6,10 @@ import { CalendarDays, BarChart3 } from 'lucide-react';
 
 export function Header() {
   const handleReset = () => {
-    if (window.location.pathname === '/' && window.location.search === '') {
+    if (window.location.search === '') {
       window.location.reload();
     } else {
-      window.location.href = '/';
+      window.location.search = '';
     }
   };
 
