@@ -63,7 +63,7 @@
       "BBC": {
         "Sport": 2,
         "Culture": 19,
-        "Economy": 2,
+        "Economy": 30,
         "Society": 11,
         "Politics": 2,
         "Technology": 2
@@ -71,7 +71,7 @@
       "RSS": {
         "Sport": 2,
         "Culture": 61,
-        "Economy": 51,
+        "Economy": 0,
         "Society": 80,
         "Politics": 109,
         "Technology": 71
@@ -182,7 +182,7 @@
       "BBC": {
         "Sport": 2,
         "Culture": 19,
-        "Economy": 2,
+        "Economy": 30,
         "Society": 11,
         "Politics": 2,
         "Technology": 2
@@ -190,7 +190,7 @@
       "RSS": {
         "Sport": 2,
         "Culture": 61,
-        "Economy": 51,
+        "Economy": 0,
         "Society": 80,
         "Politics": 109,
         "Technology": 71
@@ -301,7 +301,7 @@
       "BBC": {
         "Sport": 2,
         "Culture": 19,
-        "Economy": 2,
+        "Economy": 30,
         "Society": 11,
         "Politics": 2,
         "Technology": 2
@@ -309,7 +309,7 @@
       "RSS": {
         "Sport": 2,
         "Culture": 61,
-        "Economy": 51,
+        "Economy": 0,
         "Society": 80,
         "Politics": 109,
         "Technology": 71
@@ -420,7 +420,7 @@
       "BBC": {
         "Sport": 2,
         "Culture": 19,
-        "Economy": 2,
+        "Economy": 30,
         "Society": 11,
         "Politics": 2,
         "Technology": 2
@@ -428,7 +428,7 @@
       "RSS": {
         "Sport": 2,
         "Culture": 61,
-        "Economy": 51,
+        "Economy": 0,
         "Society": 80,
         "Politics": 109,
         "Technology": 71
@@ -539,7 +539,7 @@
       "BBC": {
         "Sport": 2,
         "Culture": 19,
-        "Economy": 2,
+        "Economy": 30,
         "Society": 11,
         "Politics": 2,
         "Technology": 2
@@ -547,7 +547,7 @@
       "RSS": {
         "Sport": 2,
         "Culture": 61,
-        "Economy": 51,
+        "Economy": 0,
         "Society": 80,
         "Politics": 109,
         "Technology": 71
@@ -658,7 +658,7 @@
       "BBC": {
         "Sport": 2,
         "Culture": 19,
-        "Economy": 2,
+        "Economy": 30,
         "Society": 11,
         "Politics": 2,
         "Technology": 2
@@ -666,7 +666,7 @@
       "RSS": {
         "Sport": 2,
         "Culture": 61,
-        "Economy": 51,
+        "Economy": 0,
         "Society": 80,
         "Politics": 109,
         "Technology": 71
@@ -777,7 +777,7 @@
       "BBC": {
         "Sport": 2,
         "Culture": 19,
-        "Economy": 2,
+        "Economy": 30,
         "Society": 11,
         "Politics": 2,
         "Technology": 2
@@ -785,7 +785,7 @@
       "RSS": {
         "Sport": 2,
         "Culture": 61,
-        "Economy": 51,
+        "Economy": 0,
         "Society": 80,
         "Politics": 109,
         "Technology": 71

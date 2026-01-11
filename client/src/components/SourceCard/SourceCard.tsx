@@ -71,8 +71,8 @@ export function SourceCard({
         </p>
 
         {activeCategories.length > 0 && (
-          <div className="mt-2 pt-4 border-t border-white/5">
-            <div className="flex items-center gap-2 mb-2">
+          <div className="mt-2 pt-3 border-t border-white/5">
+            <div className="flex items-center gap-2 mb-3">
               <BarChart2 className="w-3 h-3 text-gray-500" />
               <span className="text-[10px] uppercase tracking-wider text-gray-500 font-medium">
                 Volume by Topic
