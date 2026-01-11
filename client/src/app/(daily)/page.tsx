@@ -1,9 +1,13 @@
-import { DailyCard } from './_components/DailyCard';
 import { Sparkles, CalendarRange } from 'lucide-react';
 import weeklyData from '@/data/daily.json';
 import { Box } from '@/components/Box';
+import { DailyList } from './_components/DailyList';
 
 export default async function DailySummaryPage() {
+  const sortedData = [...weeklyData].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+
   const getShortDate = (date: string) =>
     new Date(date).toLocaleDateString('en-US', {
       month: 'short',
@@ -50,11 +54,7 @@ export default async function DailySummaryPage() {
         )}
       </div>
 
-      <div className="flex flex-col gap-4">
-        {weeklyData.map((dayData) => (
-          <DailyCard key={dayData.date} data={dayData} />
-        ))}
-      </div>
+      <DailyList data={sortedData} />
     </Box>
   );
 }
