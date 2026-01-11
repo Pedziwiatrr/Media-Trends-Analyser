@@ -37,7 +37,7 @@ export function DailyAnalysis({ topCategories, pieData }: DailyAnalysisProps) {
           </span>
           , which accounted for{' '}
           <span className="text-indigo-400 font-bold">{primary.percent}%</span>{' '}
-          of the total volume today.
+          of the total volume.
           {secondary && (
             <>
               {' '}

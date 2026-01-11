@@ -10,10 +10,11 @@ import { DailyAnalysis } from './DailyAnalysis';
 
 type DailyCardProps = {
   data: DailyReport;
+  isOpen: boolean;
+  onToggle: () => void;
 };
 
-export function DailyCard({ data }: DailyCardProps) {
-  const [isOpen, setIsOpen] = useState(false);
+export function DailyCard({ data, isOpen, onToggle }: DailyCardProps) {
   const [activeCategory, setActiveCategory] = useState<Category>('Politics');
 
   const { topCategories, pieData } = useMemo(() => {
@@ -65,7 +66,7 @@ export function DailyCard({ data }: DailyCardProps) {
         date={data.date}
         topCategories={topCategories}
         isOpen={isOpen}
-        onToggle={() => setIsOpen(!isOpen)}
+        onToggle={onToggle}
       />
 
       {isOpen && (
