@@ -1,5 +1,5 @@
 import mockData from '@/data/periodic_summary.json';
-import type { ReportData } from '@/types/report';
+import type { PeriodicReport } from '@/types/periodicReport';
 
 type ReportFilters = {
   source?: string | string[];
@@ -15,5 +15,5 @@ export async function fetchReportData(filters: ReportFilters) {
 
   // TODO - API Fetch
 
-  return mockData as ReportData;
+  return mockData as PeriodicReport;
 }

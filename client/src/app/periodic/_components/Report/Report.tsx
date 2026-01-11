@@ -8,11 +8,11 @@ import { FileText } from 'lucide-react';
 import { EventTimeline } from './EventTimeline';
 import { Button } from '@/components/Button';
 import { Printer } from 'lucide-react';
-import type { ReportData } from '@/types/report';
 import { ShareButton } from '@/components/ShareButton';
+import type { PeriodicReport } from '@/types/periodicReport';
 
 type ReportProps = {
-  data: ReportData;
+  data: PeriodicReport;
   startDate: string;
   endDate: string;
   isExport?: boolean;

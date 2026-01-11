@@ -1,6 +1,6 @@
 import { type Source } from '@/constants/sources';
 
-export type ReportData = {
+export type PeriodicReport = {
   main_summary: string;
   categories_timeline: Array<{
     date: string;

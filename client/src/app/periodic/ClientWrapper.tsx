@@ -1,13 +1,13 @@
 'use client';
 
-import type { ReportData } from '@/types/report';
 import { useRef } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import { ControlPanel } from './_components/ControlPanel';
 import { Report } from './_components/Report';
+import type { PeriodicReport } from '@/types/periodicReport';
 
 type ClientWrapperProps = {
-  reportData: ReportData | null;
+  reportData: PeriodicReport | null;
   startDate: string;
   endDate: string;
   searchParamsKey: string;

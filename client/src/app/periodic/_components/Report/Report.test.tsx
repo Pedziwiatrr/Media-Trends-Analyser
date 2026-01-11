@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Report } from './Report';
-import type { ReportData } from '@/types/report';
+import type { PeriodicReport } from '@/types/periodicReport';
 
 jest.mock('./Charts', () => ({
   Charts: () => <div data-testid="mock-charts">Charts Component</div>,
@@ -38,7 +38,7 @@ const mockData = {
   event_timeline: [],
   category_totals: {},
   categories_timeline: [],
-} as unknown as ReportData;
+} as unknown as PeriodicReport;
 
 describe('Report', () => {
   it('renders the main summary and dates correctly', () => {
