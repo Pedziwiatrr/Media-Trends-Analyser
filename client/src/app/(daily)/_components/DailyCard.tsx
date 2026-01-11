@@ -2,12 +2,11 @@
 
 import { useState, useMemo } from 'react';
 import { BarChart3, Info } from 'lucide-react';
-import { SourceCard } from '@/components/SourceCard';
 import { CategoryPieChart } from '@/components/charts/PieChart';
 import { type Category, getCategoryConfig } from '@/constants/categories';
 import type { DailyReport } from '@/types/dailyReport';
-import type { Source } from '@/constants/sources';
 import { DailyHeader } from './DailyHeader';
+import { DailyFilters, DailySourceGrid } from './DailySummaries';
 
 type DailyCardProps = {
   data: DailyReport;
@@ -72,54 +71,13 @@ export function DailyCard({ data }: DailyCardProps) {
 
       {isOpen && (
         <div className="border-t border-white/5 bg-black/20">
-          <div className="p-6 border-b border-white/5 flex flex-col gap-6">
-            <div className="text-sm text-gray-400 leading-relaxed max-w-3xl">
-              <strong className="text-white block mb-1">
-                Select a Category
-              </strong>
-              Explore how different sources covered the key topics of the day.
-              Click a category below to filter the summaries.
-            </div>
+          <DailyFilters
+            availableCategories={availableCategories}
+            activeCategory={activeCategory}
+            onSelect={setActiveCategory}
+          />
 
-            <div className="flex flex-wrap gap-2">
-              {availableCategories.map((category) => (
-                <button
-                  key={category}
-                  onClick={() => setActiveCategory(category)}
-                  className={`
-                    px-4 py-2 rounded-full text-sm font-medium transition-all border
-                    ${
-                      currentCategory === category
-                        ? 'bg-indigo-600 border-indigo-500 text-white shadow-lg shadow-indigo-500/25'
-                        : 'bg-white/5 border-white/5 text-gray-400 hover:bg-white/10 hover:text-white hover:border-white/10'
-                    }
-                  `}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-            {Object.entries(data.summaries).map(([sourceName, categories]) => {
-              const summaryText = categories[currentCategory];
-
-              if (!summaryText) return null;
-
-              const typedSource = sourceName as Source;
-              const sourceCounts = data.categories[typedSource];
-
-              return (
-                <SourceCard
-                  key={sourceName}
-                  source={typedSource}
-                  text={summaryText}
-                  categoryCounts={sourceCounts}
-                />
-              );
-            })}
-          </div>
+          <DailySourceGrid data={data} currentCategory={currentCategory} />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center border-t border-white/5 bg-black/20 p-6 md:p-8">
             <div className="space-y-4">
