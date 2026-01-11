@@ -1,12 +1,13 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { ChevronDown, Calendar, BarChart3, Info } from 'lucide-react';
+import { BarChart3, Info } from 'lucide-react';
 import { SourceCard } from '@/components/SourceCard';
 import { CategoryPieChart } from '@/components/charts/PieChart';
 import { type Category, getCategoryConfig } from '@/constants/categories';
 import type { DailyReport } from '@/types/dailyReport';
 import type { Source } from '@/constants/sources';
+import { DailyHeader } from './DailyHeader';
 
 type DailyCardProps = {
   data: DailyReport;
@@ -62,54 +63,12 @@ export function DailyCard({ data }: DailyCardProps) {
 
   return (
     <div className="bg-white/4 border border-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:border-white/20">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex flex-col md:flex-row md:items-center justify-between p-4 sm:p-6 hover:bg-white/4 transition-colors text-left gap-4"
-      >
-        <div className="flex items-center gap-4 shrink-0">
-          <div className="bg-indigo-500/20 p-2.5 rounded-lg text-indigo-400 shrink-0">
-            <Calendar className="w-6 h-6" />
-          </div>
-
-          <h3 className="text-xl font-bold text-white tracking-tight">
-            {new Date(data.date).toLocaleDateString('en-US', {
-              month: 'short',
-              day: 'numeric',
-              weekday: 'short',
-            })}
-          </h3>
-        </div>
-
-        <div className="flex items-center gap-4 md:gap-6">
-          <div className="flex flex-wrap gap-2 items-center">
-            {topCategories.slice(0, 3).map((item) => {
-              const style = getCategoryConfig(item.category);
-
-              return (
-                <div
-                  key={item.category}
-                  className={`flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium border ${style.bg} ${style.text} ${style.border}`}
-                >
-                  <span>{item.category}</span>
-                  <span className="opacity-70">| {item.percent}%</span>
-                </div>
-              );
-            })}
-
-            {topCategories.length > 3 && (
-              <span className="text-xs text-gray-500 font-medium px-1">
-                +{topCategories.length - 3}
-              </span>
-            )}
-          </div>
-
-          <div
-            className={`hidden md:block p-2 rounded-full bg-white/5 transition-transform duration-300 shrink-0 ${isOpen ? 'rotate-180' : ''}`}
-          >
-            <ChevronDown className="w-5 h-5 text-gray-400" />
-          </div>
-        </div>
-      </button>
+      <DailyHeader
+        date={data.date}
+        topCategories={topCategories}
+        isOpen={isOpen}
+        onToggle={() => setIsOpen(!isOpen)}
+      />
 
       {isOpen && (
         <div className="border-t border-white/5 bg-black/20">

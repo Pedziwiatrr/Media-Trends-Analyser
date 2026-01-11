@@ -1,4 +1,4 @@
-import { DailyCard } from './DailyCard';
+import { DailyCard } from './_components/DailyCard';
 import { Sparkles, CalendarRange } from 'lucide-react';
 import weeklyData from '@/data/daily.json';
 import { Box } from '@/components/Box';
