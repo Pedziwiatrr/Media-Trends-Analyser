@@ -35,9 +35,9 @@ export function DailyCard({ data }: DailyCardProps) {
         percent: total > 0 ? Math.round((count / total) * 100) : 0,
       }));
 
-    const pieData = Object.entries(totals).map(([name, value]) => ({
-      name,
-      value,
+    const pieData = sorted.map((item) => ({
+      name: item.category,
+      value: item.percent,
     }));
 
     return { topCategories: sorted, pieData };
