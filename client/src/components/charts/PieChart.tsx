@@ -77,6 +77,17 @@ export function CategoryPieChart({
       </Pie>
 
       <Tooltip
+        formatter={(
+          value: number | string | Array<number | string> | undefined
+        ) => {
+          if (typeof value === 'number') {
+            return `${value}%`;
+          }
+          if (Array.isArray(value)) {
+            return value.join(', ');
+          }
+          return value;
+        }}
         contentStyle={{
           backgroundColor: '#09090b',
           border: '1px solid #27272a',
