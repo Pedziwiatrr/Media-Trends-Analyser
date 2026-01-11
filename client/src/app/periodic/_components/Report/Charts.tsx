@@ -55,7 +55,7 @@ export function Charts({
           </p>
         </div>
 
-        <div className="md:col-span-2 bg-black/20 rounded-xl border border-white/5 p-4">
+        <div className="h-75 md:col-span-2 bg-black/20 rounded-xl border border-white/5 p-4">
           <CategoryPieChart data={categories} isExport={isExport} />
         </div>
       </div>

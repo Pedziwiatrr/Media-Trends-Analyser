@@ -12,6 +12,7 @@ import {
 } from 'recharts';
 
 import { CHART_COLORS } from '@/constants/chartColors';
+import { CATEGORIES, type Category } from '@/constants/categories';
 
 type TrendDataPoint = {
   date: string;
@@ -74,21 +75,27 @@ export function CategoryTrendChart({
         cursor={{ stroke: '#52525b', strokeWidth: 1 }}
       />
       <Legend wrapperStyle={{ paddingTop: '20px' }} />
-      {categories.map((category, index) => (
-        <Line
-          key={category}
-          dataKey={category}
-          stroke={CHART_COLORS[index % CHART_COLORS.length]}
-          strokeWidth={2}
-          dot={{
-            r: 4,
-            strokeWidth: 0,
-            fill: CHART_COLORS[index % CHART_COLORS.length],
-          }}
-          activeDot={{ r: 6 }}
-          isAnimationActive={!isExport}
-        />
-      ))}
+      {categories.map((category, index) => {
+        const color =
+          CATEGORIES[category as Category]?.color ||
+          CHART_COLORS[index % CHART_COLORS.length];
+
+        return (
+          <Line
+            key={category}
+            dataKey={category}
+            stroke={color}
+            strokeWidth={2}
+            dot={{
+              r: 4,
+              strokeWidth: 0,
+              fill: color,
+            }}
+            activeDot={{ r: 6 }}
+            isAnimationActive={!isExport}
+          />
+        );
+      })}
     </LineChart>
   );
 

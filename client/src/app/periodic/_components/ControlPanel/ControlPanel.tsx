@@ -19,6 +19,8 @@ import { CATEGORIES } from '@/constants/categories';
 
 const MIN_DATA_DATE = '2026-01-01';
 
+const categoriesList = Object.keys(CATEGORIES);
+
 const getToday = () => new Date().toISOString().split('T')[0];
 
 const getYesterday = () => {
@@ -48,7 +50,7 @@ export function ControlPanel({ children }: ControlPanelProps) {
 
   const [selectedCategories, setSelectedCategories] = useState<string[]>(() => {
     const fromUrl = searchParams.getAll('category');
-    return fromUrl.length > 0 ? fromUrl : CATEGORIES;
+    return fromUrl.length > 0 ? fromUrl : categoriesList;
   });
 
   const [startDate, setStartDate] = useState<string>(
@@ -154,7 +156,7 @@ export function ControlPanel({ children }: ControlPanelProps) {
             Categories
           </div>
           <div className="flex flex-wrap gap-3 justify-center">
-            {CATEGORIES.map((category) => (
+            {categoriesList.map((category) => (
               <CategorySelector
                 key={category}
                 category={category}
