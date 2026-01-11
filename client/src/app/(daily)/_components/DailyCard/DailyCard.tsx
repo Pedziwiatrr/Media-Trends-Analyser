@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import type { Category } from '@/constants/categories';
 import type { DailyReport } from '@/types/dailyReport';
 
@@ -15,7 +15,24 @@ type DailyCardProps = {
 };
 
 export function DailyCard({ data, isOpen, onToggle }: DailyCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const isFirstRender = useRef(true);
+
   const [activeCategory, setActiveCategory] = useState<Category>('Politics');
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
+    if (isOpen && cardRef.current) {
+      cardRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  }, [isOpen]);
 
   const { topCategories, pieData } = useMemo(() => {
     const totals: Record<string, number> = {};
@@ -61,7 +78,10 @@ export function DailyCard({ data, isOpen, onToggle }: DailyCardProps) {
     : availableCategories[0];
 
   return (
-    <div className="bg-white/4 border border-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:border-white/20">
+    <div
+      ref={cardRef}
+      className="bg-white/4 border border-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:border-white/20"
+    >
       <DailyHeader
         date={data.date}
         topCategories={topCategories}
