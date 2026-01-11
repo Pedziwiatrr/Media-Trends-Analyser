@@ -1,3 +1,5 @@
+'use client';
+
 import { BarChart3, Info } from 'lucide-react';
 import { CategoryPieChart } from '@/components/charts/PieChart';
 import { getCategoryConfig } from '@/constants/categories';
@@ -9,6 +11,11 @@ type DailyAnalysisProps = {
 };
 
 export function DailyAnalysis({ topCategories, pieData }: DailyAnalysisProps) {
+  if (topCategories.length === 0) return null;
+
+  const primary = topCategories[0];
+  const secondary = topCategories[1];
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center border-t border-white/5 bg-black/20 p-6 md:p-8">
       <div className="space-y-4">
@@ -20,29 +27,25 @@ export function DailyAnalysis({ topCategories, pieData }: DailyAnalysisProps) {
         </div>
 
         <h3 className="text-xl font-bold text-white">
-          {topCategories[0]?.category} leads the narrative.
+          {primary.category} leads the narrative.
         </h3>
 
         <p className="text-gray-400 text-sm leading-relaxed">
           The data highlights a strong focus on{' '}
-          <span className={getCategoryConfig(topCategories[0]?.category).text}>
-            {topCategories[0]?.category}
+          <span className={getCategoryConfig(primary.category).text}>
+            {primary.category}
           </span>
           , which accounted for{' '}
-          <span className="text-indigo-400 font-bold">
-            {topCategories[0]?.percent}%
-          </span>{' '}
+          <span className="text-indigo-400 font-bold">{primary.percent}%</span>{' '}
           of the total volume today.
-          {topCategories[1] && (
+          {secondary && (
             <>
               {' '}
               This was followed by{' '}
-              <span
-                className={getCategoryConfig(topCategories[1]?.category).text}
-              >
-                {topCategories[1]?.category}
+              <span className={getCategoryConfig(secondary.category).text}>
+                {secondary.category}
               </span>{' '}
-              at {topCategories[1]?.percent}%.
+              at {secondary.percent}%.
             </>
           )}
         </p>

@@ -47,10 +47,9 @@ export function DailyCard({ data }: DailyCardProps) {
     const categories = new Set<Category>();
 
     Object.values(data.summaries).forEach((sourceData) => {
-      Object.keys(sourceData).forEach((category) => {
-        const typedCategory = category as Category;
-        categories.add(typedCategory);
-      });
+      Object.keys(sourceData).forEach((category) =>
+        categories.add(category as Category)
+      );
     });
 
     return Array.from(categories).sort();
