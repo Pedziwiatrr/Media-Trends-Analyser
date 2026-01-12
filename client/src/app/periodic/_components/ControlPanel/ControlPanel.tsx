@@ -16,6 +16,7 @@ import { SourceSelector } from '@/components/SourceSelector';
 import { CategorySelector } from '@/components/CategorySelector';
 import { type Source, SOURCES } from '@/constants/sources';
 import { CATEGORIES } from '@/constants/categories';
+import { getISODate } from '@/utils/dateUtils';
 
 const MIN_DATA_DATE = '2026-01-01';
 
@@ -23,12 +24,12 @@ const categoriesList = Object.keys(CATEGORIES).filter(
   (category) => category !== 'default'
 );
 
-const getToday = () => new Date().toISOString().split('T')[0];
+const getToday = () => getISODate(new Date());
 
 const getYesterday = () => {
   const date = new Date();
   date.setDate(date.getDate() - 1);
-  return date.toISOString().split('T')[0];
+  return getISODate(date);
 };
 
 type ControlPanelProps = {
