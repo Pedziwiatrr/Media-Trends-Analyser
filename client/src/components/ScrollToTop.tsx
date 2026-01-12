@@ -27,14 +27,21 @@ export function ScrollToTop() {
     });
   };
 
-  if (!isVisible) {
-    return null;
-  }
-
   return (
     <button
       onClick={scrollToTop}
-      className="fixed bottom-8 right-8 z-50 p-3 bg-indigo-500 hover:bg-indigo-600 text-white rounded-full shadow-lg shadow-indigo-500/20 transition-all duration-300 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-950"
+      className={`
+        fixed bottom-8 right-8 z-50 p-3
+        bg-indigo-500 hover:bg-indigo-600 text-white rounded-full
+        shadow-lg shadow-indigo-500/20
+        transition-all duration-400 ease-in-out
+        focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-950
+        ${
+          isVisible
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 translate-y-16 pointer-events-none'
+        }
+      `}
       aria-label="Scroll to top"
     >
       <ArrowUp className="w-6 h-6" />
