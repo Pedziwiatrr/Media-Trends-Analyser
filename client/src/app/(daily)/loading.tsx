@@ -10,6 +10,7 @@ export default function Loading() {
       <LoadingState
         title="Fetching Reports..."
         description="Retrieving daily analysis and statistics"
+        className="-mt-8"
       />
     </Box>
   );
