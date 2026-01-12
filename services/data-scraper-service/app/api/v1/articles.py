@@ -1,9 +1,15 @@
 from app.services.article_service import ScraperService
+from app.services.db_service import DatabaseService
+from app.schemas.articles import ArticleCreate
+from app.core.db import get_db
 
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, Depends
+from sqlalchemy.orm import Session
+
 
 router = APIRouter(prefix="/articles", responses={404: {"description": "Not found"}})
 scraper_service = ScraperService()
+db_service = DatabaseService()
 
 # need to think of adding start/end datetime for scrapping api with timestamp,
 # can be added as separate enpoint if api would be separated to rss, api enpoints or start/end can be query params
@@ -35,3 +41,11 @@ async def get_articles(source: str, category: str | None = None):
     :type category: str | None
     """
     return scraper_service.fetch_articles(source, category)
+
+
+@router.post("/articles")
+def save_article_in_db(articles: list[ArticleCreate], db: Session = Depends(get_db)):
+    """
+    Add articles to the Postgres database.
+    """
+    return db_service.save_articles(articles, db)
