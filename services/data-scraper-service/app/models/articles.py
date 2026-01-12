@@ -8,7 +8,7 @@ class Base(DeclarativeBase): ...
 
 
 class ArticleDB(Base):
-    # __tablename__ == "articles"
+    __tablename__ = "article"
 
     id: Mapped[int] = mapped_column(Integer, Identity(), primary_key=True)
     title: Mapped[str | None] = mapped_column(String, nullable=True)
