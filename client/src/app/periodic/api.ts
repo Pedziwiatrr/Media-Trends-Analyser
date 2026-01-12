@@ -1,14 +1,14 @@
 import mockData from '@/data/periodic_summary.json';
 import type { PeriodicReport } from '@/types/periodicReport';
 
-type ReportFilters = {
+type PeriodicFilters = {
   source?: string | string[];
   category?: string | string[];
   from?: string;
   to?: string;
 };
 
-export async function fetchReportData(filters: ReportFilters) {
+export async function fetchPeriodicReport(filters: PeriodicFilters) {
   if (!filters) return;
 
   await new Promise((resolve) => setTimeout(resolve, 2000));

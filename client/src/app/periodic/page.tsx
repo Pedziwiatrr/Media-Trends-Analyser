@@ -1,5 +1,5 @@
 import { ClientWrapper } from './ClientWrapper';
-import { fetchReportData } from './api';
+import { fetchPeriodicReport } from './api';
 
 type HomeProps = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -13,7 +13,7 @@ export default async function Home({ searchParams }: HomeProps) {
   ).toString();
 
   const hasFilters = Object.keys(params).length > 0;
-  const reportData = hasFilters ? await fetchReportData(params) : null;
+  const reportData = hasFilters ? await fetchPeriodicReport(params) : null;
 
   const startDate = typeof params.from === 'string' ? params.from : '';
   const endDate = typeof params.to === 'string' ? params.to : '';
