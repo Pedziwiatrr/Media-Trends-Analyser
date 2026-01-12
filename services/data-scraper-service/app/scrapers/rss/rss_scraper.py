@@ -31,7 +31,7 @@ class RssScraper(BaseScraper):
                 url=item.find(".//link").text,
                 published_at=datetime.now(),
                 source=self.source_name,
-                category=[
+                categories=[
                     category.text
                     for category in item.findall(".//category")
                     if category.text

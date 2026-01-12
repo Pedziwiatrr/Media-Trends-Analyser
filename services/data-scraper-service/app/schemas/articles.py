@@ -8,7 +8,7 @@ class ArticleCreate(BaseModel):
     url: HttpUrl
     published_at: datetime = Field(default_factory=datetime.now)
     source: str | None = None
-    category: list[str] = Field(default_factory=list)
+    categories: list[str] = Field(default_factory=list)
 
     model_config = {"str_strip_whitespace": True, "extra": "forbid"}
 

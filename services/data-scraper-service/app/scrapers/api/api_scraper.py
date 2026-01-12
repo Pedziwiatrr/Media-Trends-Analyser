@@ -53,7 +53,7 @@ class NYTScrapper(ApiScraper):
                     url=result["url"],
                     published_at=datetime.now(),
                     source=self.source_name,
-                    category=result["des_facet"] + result["org_facet"],
+                    categories=result["des_facet"] + result["org_facet"],
                 )
                 if article:
                     data.append(article)
@@ -78,7 +78,7 @@ class BBCScraper(ApiScraper):
                             url=value["news_link"],
                             published_at=datetime.now(),
                             source=self.source_name,
-                            category=[key],
+                            categories=[key],
                         )
                         if article:
                             data.append(article)

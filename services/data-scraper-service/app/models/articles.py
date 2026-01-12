@@ -1,5 +1,6 @@
-from sqlalchemy import Integer, String, Text, DateTime, ARRAY, Identity
+from sqlalchemy import Integer, String, Text, DateTime, Identity
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.dialects.postgresql import JSONB
 
 from datetime import datetime
 
@@ -18,4 +19,4 @@ class ArticleDB(Base):
         DateTime(timezone=True), nullable=False
     )
     source: Mapped[str | None] = mapped_column(String, nullable=True)
-    category: Mapped[list[str]] = mapped_column(ARRAY(String), nullable=False)
+    categories: Mapped[list[str]] = mapped_column(JSONB, nullable=False)
