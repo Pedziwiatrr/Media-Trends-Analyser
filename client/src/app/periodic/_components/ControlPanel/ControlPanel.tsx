@@ -7,7 +7,6 @@ import {
   type ChangeEvent,
 } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Loader2 } from 'lucide-react';
 
 import { Button } from '@/components/Button';
 import { DateInput } from '@/components/DateInput';
@@ -17,6 +16,7 @@ import { CategorySelector } from '@/components/CategorySelector';
 import { type Source, SOURCES } from '@/constants/sources';
 import { CATEGORIES } from '@/constants/categories';
 import { getISODate } from '@/utils/dateUtils';
+import { LoadingState } from '@/components/LoadingState';
 
 const MIN_DATA_DATE = '2026-01-01';
 
@@ -202,13 +202,10 @@ export function ControlPanel({ children }: ControlPanelProps) {
       </Box>
 
       {isPending ? (
-        <div className="w-full flex flex-col items-center justify-center py-20">
-          <Loader2 className="w-12 h-12 text-indigo-500 animate-spin mb-4" />
-          <h3 className="text-xl font-medium text-white">Analyzing Data...</h3>
-          <p className="text-gray-400 text-sm mt-2">
-            Aggregating trends from selected sources
-          </p>
-        </div>
+        <LoadingState
+          title="Analyzing Data..."
+          description="Aggregating trends from selected sources"
+        />
       ) : (
         children
       )}
