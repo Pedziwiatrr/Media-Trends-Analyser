@@ -6,8 +6,9 @@ Tool with Web App interface for scrapping media entries, analysing trends and ev
 - agent-service
     ```sh
     cd services/agent-service
+    export PYTHONPATH="$PWD:$PYTHONPATH"
     uv venv
     source .venv/bin/activate
     uv sync
-    export PYTHONPATH="$PWD:$PYTHONPATH"
+    
     ```
