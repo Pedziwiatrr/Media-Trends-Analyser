@@ -21,18 +21,7 @@ class DailySummary(BaseModel):
     references: dict[str, dict[str, list]] = Field(default_factory=dict)
 
 
-class DailySummaryCreate(BaseModel):
-    date: date
-    summaries: dict[str, dict[str, str]]
-    categories: dict[str, dict[str, int]]
-    references: dict[str, dict[str, list]]
-
-
-class DailySummaryResponse(BaseModel):
+class DailySummaryResponse(DailySummary):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
-    date: date
-    summaries: dict[str, dict[str, str]]
-    categories: dict[str, dict[str, int]]
-    references: dict[str, dict[str, list]]
