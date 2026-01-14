@@ -15,23 +15,21 @@ type DailyCardProps = {
 
 export function DailyCard({ data, isOpenByDefault = false }: DailyCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
-  const isFirstRender = useRef(true);
 
   const [isOpen, setIsOpen] = useState(isOpenByDefault);
   const [activeCategory, setActiveCategory] = useState<Category>('Politics');
 
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
+  const prevIsOpen = useRef(isOpen);
 
-    if (isOpen && cardRef.current) {
+  useEffect(() => {
+    if (!prevIsOpen.current && isOpen && cardRef.current) {
       cardRef.current.scrollIntoView({
         behavior: 'smooth',
         block: 'start',
       });
     }
+
+    prevIsOpen.current = isOpen;
   }, [isOpen]);
 
   const { topCategories, pieData } = useMemo(() => {
