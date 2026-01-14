@@ -20,7 +20,7 @@ export function DailyButton({
   return (
     <button
       onClick={onToggle}
-      className="w-full flex flex-col md:flex-row md:items-center justify-between p-4 sm:p-6 hover:bg-white/4 transition-colors text-left gap-4"
+      className="w-full flex flex-col md:flex-row md:items-center justify-between p-3 sm:p-6 hover:bg-white/4 transition-colors text-left gap-4"
     >
       <div className="flex items-center gap-4 shrink-0">
         <div className="bg-indigo-500/20 p-2.5 rounded-lg text-indigo-400 shrink-0">

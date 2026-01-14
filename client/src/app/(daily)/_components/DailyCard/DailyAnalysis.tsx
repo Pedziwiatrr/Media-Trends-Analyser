@@ -17,7 +17,7 @@ export function DailyAnalysis({ topCategories, pieData }: DailyAnalysisProps) {
   const secondary = topCategories[1];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center border-t border-white/5 bg-black/20 p-6 md:p-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center border-t border-white/5 bg-black/20 p-4 md:p-8">
       <div className="space-y-4">
         <div className="flex items-center gap-2">
           <BarChart3 className="w-4 h-4 text-indigo-400" />

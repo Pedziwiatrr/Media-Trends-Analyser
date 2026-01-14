@@ -56,7 +56,7 @@ export function DailySourceGrid({
   currentCategory,
 }: DailySourceGridProps) {
   return (
-    <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="p-3 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
       {Object.entries(data.summaries).map(([sourceName, categories]) => {
         const summaryText = categories[currentCategory];
 

@@ -60,7 +60,7 @@ export function SourceCard({
         <div className="absolute -top-10 -right-10 w-32 h-32 bg-linear-to-br from-white/5 to-transparent rounded-full blur-2xl" />
       </div>
 
-      <div className="relative z-10 p-6 grow flex flex-col">
+      <div className="relative z-10 px-4 py-6 sm:p-6 grow flex flex-col">
         <div className="flex items-center gap-4 mb-4">
           {Icon}
           <h4 className={`text-xl font-bold ${style.color}`}>{source}</h4>
