@@ -3,6 +3,7 @@ import { CategoryTrendChart } from '@/components/charts/LineChart';
 import { SectionWrapper } from '@/components/SectionWrapper';
 import { ChartColumn, PieChart as PieIcon, Activity } from 'lucide-react';
 import { type Category } from '@/constants/categories';
+import { useBreakpoint } from '@/hooks/useBreakpoint';
 
 type CategoryData = {
   [Key in Category]?: number;
@@ -34,8 +35,13 @@ export function Charts({
   trendData,
   isExport = false,
 }: ChartsProps) {
+  const isDesktop = useBreakpoint('sm');
+
   const categories = convertPieData(categoryData);
   const categoryNames = categories.map((c) => c.name);
+
+  const pieInnerRadius = isDesktop ? undefined : 45;
+  const pieOuterRadius = isDesktop ? undefined : 75;
 
   return (
     <SectionWrapper
@@ -55,8 +61,13 @@ export function Charts({
           </p>
         </div>
 
-        <div className="h-75 md:col-span-2 bg-black/20 rounded-xl border border-white/5 p-4">
-          <CategoryPieChart data={categories} isExport={isExport} />
+        <div className="md:col-span-2 bg-black/20 rounded-xl border border-white/5 p-6 min-h-75 flex flex-col">
+          <CategoryPieChart
+            data={categories}
+            isExport={isExport}
+            innerRadius={pieInnerRadius}
+            outerRadius={pieOuterRadius}
+          />
         </div>
       </div>
 
