@@ -14,6 +14,7 @@ type SourceDetails = {
   icon: ReactElement;
   color: string;
   bg: string;
+  border: string;
 };
 
 type Sources = Record<Source | 'default', SourceDetails>;
@@ -35,6 +36,7 @@ export const SOURCES: Sources = {
     ),
     color: 'text-rose-500',
     bg: 'bg-rose-500/10',
+    border: 'border-rose-500/20',
   },
   'New York Times': {
     region: 'global',
@@ -46,6 +48,7 @@ export const SOURCES: Sources = {
     ),
     color: 'text-zinc-100',
     bg: 'bg-zinc-800/50',
+    border: 'border-zinc-700',
   },
   Reddit: {
     region: 'global',
@@ -56,6 +59,7 @@ export const SOURCES: Sources = {
     ),
     color: 'text-orange-400',
     bg: 'bg-orange-500/10',
+    border: 'border-orange-500/20',
   },
   'Source 1': {
     region: 'pl',
@@ -66,6 +70,7 @@ export const SOURCES: Sources = {
     ),
     color: 'text-yellow-400',
     bg: 'bg-yellow-500/10',
+    border: 'border-yellow-500/20',
   },
   'Source 2': {
     region: 'pl',
@@ -76,6 +81,7 @@ export const SOURCES: Sources = {
     ),
     color: 'text-yellow-400',
     bg: 'bg-yellow-500/10',
+    border: 'border-yellow-500/20',
   },
   'Source 3': {
     region: 'pl',
@@ -86,6 +92,7 @@ export const SOURCES: Sources = {
     ),
     color: 'text-yellow-400',
     bg: 'bg-yellow-500/10',
+    border: 'border-yellow-500/20',
   },
   default: {
     region: 'global',
@@ -96,6 +103,7 @@ export const SOURCES: Sources = {
     ),
     color: 'text-yellow-400',
     bg: 'bg-yellow-500/10',
+    border: 'border-yellow-500/20',
   },
 };
 
