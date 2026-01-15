@@ -59,7 +59,7 @@ export function SourceCard({
   return (
     <div ref={cardRef} className="relative flex flex-col rounded-xl h-full">
       <div
-        className={`absolute inset-0 rounded-xl overflow-hidden ${style.bg} pointer-events-none`}
+        className={`absolute inset-0 rounded-xl overflow-hidden ${style.bg} border ${style.border} pointer-events-none`}
       >
         <div className="absolute -top-10 -right-10 w-32 h-32 bg-linear-to-br from-white/5 to-transparent rounded-full blur-2xl" />
       </div>
