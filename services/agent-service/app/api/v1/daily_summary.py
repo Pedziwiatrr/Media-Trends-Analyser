@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, Query, status, HTTPException
 from sqlalchemy.orm import Session
-from datetime import date, timedelta
+from datetime import date
 
 from app.database.database import get_db
 from app.schemas import DailySummaryResponse
