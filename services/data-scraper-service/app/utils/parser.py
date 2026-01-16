@@ -1,7 +1,7 @@
 import re
 
 
-def parse_text(text: str = "") -> str:
+def parse_text(text: str | None = "") -> str:
     """
     Parses scraped text using regular expressions and removes unwanted artifacts like HTML tags
 
@@ -10,5 +10,6 @@ def parse_text(text: str = "") -> str:
     :return: Description
     :rtype: str
     """
-    cleaned_text = re.sub(pattern="<[^>]+.*?>", repl="", string=text)
-    return cleaned_text
+    if not text:
+        return ""
+    return re.sub(pattern="<[^>]+.*?>", repl="", string=text)

@@ -25,16 +25,20 @@ class RssScraper(BaseScraper):
             raise Exception(e)
 
         for item in root.iter("item"):
-            title = (item.find(".//title").text,)
+            title = item.find(".//title").text
             title = parse_text(title)
 
-            description = (item.find(".//description").text,)
+            description = item.find(".//description").text
             description = parse_text(description)
+            url = item.find(".//link").text
+
+            if not description or not url:
+                continue
 
             article = ArticleCreate.create(
                 title=title,
                 description=description,
-                url=item.find(".//link").text,
+                url=url,
                 published_at=datetime.now(),
                 source=self.source_name,
                 categories=[
