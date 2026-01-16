@@ -107,47 +107,45 @@ def replace_article_ids_with_urls(
     }
 
 
+def convert_dict_to_percentages(data: dict[str, int]) -> dict[str, int]:
+    total = sum(data.values())
+
+    if total == 0:
+        return {key: 0 for key in data}
+
+    percentages = {key: round((value / total) * 100) for key, value in data.items()}
+
+    max_key = max(percentages, key=percentages.get)
+    percentages[max_key] += 100 - sum(percentages.values())
+
+    return percentages
+
+
+def convert_totals_to_percentages(category_totals: dict[str, int]) -> dict[str, int]:
+    return convert_dict_to_percentages(category_totals)
+
+
+def convert_categories_to_percentages(
+    categories: dict[str, dict[str, int]],
+) -> dict[str, dict[str, int]]:
+    return {
+        source: convert_dict_to_percentages(category_counts)
+        for source, category_counts in categories.items()
+    }
+
+
 def convert_timeline_to_percentages(categories_timeline: list[dict]) -> list[dict]:
     result = []
 
     for day_data in categories_timeline:
-        day = {"date": day_data["date"]}
-
         category_values = {cat: val for cat, val in day_data.items() if cat != "date"}
+        percentages = convert_dict_to_percentages(category_values)
 
-        total = sum(category_values.values())
-
-        if total > 0:
-            percentages = {}
-            for category, count in category_values.items():
-                percentages[category] = round((count / total) * 100)
-
-            max_category = max(percentages, key=percentages.get)
-            percentages[max_category] += 100 - sum(percentages.values())
-
-            day.update(percentages)
-        else:
-            for category in category_values:
-                day[category] = 0
-
+        day = {"date": day_data["date"]}
+        day.update(percentages)
         result.append(day)
 
     return result
-
-def convert_totals_to_percentages(category_totals: dict[str, int]) -> dict[str, int]:
-    total = sum(category_totals.values())
-
-    if total == 0:
-        return {cat: 0 for cat in category_totals}
-
-    percentages = {
-        cat: round((count / total) * 100) for cat, count in category_totals.items()
-    }
-
-    max_category = max(percentages, key=percentages.get)
-    percentages[max_category] += 100 - sum(percentages.values())
-
-    return percentages
 
 
 def get_daily_summary(summary_date: date, db: Session) -> DailySummaryResponse:
@@ -238,3 +236,34 @@ def get_periodic_summary(
     )
 
     return periodic_summary
+
+
+def get_recent_daily_summaries(db: Session) -> list[DailySummaryResponse]:
+    end_date = date.today() - timedelta(days=1)
+    start_date = end_date - timedelta(days=6)
+
+    summaries = (
+        db.query(ViewDailySummary)
+        .filter(ViewDailySummary.date >= start_date, ViewDailySummary.date <= end_date)
+        .order_by(ViewDailySummary.date.desc())
+        .all()
+    )
+
+    if not summaries:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No daily summaries found for the last 7 days",
+        )
+
+    for s in summaries:
+        s.id = s.summary_id
+
+    result = []
+    for s in summaries:
+        summary_response = DailySummaryResponse.model_validate(s)
+        summary_response.categories = convert_categories_to_percentages(
+            summary_response.categories
+        )
+        result.append(summary_response)
+
+    return result
