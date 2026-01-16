@@ -55,6 +55,7 @@ def convert_articles_to_schema(articles: list[Article]) -> list[ArticleSchema]:
         for a in articles_valid
     ]
 
+
 def delete_unassigned_articles(
     db: Session, summary_date: date, referenced_ids: set[int]
 ) -> None:
@@ -65,6 +66,7 @@ def delete_unassigned_articles(
         Article.published_at < end_date,
         ~Article.id.in_(referenced_ids),
     ).delete(synchronize_session=False)
+
 
 def update_article_references(
     db: Session, db_summary: DailySummary, references_data: dict, summary_date: date
@@ -103,6 +105,49 @@ def replace_article_ids_with_urls(
         source_name: [id_to_url[article_id] for article_id in ref_list]
         for source_name, ref_list in references.items()
     }
+
+
+def convert_timeline_to_percentages(categories_timeline: list[dict]) -> list[dict]:
+    result = []
+
+    for day_data in categories_timeline:
+        day = {"date": day_data["date"]}
+
+        category_values = {cat: val for cat, val in day_data.items() if cat != "date"}
+
+        total = sum(category_values.values())
+
+        if total > 0:
+            percentages = {}
+            for category, count in category_values.items():
+                percentages[category] = round((count / total) * 100)
+
+            max_category = max(percentages, key=percentages.get)
+            percentages[max_category] += 100 - sum(percentages.values())
+
+            day.update(percentages)
+        else:
+            for category in category_values:
+                day[category] = 0
+
+        result.append(day)
+
+    return result
+
+def convert_totals_to_percentages(category_totals: dict[str, int]) -> dict[str, int]:
+    total = sum(category_totals.values())
+
+    if total == 0:
+        return {cat: 0 for cat in category_totals}
+
+    percentages = {
+        cat: round((count / total) * 100) for cat, count in category_totals.items()
+    }
+
+    max_category = max(percentages, key=percentages.get)
+    percentages[max_category] += 100 - sum(percentages.values())
+
+    return percentages
 
 
 def get_daily_summary(summary_date: date, db: Session) -> DailySummaryResponse:
@@ -180,9 +225,16 @@ def get_periodic_summary(
         end_date=end,
     )
 
-    if periodic_summary.references:
-        periodic_summary.references = replace_article_ids_with_urls(
-            db, periodic_summary.references
-        )
+    periodic_summary.references = replace_article_ids_with_urls(
+        db, periodic_summary.references
+    )
+
+    periodic_summary.categories_timeline = convert_timeline_to_percentages(
+        periodic_summary.categories_timeline
+    )
+
+    periodic_summary.category_totals = convert_totals_to_percentages(
+        periodic_summary.category_totals
+    )
 
     return periodic_summary
