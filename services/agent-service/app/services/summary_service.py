@@ -258,19 +258,23 @@ def get_recent_daily_summaries(db: Session) -> list[dict]:
         if current_date in summaries_by_date:
             s = summaries_by_date[current_date]
             categories = convert_categories_to_percentages(s.categories)
-            result.append({
-                "date": current_date.isoformat(),
-                "has_data": True,
-                "summaries": s.summaries,
-                "categories": categories,
-            })
+            result.append(
+                {
+                    "date": current_date.isoformat(),
+                    "has_data": True,
+                    "summaries": s.summaries,
+                    "categories": categories,
+                }
+            )
         else:
-            result.append({
-                "date": current_date.isoformat(),
-                "has_data": False,
-                "summaries": {},
-                "categories": {},
-            })
+            result.append(
+                {
+                    "date": current_date.isoformat(),
+                    "has_data": False,
+                    "summaries": {},
+                    "categories": {},
+                }
+            )
 
         current_date -= timedelta(days=1)
 

@@ -18,6 +18,7 @@ def get_daily_summary(
 ):
     return summary_service.get_daily_summary(summary_date, db)
 
+
 @router.get(
     "/recent",
     response_model=list[dict],
