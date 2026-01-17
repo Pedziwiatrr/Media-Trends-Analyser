@@ -363,7 +363,7 @@ def get_periodic_summary(
         periodic_summary.category_totals
     )
 
-    return periodic_summary
+    return PeriodicSummaryResponse.model_validate(periodic_summary.model_dump())
 
 
 def get_recent_daily_summaries(db: Session) -> list[dict]:
