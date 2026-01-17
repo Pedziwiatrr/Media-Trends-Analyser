@@ -59,3 +59,18 @@ def test_get_periodic_summary_success(mock_service):
     assert args[1] == date(2026, 1, 7)
     assert args[2] == ["BBC", "TVN24"]
     assert args[3] == ["Technology", "Politics"]
+
+
+def test_get_periodic_summary_missing_params():
+    response = client.get(
+        f"{BASE_URL}/?end=2026-01-01&sources=BBC&categories=Technology"
+    )
+    assert response.status_code == 422
+
+
+def test_get_periodic_summary_invalid_date_range():
+    response = client.get(
+        f"{BASE_URL}/?start=2077-01-01&end=966-04-16&sources=BBC&categories=Technology"
+    )
+
+    assert response.status_code != 500
