@@ -74,3 +74,19 @@ def test_get_periodic_summary_invalid_date_range():
     )
 
     assert response.status_code != 500
+
+
+@patch("app.api.v1.periodic_summary.summary_service.get_periodic_summary")
+def test_get_periodic_summary_internal_server_error(mock_service):
+    client = TestClient(app, raise_server_exceptions=False)
+
+    mock_service.side_effect = Exception("Database connection lost")
+
+    response = client.get(
+        f"{BASE_URL}/?start=2026-01-01&end=2026-01-07&sources=BBC&categories=Technology"
+    )
+
+    assert response.status_code == 500
+    data = response.json()
+    assert data["detail"] == "Internal server error"
+    assert "Database connection lost" in data["error"]
