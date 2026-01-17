@@ -92,7 +92,7 @@
         },
         "type": "RssScraper"
     },
-    "nytRss": {
+    "nyt-rss": {
         "title": "NewYorkTimes",
         "endpoint": {
             "base_url": "https://rss.nytimes.com/services/xml/rss/nyt/%s.xml",
@@ -126,7 +126,7 @@
         "api_key": ""
     },
     "nyt-top-stories": {
-        "title": "NewYorkTimes Top Stories",
+        "title": "NewYorkTimes",
         "endpoint": {
             "base_url": "https://api.nytimes.com/svc/topstories/v2/%s.json?api-key=",
             "categories": [
