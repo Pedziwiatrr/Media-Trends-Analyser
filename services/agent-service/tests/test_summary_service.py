@@ -83,6 +83,13 @@ def test_get_daily_summary_success(mock_fetch, mock_create_agent, mock_db, mock_
     assert isinstance(added_summary, DailySummary)
     assert added_summary.date == summary_date
 
+    assert (
+        added_summary.summaries
+        == mock_agent.get_daily_summary.return_value.model_dump.return_value[
+            "summaries"
+        ]
+    )
+
 
 def test_get_daily_summary_already_exists(mock_db):
     summary_date = date(2026, 1, 1)
