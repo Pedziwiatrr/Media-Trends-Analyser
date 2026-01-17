@@ -43,7 +43,7 @@ class ApiScraper(BaseScraper):
 
 
 @save_scrapers
-class NYTScrapper(ApiScraper):
+class NYTScraper(ApiScraper):
     def _extract_data(self, response):
         data = []
         for result in response["results"]:

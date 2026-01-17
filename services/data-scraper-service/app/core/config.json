@@ -137,7 +137,7 @@
                 "health"
             ]
         },
-        "type": "NYTScrapper",
+        "type": "NYTScraper",
         "api_key": "NEW_YORK_TIMES_API_KEY"
     }
 }

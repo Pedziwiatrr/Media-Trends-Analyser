@@ -1,3 +1,3 @@
-from .api_scraper import BBCScraper, NYTScrapper
+from .api_scraper import BBCScraper, NYTScraper
 
-__all__ = ["BBCScraper", "NYTScrapper"]
+__all__ = ["BBCScraper", "NYTScraper"]
