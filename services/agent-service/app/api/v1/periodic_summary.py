@@ -5,40 +5,31 @@ import uuid
 
 from app.database.database import get_db
 from app.schemas.task_status import TaskStatusResponse
-from app.services import summary_service, task_service
+from app.services import task_service
 
 router = APIRouter(prefix="/periodic_summary")
 
 
-def generate_summary_task(
-        task_id: str,
-        start: date,
-        end: date,
-        sources: list[str],
-        categories: list[str],
-        db: Session,
-):
-    try:
-        result = summary_service.get_periodic_summary(start, end, sources, categories, db)
-        task_service.update_task_result(task_id, result.model_dump())
-    except Exception as e:
-        task_service.update_task_error(task_id, str(e))
-
-
 @router.post("/start", response_model=dict)
 def start_periodic_summary(
-        background_tasks: BackgroundTasks,
-        start: date = Query(...),
-        end: date = Query(...),
-        sources: list[str] = Query(...),
-        categories: list[str] = Query(...),
-        db: Session = Depends(get_db),
+    background_tasks: BackgroundTasks,
+    start: date = Query(...),
+    end: date = Query(...),
+    sources: list[str] = Query(...),
+    categories: list[str] = Query(...),
+    db: Session = Depends(get_db),
 ):
     task_id = str(uuid.uuid4())
     task_service.create_task(task_id)
 
     background_tasks.add_task(
-        generate_summary_task, task_id, start, end, sources, categories, db
+        task_service.generate_summary_task,
+        task_id,
+        start,
+        end,
+        sources,
+        categories,
+        db,
     )
 
     return {"task_id": task_id}

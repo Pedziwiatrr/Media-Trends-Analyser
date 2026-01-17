@@ -1,8 +1,10 @@
 import asyncio
 import logging
 from typing import Any, Optional
-from datetime import datetime
+from datetime import datetime, date
 from app.schemas.task_status import TaskStatus
+from sqlalchemy.orm import Session
+from app.services.summary_service import get_periodic_summary
 
 logger = logging.getLogger(__name__)
 
@@ -75,3 +77,20 @@ def stop_cleanup_task():
     if cleanup_task:
         cleanup_task.cancel()
         cleanup_task = None
+
+
+def generate_summary_task(
+    task_id: str,
+    start: date,
+    end: date,
+    sources: list[str],
+    categories: list[str],
+    db: Session,
+):
+    try:
+        result = get_periodic_summary(start, end, sources, categories, db)
+        update_task_result(task_id, result.model_dump())
+    except Exception as e:
+        logger.exception("[Task %s] Error generating summary", task_id)
+        update_task_error(task_id, str(e))
+
