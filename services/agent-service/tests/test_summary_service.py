@@ -1,9 +1,13 @@
-from datetime import date
-from unittest.mock import MagicMock
+from datetime import date, datetime
+from unittest.mock import MagicMock, patch
 
 import pytest
-from app.schemas.daily_summary import DailySummary as DailySummarySchema
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
+
+from app.models import Article, DailySummary, ViewDailySummary
+from app.schemas.daily_summary import DailySummary as DailySummarySchema
+from app.services import summary_service
 
 
 # --- FIXTURES ---
@@ -31,3 +35,20 @@ def mock_agent():
 
 
 # --- UNIT TESTS ---
+def test_fetch_articles_found(mock_db):
+    mock_query = mock_db.query.return_value
+    mock_filter1 = mock_query.filter.return_value
+    mock_filter2 = mock_filter1.filter.return_value
+    mock_filter2.all.return_value = [Article(id=1, title="Test")]
+
+    result = summary_service.fetch_articles(mock_db, date(2026, 1, 1))
+    assert len(result) == 1
+    assert result[0].title == "Test"
+
+
+def test_fetch_articles_not_found(mock_db):
+    mock_db.query.return_value.filter.return_value.filter.return_value.all.return_value = []
+
+    with pytest.raises(HTTPException) as exc:
+        summary_service.fetch_articles(mock_db, date(2026, 1, 1))
+    assert exc.value.status_code == 404
