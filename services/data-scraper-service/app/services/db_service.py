@@ -48,3 +48,6 @@ class DatabaseService:
             "new_saved": saved_count,
             "skipped_duplicates": skipped_count,
         }
+
+
+db_service = DatabaseService()

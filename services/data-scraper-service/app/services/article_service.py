@@ -126,3 +126,6 @@ class ScraperService(object):
             source_name,
             api_key_name,
         )
+
+
+scraper_service = ScraperService()

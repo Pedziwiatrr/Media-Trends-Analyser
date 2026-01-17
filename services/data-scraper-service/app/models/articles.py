@@ -12,11 +12,11 @@ class ArticleDB(Base):
     __tablename__ = "article"
 
     id: Mapped[int] = mapped_column(Integer, Identity(), primary_key=True)
-    title: Mapped[str | None] = mapped_column(String, nullable=True)
+    title: Mapped[str] = mapped_column(String, nullable=False)
     description: Mapped[str] = mapped_column(Text, nullable=False)
     url: Mapped[str] = mapped_column(String, nullable=False)
     published_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False
     )
-    source: Mapped[str | None] = mapped_column(String, nullable=True)
+    source: Mapped[str] = mapped_column(String, nullable=False)
     categories: Mapped[list[str]] = mapped_column(JSONB, nullable=False)

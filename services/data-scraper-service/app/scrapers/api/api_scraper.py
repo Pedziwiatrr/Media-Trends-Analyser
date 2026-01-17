@@ -17,9 +17,10 @@ class ApiScraper(BaseScraper):
             self.api_key = api_key
             self.url += self.api_key
 
-    def collect_data(self, category: str = None) -> list:
+    def collect_data(self, category: str | None = None) -> list:
         """ """
-        temp_url = self.url % category if category else self.url
+        self.category = category
+        temp_url = self.url % self.category if self.category else self.url
 
         try:
             response = requests.get(temp_url)
@@ -54,16 +55,21 @@ class NYTScrapper(ApiScraper):
                 description = parse_text(description)
 
                 url = result.get("url", None)
-                categories = result.get("des_facet", []) + result.get("org_facet", [])
+                categories = [self.category] if self.category else []
+                categories += result.get("des_facet", []) + result.get("org_facet", [])
 
                 if not description or not url:
                     continue
+
+                date = result.get("published_date", None)
 
                 article = ArticleCreate.create(
                     title=title,
                     description=description,
                     url=url,
-                    published_at=datetime.now(),
+                    published_at=datetime.fromisoformat(date)
+                    if date
+                    else datetime.now(),
                     source=self.source_name,
                     categories=categories,
                 )
@@ -94,14 +100,13 @@ class BBCScraper(ApiScraper):
 
                         url = value.get("news_link", None)
 
-                        if not description or not url:
+                        if not title or not description or not url:
                             continue
 
                         article = ArticleCreate.create(
                             title=title,
                             description=description,
                             url=url,
-                            published_at=datetime.now(),
                             source=self.source_name,
                             categories=[key],
                         )

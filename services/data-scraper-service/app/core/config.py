@@ -1,4 +1,3 @@
-from dotenv import load_dotenv
 import json
 
 CONFIG_FILE = "app/core/config.json"
@@ -10,5 +9,4 @@ def load_context():
     return obj
 
 
-load_dotenv()
 CONTEXT = load_context()

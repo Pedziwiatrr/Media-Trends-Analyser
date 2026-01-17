@@ -1,5 +1,5 @@
-from app.services.article_service import ScraperService
-from app.services.db_service import DatabaseService
+from app.services.article_service import scraper_service
+from app.services.db_service import db_service
 from app.schemas.articles import ArticleCreate
 from app.core.db import get_db
 
@@ -8,8 +8,7 @@ from sqlalchemy.orm import Session
 
 
 router = APIRouter(prefix="/articles", responses={404: {"description": "Not found"}})
-scraper_service = ScraperService()
-db_service = DatabaseService()
+
 
 # need to think of adding start/end datetime for scrapping api with timestamp,
 # can be added as separate enpoint if api would be separated to rss, api enpoints or start/end can be query params
