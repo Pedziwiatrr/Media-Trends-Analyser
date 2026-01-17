@@ -29,7 +29,7 @@ services:
       - ./services/data-scraper-service/uv.lock:/src/uv.lock
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.scrapers-v1.rule=(Host(`trendsanalyser.com`) || Host(`localhost`)) && PathPrefix(`/scrapers/api/v1`)"
+      - "traefik.http.routers.scrapers-v1.rule=PathPrefix(`/scrapers/api/v1`) && Headers(`API_Key`, `${VM_SECRET}`)"
       - "traefik.http.routers.scrapers-v1.entrypoints=web"
 
       - "traefik.http.middlewares.scrapers-v1-strip.stripprefix.prefixes=/scrapers/api/v1"
@@ -44,15 +44,15 @@ services:
       - app_network
     env_file:
       - ./services/agent-service/.env
-#    extra_hosts:
-#      - "host.docker.internal:host-gateway"
+    #    extra_hosts:
+    #      - "host.docker.internal:host-gateway"
     volumes:
       - ./services/agent-service/app:/src/app
       - ./services/agent-service/pyproject.toml:/src/pyproject.toml
       - ./services/agent-service/uv.lock:/src/uv.lock
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.llmagent-v1.rule=(Host(`trendsanalyser.com`) || Host(`localhost`)) && PathPrefix(`/agent/api/v1`)"
+      - "traefik.http.routers.llmagent-v1.rule=PathPrefix(`/agent/api/v1`) && Headers(`API_Key`, `${VM_SECRET}`)"
       - "traefik.http.routers.llmagent-v1.entrypoints=web"
 
       - "traefik.http.middlewares.llmagent-v1-strip.stripprefix.prefixes=/agent/api/v1"
