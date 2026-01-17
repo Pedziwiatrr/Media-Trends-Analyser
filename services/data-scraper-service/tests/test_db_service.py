@@ -4,29 +4,8 @@ import pytest
 from app.models.articles import ArticleDB
 from app.schemas.articles import ArticleCreate
 from app.services.db_service import DatabaseService
-from sqlalchemy import create_engine
-from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.ext.compiler import compiles
-from sqlalchemy.orm import sessionmaker
-
-
-# --- SQQLITE JSONB FIX ---
-@compiles(JSONB, "sqlite")
-def compile_jsonb_sqlite(type_, compiler, **kw):
-    return "JSON"
-
 
 # --- FIXTURES ---
-@pytest.fixture
-def db_session():
-    engine = create_engine("sqlite:///:memory:")
-
-    ArticleDB.metadata.create_all(bind=engine)
-
-    SessionLocal = sessionmaker(bind=engine)
-    session = SessionLocal()
-    yield session
-    session.close()
 
 
 @pytest.fixture
