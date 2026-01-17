@@ -4,6 +4,7 @@ from unittest.mock import MagicMock, PropertyMock, patch
 import pytest
 from app.agents.summary_agent import SummaryAgent
 from app.schemas.article import Article
+from app.schemas.daily_summary import DailySummary
 
 # --- FIXTURES ---
 
@@ -96,3 +97,54 @@ def test_get_daily_summary_empty(mock_model, mock_settings):
 
     assert result.date == test_date
     assert result.summaries == {}
+
+
+def test_get_periodic_summary_filtering(mock_model, mock_settings):
+    agent = SummaryAgent(model=mock_model, settings=mock_settings)
+    daily_mock = MagicMock(spec=DailySummary)
+    daily_mock.summaries = {
+        "BBC": {
+            "Technology": "Important tech news like new Kim Kardashian Fortnite skins"
+        },
+        "Pudelek": {"Gossip": "Something we don't care about like WW3 or so"},
+    }
+    daily_mock.categories = {"BBC": {"Technology": 1}, "Pudelek": {"Gossip": 50}}
+    daily_mock.references = {"BBC": {"Technology": [1]}, "Pudelek": {"Gossip": [2]}}
+
+    mock_output = {
+        "main_summary": "Test",
+        "categories_timeline": [],
+        "category_totals": {},
+        "trends": {},
+        "key_insights": [],
+        "source_highlights": {},
+        "event_timeline": {},
+        "references": {},
+    }
+
+    mock_final_chain = MagicMock()
+    mock_final_chain.invoke.return_value = mock_output
+
+    with patch(
+        "app.agents.summary_agent.SummaryAgent.periodic_summary_prompt",
+        new_callable=PropertyMock,
+    ) as mock_prompt_property:
+        mock_prompt_obj = MagicMock()
+        mock_prompt_property.return_value = mock_prompt_obj
+
+        mock_prompt_obj.__or__.return_value = mock_model
+        mock_model.__or__.return_value = mock_final_chain
+
+        agent.get_periodic_summary(
+            daily_summaries=[daily_mock],
+            sources=["BBC"],
+            categories=["Technology"],
+            start_date=date(2026, 1, 1),
+            end_date=date(2026, 1, 7),
+        )
+
+    assert "BBC" in daily_mock.summaries
+    assert "Pudelek" not in daily_mock.summaries
+
+    assert "BBC" in daily_mock.categories
+    assert "Pudelek" not in daily_mock.categories
