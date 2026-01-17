@@ -20,12 +20,16 @@ class DatabaseService:
         saved_count = 0
         skipped_count = 0
 
-        for article in articles:
-            exists = (
-                db.query(ArticleDB).filter(ArticleDB.url == str(article.url)).first()
-            )
+        urls_to_check = [str(article.url) for article in articles]
+        existing_article_records = {
+            record.url
+            for record in db.query(ArticleDB)
+            .filter(ArticleDB.url.in_(urls_to_check))
+            .all()
+        }
 
-            if exists:
+        for article in articles:
+            if str(article.url) in existing_article_records:
                 skipped_count += 1
                 continue
 
