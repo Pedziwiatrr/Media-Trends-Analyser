@@ -78,3 +78,37 @@ def test_collect_data_request_failure(mock_get, rss_scraper):
         rss_scraper.collect_data()
 
     assert "Request failed for" in str(exc.value)
+
+
+@patch("app.scrapers.rss.rss_scraper.requests.get")
+def test_collect_data_invalid_xml(mock_get, rss_scraper):
+    mock_response = MagicMock()
+    mock_response.content = b"Kacper Siemionek, completely not valid XML"
+    mock_get.return_value = mock_response
+
+    with pytest.raises(Exception) as exc:
+        rss_scraper.collect_data()
+
+    assert len(str(exc.value)) > 0
+
+
+@patch("app.scrapers.rss.rss_scraper.requests.get")
+def test_collect_data_missing_fields(mock_get, rss_scraper, mock_article_create):
+    broken_xml = """
+    <rss version="2.0">
+        <channel>
+            <item>
+                <title>No link :(((</title>
+                <description>Kacper Siemionek</description>
+                <pubDate>Sat, 01 Jan 2026 20:20:00 GMT</pubDate>
+            </item>
+        </channel>
+    </rss>
+    """
+    mock_response = MagicMock()
+    mock_response.content = broken_xml.encode("utf-8")
+    mock_get.return_value = mock_response
+
+    results = rss_scraper.collect_data()
+
+    assert len(results) == 0
