@@ -65,7 +65,8 @@ services:
     restart: always
     environment:
       - SCRAPPER_URL=http://data-service:8082/articles/all
-      - AGENT_URL=http://agent-service:8083/daily_summary
+      - SCRAPPER_DB_URL="http://data-service:8082/articles/articles"
+      - AGENT_URL=http://agent-service:8083/daily_summary/
     networks:
       - app_network
     volumes:

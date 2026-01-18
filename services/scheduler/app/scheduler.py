@@ -18,7 +18,7 @@ SCRAPPER_URL = os.getenv("SCRAPPER_URL", "http://data-service:8082/articles/all"
 SCRAPPER_DB_URL = os.getenv(
     "SCRAPPER_DB_URL", "http://data-service:8082/articles/articles"
 )
-AGENT_URL = os.getenv("AGENT_URL", "http://agent-service:8083/daily_summary")
+AGENT_URL = os.getenv("AGENT_URL", "http://agent-service:8083/daily_summary/")
 
 
 async def trigger_scraping_job():
@@ -65,8 +65,8 @@ async def trigger_agent_summary_job():
 # scheduler.add_job(trigger_scraping_job, "cron", hour=12, minute=0)
 # scheduler.add_job(trigger_scraping_job, "cron", hour=22, minute=0)
 # scheduler.add_job(trigger_agent_summary_job, "cron", hour=23, minute=30)
-scheduler.add_job(trigger_scraping_job, "interval", minutes=3)
-scheduler.add_job(trigger_agent_summary_job, "interval", minutes=5)
+scheduler.add_job(trigger_scraping_job, "interval", minutes=2)
+scheduler.add_job(trigger_agent_summary_job, "interval", minutes=3)
 
 
 @asynccontextmanager
