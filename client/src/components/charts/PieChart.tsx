@@ -87,7 +87,7 @@ export function CategoryPieChart({
       <div
         className={`
           relative mx-auto
-          ${isExport ? 'h-75 w-75' : 'h-62'}
+          ${isExport ? 'h-50 w-75' : 'h-62'}
           ${isRightLegend ? 'flex-1 min-w-50' : 'w-full'}
         `}
       >
