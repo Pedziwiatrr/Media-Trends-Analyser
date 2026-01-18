@@ -62,11 +62,9 @@ async def trigger_agent_summary_job():
             )
 
 
-# scheduler.add_job(trigger_scraping_job, "cron", hour=12, minute=0)
-# scheduler.add_job(trigger_scraping_job, "cron", hour=22, minute=0)
-# scheduler.add_job(trigger_agent_summary_job, "cron", hour=23, minute=30)
-scheduler.add_job(trigger_scraping_job, "interval", minutes=2)
-scheduler.add_job(trigger_agent_summary_job, "interval", minutes=3)
+scheduler.add_job(trigger_scraping_job, "cron", hour=12, minute=0)
+scheduler.add_job(trigger_scraping_job, "cron", hour=22, minute=0)
+scheduler.add_job(trigger_agent_summary_job, "cron", hour=23, minute=30)
 
 
 @asynccontextmanager
