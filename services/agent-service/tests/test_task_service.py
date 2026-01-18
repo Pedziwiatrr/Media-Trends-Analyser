@@ -58,7 +58,7 @@ def test_cleanup_expired_tasks():
     assert "jd3198jw8asd0j9j21" not in task_service.tasks
 
 
-@patch("app.services.summary_service.get_periodic_summary")
+@patch("app.services.task_service.get_periodic_summary")  # <-- Mock w task_service, nie summary_service
 def test_generate_summary_task_success(mock_get_summary, mock_db):
     mock_get_summary.return_value = MagicMock(model_dump=lambda: {"data": "summary"})
 
@@ -74,7 +74,9 @@ def test_generate_summary_task_success(mock_get_summary, mock_db):
 
     task = task_service.get_task("jd3198jw8asd0j9j21")
     assert task["status"] == TaskStatus.COMPLETED
+    assert task["result"] == {"data": "summary"}
     task_service.delete_task("jd3198jw8asd0j9j21")
+
 
 
 @patch("app.services.task_service.get_periodic_summary")
