@@ -5,7 +5,6 @@ from datetime import datetime, date
 from app.schemas.task_status import TaskStatus
 from sqlalchemy.orm import Session
 from app.services.summary_service import get_periodic_summary
-from fastapi import HTTPException, status
 
 
 logger = logging.getLogger(__name__)
