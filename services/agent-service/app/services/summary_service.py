@@ -3,7 +3,7 @@ from functools import partial
 from datetime import date, datetime, timedelta
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_google_genai import ChatGoogleGenerativeAI, HarmCategory, HarmBlockThreshold
 
 from app.models import DailySummary, Article, ViewDailySummary
 from app.schemas import (
@@ -18,7 +18,11 @@ from app.agents.agent_config import AgentSettings
 
 def create_summary_agent() -> SummaryAgent:
     settings = AgentSettings()
-    model = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0)
+    model = ChatGoogleGenerativeAI(
+        model="gemini-2.5-flash",
+        temperature=0,
+        model_kwargs={"response_mime_type": "application/json"}
+    )
     return SummaryAgent(model, settings)
 
 
