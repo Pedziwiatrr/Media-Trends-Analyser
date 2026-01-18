@@ -7,6 +7,7 @@ class TaskStatus(str, Enum):
     PROCESSING = "processing"
     COMPLETED = "completed"
     FAILED = "failed"
+    NOT_FOUND = "not_found"
 
 
 class TaskStatusResponse(BaseModel):

@@ -5,6 +5,8 @@ from datetime import datetime, date
 from app.schemas.task_status import TaskStatus
 from sqlalchemy.orm import Session
 from app.services.summary_service import get_periodic_summary
+from fastapi import HTTPException, status
+
 
 logger = logging.getLogger(__name__)
 
@@ -40,7 +42,12 @@ def update_task_error(task_id: str, error: str) -> None:
 def get_task(task_id: str) -> dict[str, Any]:
     task = tasks.get(task_id)
     if not task:
-        return {"status": TaskStatus.PENDING}
+        return {
+            "task_id": task_id,
+            "status": TaskStatus.NOT_FOUND,
+            "result": None,
+            "error": f"Task with id {task_id} does not exist or has expired."
+        }
     return task
 
 
