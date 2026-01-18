@@ -1,5 +1,7 @@
 from datetime import date
 from unittest.mock import MagicMock, PropertyMock, patch
+import json
+from langchain_core.output_parsers import JsonOutputParser
 
 import pytest
 from app.agents.summary_agent import SummaryAgent
@@ -103,7 +105,7 @@ def test_get_periodic_summary_filtering(mock_model, mock_settings):
     }
 
     mock_final_chain = MagicMock()
-    mock_final_chain.invoke.return_value = mock_output
+    mock_final_chain.invoke.return_value = json.dumps(mock_output)  # <-- poprawka
 
     with patch(
         "app.agents.summary_agent.SummaryAgent.periodic_summary_prompt",
@@ -149,7 +151,7 @@ def test_get_periodic_summary_structure(mock_model, mock_settings):
     }
 
     mock_final_chain = MagicMock()
-    mock_final_chain.invoke.return_value = mock_output
+    mock_final_chain.invoke.return_value = json.dumps(mock_output)
 
     with patch(
         "app.agents.summary_agent.SummaryAgent.periodic_summary_prompt",

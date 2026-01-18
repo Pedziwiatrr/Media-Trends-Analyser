@@ -39,7 +39,7 @@ def test_update_task_error():
 def test_get_task_not_found():
     task_service.tasks.clear()
     task = task_service.get_task("jd3198jw8asd0j9j21")
-    assert task["status"] == TaskStatus.PENDING
+    assert task["status"] == TaskStatus.NOT_FOUND
 
 
 def test_delete_task():

@@ -9,7 +9,7 @@ from app.schemas.daily_summary import DailySummary
 from app.schemas.periodic_summary import PeriodicSummary
 
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.output_parsers import StrOutputParser
+from langchain_core.output_parsers import StrOutputParser, JsonOutputParser
 from dotenv import load_dotenv
 
 load_dotenv()

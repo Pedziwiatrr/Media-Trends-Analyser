@@ -3,7 +3,7 @@ from functools import partial
 from datetime import date, datetime, timedelta
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
-from langchain_google_genai import ChatGoogleGenerativeAI, HarmCategory, HarmBlockThreshold
+from langchain_google_genai import ChatGoogleGenerativeAI
 
 from app.models import DailySummary, Article, ViewDailySummary
 from app.schemas import (
