@@ -70,7 +70,7 @@ export async function checkTaskStatus(taskId: string): Promise<TaskStatus> {
   );
 
   if (!response.ok) {
-    throw new Error('Failed to check status');
+    throw new Error('Failed to check generation status');
   }
 
   return response.json();

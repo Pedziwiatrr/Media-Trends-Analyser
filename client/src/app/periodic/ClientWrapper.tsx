@@ -54,11 +54,12 @@ export function ClientWrapper({
           setData(statusData.result);
           setIsPolling(false);
         } else if (statusData.status === 'failed') {
-          setError('The report generation failed during processing.');
-          setIsPolling(false);
+          throw new Error('Periodic Report  generation failed on the backend.');
         }
-      } catch (err) {
-        console.error('Polling error:', err);
+      } catch (error) {
+        console.error('Polling error:', error);
+        setError('The report generation failed during processing.');
+        setIsPolling(false);
       }
     }, 2000);
 
