@@ -1,6 +1,5 @@
 from datetime import date
 import json
-from json_repair import repair_json
 
 from app.agents.agent_config import AgentSettings
 from app.schemas.article import Article
@@ -247,14 +246,6 @@ class SummaryAgent:
             output = json.loads(clean_content, strict=False)
         except json.JSONDecodeError:
             pass
-
-        if output is None:
-            fixed_content = repair_json(clean_content, return_objects=True)
-
-            try:
-                output = json.loads(fixed_content, strict=False)
-            except Exception:
-                pass
 
         if output is None:
             raise ValueError("Failed to parse LLM output.")
