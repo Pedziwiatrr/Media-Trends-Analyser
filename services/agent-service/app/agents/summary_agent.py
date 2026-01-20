@@ -149,8 +149,7 @@ class SummaryAgent:
         """
         )
 
-    @staticmethod
-    def parse_json_response(raw_content: str) -> dict:
+    def parse_json_response(self, raw_content: str) -> dict:
         clean_content = raw_content.strip()
         if clean_content.startswith("```json"):
             clean_content = clean_content[7:]
