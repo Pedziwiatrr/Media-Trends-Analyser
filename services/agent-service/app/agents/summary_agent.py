@@ -149,6 +149,22 @@ class SummaryAgent:
         """
         )
 
+    @staticmethod
+    def parse_json_response(raw_content: str) -> dict:
+        clean_content = raw_content.strip()
+        if clean_content.startswith("```json"):
+            clean_content = clean_content[7:]
+        elif clean_content.startswith("```"):
+            clean_content = clean_content[3:]
+        if clean_content.endswith("```"):
+            clean_content = clean_content[:-3]
+        clean_content = clean_content.strip()
+
+        try:
+            return json.loads(clean_content, strict=False)
+        except json.JSONDecodeError:
+            raise ValueError("Failed to parse LLM output.")
+
     def get_daily_summary_for_source(
         self, articles: list[Article], source: str, summary_date: date
     ) -> dict:
@@ -178,24 +194,13 @@ class SummaryAgent:
             }
         )
 
-        clean_content = raw_content.strip()
-        if clean_content.startswith("```json"):
-            clean_content = clean_content[7:]
-        elif clean_content.startswith("```"):
-            clean_content = clean_content[3:]
-        if clean_content.endswith("```"):
-            clean_content = clean_content[:-3]
-        clean_content = clean_content.strip()
+        output = self.parse_json_response(raw_content)
 
-        try:
-            output = json.loads(clean_content, strict=False)
-            return {
-                "summaries": {source: output.get("summaries", {})},
-                "categories": {source: output.get("categories", {})},
-                "references": {source: output.get("references", {})},
-            }
-        except json.JSONDecodeError:
-            raise ValueError("Failed to parse LLM output.")
+        return {
+            "summaries": {source: output.get("summaries", {})},
+            "categories": {source: output.get("categories", {})},
+            "references": {source: output.get("references", {})},
+        }
 
     def get_periodic_summary(
         self,
@@ -244,28 +249,17 @@ class SummaryAgent:
             {"daily_summaries": daily_summaries}
         )
 
-        clean_content = raw_content.strip()
-        if clean_content.startswith("```json"):
-            clean_content = clean_content[7:]
-        elif clean_content.startswith("```"):
-            clean_content = clean_content[3:]
-        if clean_content.endswith("```"):
-            clean_content = clean_content[:-3]
-        clean_content = clean_content.strip()
+        output = self.parse_json_response(raw_content)
 
-        try:
-            output = json.loads(clean_content, strict=False)
-            return PeriodicSummary(
-                start_date=start_date,
-                end_date=end_date,
-                main_summary=output["main_summary"],
-                categories_timeline=output["categories_timeline"],
-                category_totals=output["category_totals"],
-                trends=output["trends"],
-                key_insights=output["key_insights"],
-                source_highlights=output["source_highlights"],
-                event_timeline=output["event_timeline"],
-                references=output["references"],
-            )
-        except json.JSONDecodeError:
-            raise ValueError("Failed to parse LLM output.")
+        return PeriodicSummary(
+            start_date=start_date,
+            end_date=end_date,
+            main_summary=output["main_summary"],
+            categories_timeline=output["categories_timeline"],
+            category_totals=output["category_totals"],
+            trends=output["trends"],
+            key_insights=output["key_insights"],
+            source_highlights=output["source_highlights"],
+            event_timeline=output["event_timeline"],
+            references=output["references"],
+        )
