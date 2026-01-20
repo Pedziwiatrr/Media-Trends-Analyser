@@ -13,49 +13,51 @@ type PeriodicFilters = {
 
 export type TaskStatus = {
   task_id: string;
-  status: 'pending' | 'processing' | 'completed' | 'failed';
+  status: 'pending' | 'processing' | 'completed' | 'failed' | 'not_found';
   result: PeriodicReport | null;
   error: string | null;
 };
 
-export const getPeriodicTaskId = unstable_cache(
-  async (filters: PeriodicFilters) => {
-    const baseUrl = env.API_URL || '';
-    const params = new URLSearchParams();
+export async function startPeriodicTask(filters: PeriodicFilters) {
+  const baseUrl = env.API_URL || '';
+  const params = new URLSearchParams();
 
-    if (filters.from) params.append('start', filters.from);
-    if (filters.to) params.append('end', filters.to);
+  if (filters.from) params.append('start', filters.from);
+  if (filters.to) params.append('end', filters.to);
 
-    const sources = Array.isArray(filters.source)
-      ? filters.source
-      : [filters.source || ''].filter(Boolean);
+  const sources = Array.isArray(filters.source)
+    ? filters.source
+    : [filters.source || ''].filter(Boolean);
 
-    const categories = Array.isArray(filters.category)
-      ? filters.category
-      : [filters.category || ''].filter(Boolean);
+  const categories = Array.isArray(filters.category)
+    ? filters.category
+    : [filters.category || ''].filter(Boolean);
 
-    sources.forEach((source) => params.append('sources', source));
-    categories.forEach((categories) => params.append('categories', categories));
+  sources.forEach((source) => params.append('sources', source));
+  categories.forEach((category) => params.append('categories', category));
 
-    const response = await fetch(
-      `${baseUrl}/agent/api/v1/periodic_summary/start?${params.toString()}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'api-key': env.VM_SECRET,
-        },
-        cache: 'no-store',
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(`Failed to start: ${response.statusText}`);
+  const response = await fetch(
+    `${baseUrl}/agent/api/v1/periodic_summary/start?${params.toString()}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'api-key': env.VM_SECRET,
+      },
+      cache: 'no-store',
     }
+  );
 
-    const data = await response.json();
-    return data.task_id as string;
-  },
+  if (!response.ok) {
+    throw new Error(`Failed to start: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  return data.task_id as string;
+}
+
+export const getPeriodicTaskId = unstable_cache(
+  startPeriodicTask,
   ['periodic-task-id-v1'],
   { revalidate: 3600, tags: ['periodic-tasks'] }
 );

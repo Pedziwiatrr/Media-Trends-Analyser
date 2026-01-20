@@ -1,5 +1,5 @@
 import { ClientWrapper } from './ClientWrapper';
-import { getPeriodicTaskId, checkTaskStatus } from './api';
+import { getPeriodicTaskId, checkTaskStatus, startPeriodicTask } from './api';
 
 type HomeProps = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -22,7 +22,16 @@ export default async function Home({ searchParams }: HomeProps) {
     try {
       taskId = await getPeriodicTaskId(params);
 
-      const response = await checkTaskStatus(taskId);
+      let response = await checkTaskStatus(taskId);
+
+      if (response.status == 'not_found') {
+        console.warn(
+          `Stale cache detected for Task ${taskId}. Starting fresh task.`
+        );
+
+        taskId = await startPeriodicTask(params);
+        response = await checkTaskStatus(taskId);
+      }
 
       if (response.status === 'completed' && response.result) {
         initialData = response.result;

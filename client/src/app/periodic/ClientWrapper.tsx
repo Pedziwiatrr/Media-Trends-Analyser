@@ -53,8 +53,11 @@ export function ClientWrapper({
         if (statusData.status === 'completed' && statusData.result) {
           setData(statusData.result);
           setIsPolling(false);
+        } else if (statusData.status === 'not_found') {
+          setError('The report request has expired. Please refresh the page.');
+          setIsPolling(false);
         } else if (statusData.status === 'failed') {
-          throw new Error('Periodic Report  generation failed on the backend.');
+          throw new Error('Periodic Report generation failed on the backend.');
         }
       } catch (error) {
         console.error('Polling error:', error);
