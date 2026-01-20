@@ -18,6 +18,7 @@ async def get_daily_summary(
 ):
     return await summary_service.get_daily_summary_async(summary_date, db)
 
+
 @router.get(
     "/recent",
     response_model=list[dict],

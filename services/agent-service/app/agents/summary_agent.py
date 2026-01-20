@@ -240,25 +240,19 @@ class SummaryAgent:
             clean_content = clean_content[:-3]
         clean_content = clean_content.strip()
 
-        output = None
-
         try:
             output = json.loads(clean_content, strict=False)
+            return PeriodicSummary(
+                start_date=start_date,
+                end_date=end_date,
+                main_summary=output["main_summary"],
+                categories_timeline=output["categories_timeline"],
+                category_totals=output["category_totals"],
+                trends=output["trends"],
+                key_insights=output["key_insights"],
+                source_highlights=output["source_highlights"],
+                event_timeline=output["event_timeline"],
+                references=output["references"],
+            )
         except json.JSONDecodeError:
-            pass
-
-        if output is None:
             raise ValueError("Failed to parse LLM output.")
-
-        return PeriodicSummary(
-            start_date=start_date,
-            end_date=end_date,
-            main_summary=output["main_summary"],
-            categories_timeline=output["categories_timeline"],
-            category_totals=output["category_totals"],
-            trends=output["trends"],
-            key_insights=output["key_insights"],
-            source_highlights=output["source_highlights"],
-            event_timeline=output["event_timeline"],
-            references=output["references"],
-        )

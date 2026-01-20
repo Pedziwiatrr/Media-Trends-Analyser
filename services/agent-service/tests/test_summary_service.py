@@ -3,7 +3,6 @@ from unittest.mock import MagicMock, patch
 import pytest
 import asyncio
 from app.models import Article, DailySummary
-from app.schemas.daily_summary import DailySummary as DailySummarySchema
 from app.services import summary_service
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
@@ -31,7 +30,11 @@ def test_fetch_articles_by_source_found(mock_db):
     mock_query = mock_db.query.return_value
     mock_filter = mock_query.filter.return_value
     mock_filter.all.return_value = [
-        Article(id=1, title="Roxi Węgiel wore this to the market!?!?!? [PHOTOS]", source="BBC")
+        Article(
+            id=1,
+            title="Roxi Węgiel wore this to the market!?!?!? [PHOTOS]",
+            source="BBC",
+        )
     ]
 
     result = summary_service.fetch_articles_by_source(mock_db, date(2026, 1, 1), "BBC")
@@ -66,8 +69,6 @@ def test_get_daily_summary_success(mock_fetch, mock_create_agent, mock_db, mock_
     mock_fetch.return_value = {"BBC": [article]}
     mock_create_agent.return_value = mock_agent
 
-    result = asyncio.run(summary_service.get_daily_summary_async(summary_date, mock_db))
-
     mock_fetch.assert_called_once_with(mock_db, summary_date)
     mock_db.add.assert_called_once()
     mock_db.commit.assert_called_once()
@@ -96,7 +97,9 @@ def test_get_daily_summary_already_exists(mock_db):
 
 @patch("app.services.summary_service.create_summary_agent")
 @patch("app.services.summary_service.fetch_all_articles_grouped")
-def test_get_daily_summary_agent_failure(mock_fetch, mock_create_agent, mock_db, mock_agent):
+def test_get_daily_summary_agent_failure(
+    mock_fetch, mock_create_agent, mock_db, mock_agent
+):
     mock_db.query.return_value.filter.return_value.first.return_value = None
     mock_fetch.return_value = {"BBC": [MagicMock(spec=Article)]}
     mock_create_agent.return_value = mock_agent
@@ -121,7 +124,7 @@ def test_fill_dates_in_categories():
         categories_timeline,
         date(2026, 1, 1),
         date(2026, 1, 3),
-        ["Technology", "Politics"]
+        ["Technology", "Politics"],
     )
     assert len(result) == 3
     assert result[0]["date"] == "2026-01-01"

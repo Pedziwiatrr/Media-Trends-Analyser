@@ -1,7 +1,6 @@
 from datetime import date
 from unittest.mock import MagicMock, PropertyMock, patch
 import json
-from langchain_core.output_parsers import JsonOutputParser
 
 import pytest
 from app.agents.summary_agent import SummaryAgent
@@ -44,7 +43,9 @@ def test_get_daily_summary_for_source(mock_model, mock_settings):
     article.full_description = "Roxi Węgiel wore this to the market!?!?!? [PHOTOS]"
 
     expected_output = {
-        "summaries": {"Technology": "Roxi Węgiel's outfit revolutionizes polish technology market."},
+        "summaries": {
+            "Technology": "Roxi Węgiel's outfit revolutionizes polish technology market."
+        },
         "categories": {"Technology": 1},
         "references": {"Technology": [101]},
     }
@@ -64,7 +65,10 @@ def test_get_daily_summary_for_source(mock_model, mock_settings):
 
         result = agent.get_daily_summary_for_source([article], "BBC", test_date)
 
-    assert result["summaries"]["BBC"]["Technology"] == "Roxi Węgiel's outfit revolutionizes polish technology market."
+    assert (
+        result["summaries"]["BBC"]["Technology"]
+        == "Roxi Węgiel's outfit revolutionizes polish technology market."
+    )
     assert result["categories"]["BBC"]["Technology"] == 1
     assert 101 in result["references"]["BBC"]["Technology"]
 
@@ -78,7 +82,6 @@ def test_get_daily_summary_for_source_empty(mock_model, mock_settings):
     assert result["summaries"]["BBC"]["Technology"] == ""
     assert result["categories"]["BBC"]["Technology"] == 0
     assert result["references"]["BBC"]["Technology"] == []
-
 
 
 def test_get_periodic_summary_filtering(mock_model, mock_settings):

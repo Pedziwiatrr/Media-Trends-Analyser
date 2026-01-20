@@ -21,7 +21,7 @@ def create_summary_agent() -> SummaryAgent:
     model = ChatGoogleGenerativeAI(
         model="gemini-3-flash-preview",
         temperature=0,
-        model_kwargs={"response_mime_type": "application/json"}
+        model_kwargs={"response_mime_type": "application/json"},
     )
     return SummaryAgent(model, settings)
 

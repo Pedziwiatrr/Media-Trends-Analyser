@@ -37,7 +37,6 @@ def update_task_error(task_id: str, error: str) -> None:
         tasks[task_id]["completed_at"] = datetime.now()
 
 
-
 def get_task(task_id: str) -> dict[str, Any]:
     task = tasks.get(task_id)
     if not task:
@@ -45,7 +44,7 @@ def get_task(task_id: str) -> dict[str, Any]:
             "task_id": task_id,
             "status": TaskStatus.NOT_FOUND,
             "result": None,
-            "error": f"Task with id {task_id} does not exist or has expired."
+            "error": f"Task with id {task_id} does not exist or has expired.",
         }
     return task
 
@@ -100,4 +99,3 @@ def generate_summary_task(
     except Exception as e:
         logger.exception("[Task %s] Error generating summary", task_id)
         update_task_error(task_id, str(e))
-
