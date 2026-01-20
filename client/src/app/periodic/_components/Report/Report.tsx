@@ -65,21 +65,15 @@ export function Report({
 
       <KeyInsights insights={data.key_insights} />
 
-      <div className={printStyle}>
-        <TrendAnalysis trends={data.trends} />
-      </div>
+      <TrendAnalysis trends={data.trends} />
 
-      <div className={printStyle}>
-        <SourceHighlights
-          highlights={data.source_highlights}
-          references={data.references}
-          isExport={isExport}
-        />
-      </div>
+      <SourceHighlights
+        highlights={data.source_highlights}
+        references={data.references}
+        isExport={isExport}
+      />
 
-      <div className={printStyle}>
-        <EventTimeline timeline={data.event_timeline} isExport={isExport} />
-      </div>
+      <EventTimeline timeline={data.event_timeline} isExport={isExport} />
 
       <div className={printStyle}>
         <Charts
