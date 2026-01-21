@@ -14,7 +14,6 @@ type ClientWrapperProps = {
   initialError?: string | null;
   startDate: string;
   endDate: string;
-  searchParamsKey: string;
 };
 
 export function ClientWrapper({
@@ -23,7 +22,6 @@ export function ClientWrapper({
   initialError,
   startDate,
   endDate,
-  searchParamsKey,
 }: ClientWrapperProps) {
   const printRef = useRef<HTMLDivElement>(null);
 
@@ -70,7 +68,7 @@ export function ClientWrapper({
   }, [isPolling, taskId]);
 
   return (
-    <ControlPanel key={searchParamsKey} isPolling={isPolling}>
+    <ControlPanel isPolling={isPolling}>
       {isPolling && null}
 
       {!isPolling && error && (

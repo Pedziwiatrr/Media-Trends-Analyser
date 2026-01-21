@@ -61,7 +61,6 @@ export default async function Home({ searchParams }: HomeProps) {
       initialError={initialError}
       startDate={filters.from}
       endDate={filters.to}
-      searchParamsKey={paramsKey}
     />
   );
 }
