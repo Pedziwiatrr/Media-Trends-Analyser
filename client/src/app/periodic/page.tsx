@@ -22,28 +22,25 @@ export default async function Home({ searchParams }: HomeProps) {
     try {
       taskId = await getPeriodicTaskId(params);
 
-      let response = await checkTaskStatus(taskId);
+      let task = await checkTaskStatus(taskId);
 
-      if (response.status == 'not_found') {
+      if (task.status == 'not_found') {
         console.warn(
           `Stale cache detected for Task ${taskId}. Starting fresh task.`
         );
 
         taskId = await startPeriodicTask(params);
-        response = await checkTaskStatus(taskId);
+        task = await checkTaskStatus(taskId);
       }
 
-      if (response.status === 'completed' && response.result) {
-        initialData = response.result;
-      } else if (response.status === 'failed') {
+      if (task.status === 'completed' && task.result) {
+        initialData = task.result;
+      } else if (task.status === 'failed') {
         initialError = 'Report generation failed on the server.';
       }
     } catch (error) {
-      console.error('Periodic Report Initiation Error:', error);
-      initialError =
-        error instanceof Error
-          ? error.message
-          : 'Failed to initiate report generation.';
+      console.error('Periodic Page Load Error:', error);
+      initialError = 'Failed to initiate report generation.';
     }
   }
 

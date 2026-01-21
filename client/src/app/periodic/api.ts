@@ -18,42 +18,56 @@ export type TaskStatus = {
   error: string | null;
 };
 
+async function fetchAgent<T>(
+  path: string,
+  options: RequestInit = {}
+): Promise<T> {
+  const url = `${env.API_URL}/agent/api/v1${path}`;
+
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      'api-key': env.VM_SECRET,
+      ...options.headers,
+    },
+    cache: 'no-store',
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error(`❌ API Error [${path}] (${response.status}): ${errorText}`);
+    throw new Error(errorText || `Request failed: ${response.status}`);
+  }
+
+  return response.json();
+}
+
 export async function startPeriodicTask(filters: PeriodicFilters) {
-  const baseUrl = env.API_URL || '';
   const params = new URLSearchParams();
 
   if (filters.from) params.append('start', filters.from);
   if (filters.to) params.append('end', filters.to);
 
-  const sources = Array.isArray(filters.source)
-    ? filters.source
-    : [filters.source || ''].filter(Boolean);
+  const listParams = (key: string, value: string | string[] | undefined) =>
+    [value || '']
+      .flat()
+      .filter(Boolean)
+      .forEach((value) => params.append(key, value));
 
-  const categories = Array.isArray(filters.category)
-    ? filters.category
-    : [filters.category || ''].filter(Boolean);
+  listParams('sources', filters.source);
+  listParams('categories', filters.category);
 
-  sources.forEach((source) => params.append('sources', source));
-  categories.forEach((category) => params.append('categories', category));
+  console.log(`[PERIODIC START] Requesting task for: ${params.toString()}`);
 
-  const response = await fetch(
-    `${baseUrl}/agent/api/v1/periodic_summary/start?${params.toString()}`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'api-key': env.VM_SECRET,
-      },
-      cache: 'no-store',
-    }
+  const data = await fetchAgent<{ task_id: string }>(
+    `/periodic_summary/start?${params.toString()}`,
+    { method: 'POST' }
   );
 
-  if (!response.ok) {
-    throw new Error(`Failed to start: ${response.statusText}`);
-  }
+  console.log(`[PERIODIC START] ✅ Success. Task ID: ${data.task_id}`);
 
-  const data = await response.json();
-  return data.task_id as string;
+  return data.task_id;
 }
 
 export const getPeriodicTaskId = unstable_cache(
@@ -63,20 +77,18 @@ export const getPeriodicTaskId = unstable_cache(
 );
 
 export async function checkTaskStatus(taskId: string): Promise<TaskStatus> {
-  const baseUrl = env.API_URL || '';
+  console.log(`[PERIODIC STATUS] Polling ID: ${taskId}`);
 
-  const response = await fetch(
-    `${baseUrl}/agent/api/v1/periodic_summary/status/${taskId}`,
+  const response = await fetchAgent<TaskStatus>(
+    `/periodic_summary/status/${taskId}`,
     {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json', 'api-key': env.VM_SECRET },
-      cache: 'no-store',
     }
   );
 
-  if (!response.ok) {
-    throw new Error('Failed to check generation status');
-  }
+  console.log(
+    `[PERIODIC STATUS] Task ${taskId} has status: ${response.status}`
+  );
 
-  return response.json();
+  return response;
 }
