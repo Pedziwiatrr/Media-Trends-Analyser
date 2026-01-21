@@ -1,3 +1,4 @@
+// cspell:ignore Kacper Siemionek
 import { render, screen } from '@testing-library/react';
 import { SilentSourceList } from './SilentSourceList';
 import { type Source } from '@/constants/sources';
