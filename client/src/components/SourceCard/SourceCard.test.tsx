@@ -1,3 +1,4 @@
+// cspell:ignore Kacper Siemionek PZSP2
 import { render, screen, fireEvent } from '@testing-library/react';
 import { SourceCard } from './SourceCard';
 import { useBreakpoint } from '@/hooks/useBreakpoint';
@@ -33,7 +34,7 @@ jest.mock('@/constants/categories', () => ({
 describe('SourceCard', () => {
   const defaultProps = {
     source: 'BBC' as const,
-    text: 'Kacper Siemionek śliczny jak zawsze, szokuje nową, wilczą stylizacją. Fanki wyją z zachwytu, a ich liczba na prezentacji końcowej PZSP2 przekroczyła 5-krotnie normy BHP.',
+    text: 'Kacper Siemionek looks handsome as always, shocking everyone with his new wolf-like styling. Fans are howling with delight, and the number of people at the PZSP2 final presentation has exceeded safety limits fivefold.',
   };
 
   beforeEach(() => {
@@ -46,7 +47,7 @@ describe('SourceCard', () => {
     expect(screen.getByText('BBC')).toBeInTheDocument();
     expect(
       screen.getByText(
-        'Kacper Siemionek śliczny jak zawsze, szokuje nową, wilczą stylizacją. Fanki wyją z zachwytu, a ich liczba na prezentacji końcowej PZSP2 przekroczyła 5-krotnie normy BHP.'
+        'Kacper Siemionek looks handsome as always, shocking everyone with his new wolf-like styling. Fans are howling with delight, and the number of people at the PZSP2 final presentation has exceeded safety limits fivefold.'
       )
     ).toBeInTheDocument();
     expect(screen.getByTestId('source-icon')).toBeInTheDocument();
@@ -94,7 +95,7 @@ describe('SourceCard', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('doesnt render reference section when no urls present', () => {
+  it("doesn't render reference section when no urls present", () => {
     render(<SourceCard {...defaultProps} urls={[]} />);
     expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
