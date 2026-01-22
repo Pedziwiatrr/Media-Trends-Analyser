@@ -1,8 +1,6 @@
 from datetime import datetime
-
 import pytest
 from app.models.articles import ArticleDB
-from app.schemas.articles import ArticleCreate
 from app.services.db_service import DatabaseService
 
 # --- FIXTURES ---
@@ -13,10 +11,26 @@ def service():
     return DatabaseService()
 
 
+# --- MOCKS ---
+
+
+class MockArticle:
+    def __init__(self, **kwargs):
+        self.__dict__.update(kwargs)
+
+    def dict(self, *args, **kwargs):
+        return self.__dict__
+
+    def model_dump(self, *args, **kwargs):
+        return self.__dict__
+
+
 # --- UNIT TESTS ---
+
+
 def test_save_articles_success(service, db_session):
     articles = [
-        ArticleCreate(
+        MockArticle(
             title="Kacper Siemionek Test",
             description="Test test test",
             url="http://kacpersiemionek.com/test-1",
@@ -48,7 +62,7 @@ def test_save_articles_empty_list(service, db_session):
 
 def test_save_articles_special_chars(service, db_session):
     title_with_emojis = "Roxie 🔥🥵😳 '''''👣🦍🍏🚀🔑🚳🚩<br>"
-    article = ArticleCreate(
+    article = MockArticle(
         title=title_with_emojis,
         description="Fani w szoku 😱🤯🔥",
         url="http://pudelek.pl/emoji",
@@ -62,7 +76,7 @@ def test_save_articles_special_chars(service, db_session):
 
 
 def test_save_articles_duplicate_url(service, db_session):
-    article = ArticleCreate(
+    article = MockArticle(
         title="Roxie Węgiel założyła TO do sklepu!? [ZOBACZ ZDJĘCIA]",
         description="Fani w szoku",
         url="http://pudelek.pl/roxie-1",
