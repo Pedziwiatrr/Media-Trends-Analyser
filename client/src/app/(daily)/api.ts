@@ -18,27 +18,6 @@ export async function fetchDailyReports(): Promise<DailyReport[]> {
       },
     });
 
-    const dateHeader = response.headers.get('date');
-    if (dateHeader) {
-      const responseDate = new Date(dateHeader).getTime();
-      const now = new Date().getTime();
-      const ageInSeconds = (now - responseDate) / 1000;
-
-      if (ageInSeconds > 2) {
-        console.log(
-          `[DAILY REPORTS] CACHE HIT! Serving data from ${ageInSeconds.toFixed(0)}s ago.`
-        );
-      } else {
-        console.log(
-          `[DAILY REPORTS] NETWORK REQUEST! Fetched fresh data just now.`
-        );
-      }
-    } else {
-      console.warn(
-        '[DAILY REPORTS] Response missing Date header, cannot determine cache status.'
-      );
-    }
-
     if (!response.ok) {
       const errorBody = await response.text();
       throw new Error(
@@ -54,7 +33,7 @@ export async function fetchDailyReports(): Promise<DailyReport[]> {
 
     return data;
   } catch (error) {
-    console.error('Fetch Daily Reports failed:', error);
+    console.error('❌ Fetch Daily Reports failed:', error);
     throw error;
   }
 }
