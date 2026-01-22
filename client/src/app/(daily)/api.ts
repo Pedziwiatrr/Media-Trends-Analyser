@@ -1,27 +1,10 @@
 import type { DailyReport } from '@/types/dailyReport';
 import { env } from '@/env';
 
-function getRevalidateTime() {
-  const now = new Date();
-  const target = new Date(now);
-
-  target.setHours(1, 0, 0, 0);
-
-  if (now >= target) {
-    target.setDate(target.getDate() + 1);
-  }
-
-  const secondsUntilUpdate = Math.floor(
-    (target.getTime() - now.getTime()) / 1000
-  );
-
-  return Math.max(60, secondsUntilUpdate);
-}
-
 export async function fetchDailyReports(): Promise<DailyReport[]> {
   const url = `${env.API_URL}/agent/api/v1/daily_summary/recent`;
 
-  const revalidateTime = getRevalidateTime();
+  const revalidateTime = 3600;
 
   try {
     const response = await fetch(url, {
