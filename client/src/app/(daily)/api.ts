@@ -34,7 +34,7 @@ export async function fetchDailyReports(): Promise<DailyReport[]> {
         );
       }
     } else {
-      console.log(
+      console.warn(
         '[DAILY REPORTS] Response missing Date header, cannot determine cache status.'
       );
     }

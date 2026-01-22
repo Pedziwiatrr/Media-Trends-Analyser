@@ -57,8 +57,6 @@ export async function startPeriodicTask(filters: PeriodicFilters) {
 }
 
 export async function checkTaskStatus(taskId: string): Promise<TaskStatus> {
-  console.log(`[PERIODIC STATUS] Polling ID: ${taskId}`);
-
   const response = await fetchAgent<TaskStatus>(
     `/periodic_summary/status/${taskId}`,
     {
@@ -66,9 +64,11 @@ export async function checkTaskStatus(taskId: string): Promise<TaskStatus> {
     }
   );
 
-  console.log(
-    `[PERIODIC STATUS] Task ${taskId} has status: ${response.status}`
-  );
+  if (response.status !== 'processing') {
+    console.log(
+      `[PERIODIC STATUS] Task ${taskId} has status: ${response.status}`
+    );
+  }
 
   return response;
 }
