@@ -1,3 +1,4 @@
 services
     ├── data-scrapper-service
-    └── agent-service
+    ├── agent-service
+    └── scheduler
