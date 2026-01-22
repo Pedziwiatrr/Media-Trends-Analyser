@@ -1,8 +1,8 @@
-from app.schemas.articles import ArticleCreate
-from app.models.articles import ArticleDB
-
-from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session
+
+from app.models.articles import ArticleDB
+from app.schemas.articles import ArticleCreate
 
 
 class DatabaseService:
