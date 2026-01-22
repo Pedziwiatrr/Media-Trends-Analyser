@@ -44,31 +44,16 @@ export async function startPeriodicTask(filters: PeriodicFilters) {
   filters.source?.forEach((s) => params.append('sources', s));
   filters.category?.forEach((c) => params.append('categories', c));
 
-  console.log(`[PERIODIC START] Requesting task for: ${params.toString()}`);
-
   const data = await fetchAgent<{ task_id: string }>(
     `/periodic_summary/start?${params.toString()}`,
     { method: 'POST' }
   );
 
-  console.log(`[PERIODIC START] ✅ Success. Task ID: ${data.task_id}`);
-
   return data.task_id;
 }
 
 export async function checkTaskStatus(taskId: string): Promise<TaskStatus> {
-  const response = await fetchAgent<TaskStatus>(
-    `/periodic_summary/status/${taskId}`,
-    {
-      method: 'GET',
-    }
-  );
-
-  if (response.status !== 'processing') {
-    console.log(
-      `[PERIODIC STATUS] Task ${taskId} has status: ${response.status}`
-    );
-  }
-
-  return response;
+  return await fetchAgent<TaskStatus>(`/periodic_summary/status/${taskId}`, {
+    method: 'GET',
+  });
 }
