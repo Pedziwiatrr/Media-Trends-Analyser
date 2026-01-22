@@ -1,0 +1,21 @@
+CYAN='\033[0;36m'
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+NC='\033[0m'
+
+echo "\n${CYAN}Running pre-commit checks...${NC}\n"
+
+cd ./client
+
+npx lint-staged
+exitCode=$?
+
+cd ..
+
+if [ $exitCode -ne 0 ]; then
+  echo "\n${RED}Pre-commit checks failed.${NC} Commit aborted\n"
+  exit $exitCode
+fi
+
+echo "\n${GREEN}Pre-commit checks passed.${NC}\n"
+exit 0
