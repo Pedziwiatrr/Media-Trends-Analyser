@@ -1,27 +1,10 @@
 import type { DailyReport } from '@/types/dailyReport';
 import { env } from '@/env';
 
-function getRevalidateTime() {
-  const now = new Date();
-  const target = new Date(now);
-
-  target.setHours(1, 0, 0, 0);
-
-  if (now >= target) {
-    target.setDate(target.getDate() + 1);
-  }
-
-  const secondsUntilUpdate = Math.floor(
-    (target.getTime() - now.getTime()) / 1000
-  );
-
-  return Math.max(60, secondsUntilUpdate);
-}
-
 export async function fetchDailyReports(): Promise<DailyReport[]> {
   const url = `${env.API_URL}/agent/api/v1/daily_summary/recent`;
 
-  const revalidateTime = getRevalidateTime();
+  const revalidateTime = 3600;
 
   try {
     const response = await fetch(url, {
@@ -30,11 +13,31 @@ export async function fetchDailyReports(): Promise<DailyReport[]> {
         'Content-Type': 'application/json',
         'api-key': env.VM_SECRET,
       },
-      cache: 'no-store',
       next: {
         revalidate: revalidateTime,
       },
     });
+
+    const dateHeader = response.headers.get('date');
+    if (dateHeader) {
+      const responseDate = new Date(dateHeader).getTime();
+      const now = new Date().getTime();
+      const ageInSeconds = (now - responseDate) / 1000;
+
+      if (ageInSeconds > 2) {
+        console.log(
+          `[DAILY REPORTS] CACHE HIT! Serving data from ${ageInSeconds.toFixed(0)}s ago.`
+        );
+      } else {
+        console.log(
+          `[DAILY REPORTS] NETWORK REQUEST! Fetched fresh data just now.`
+        );
+      }
+    } else {
+      console.log(
+        '[DAILY REPORTS] Response missing Date header, cannot determine cache status.'
+      );
+    }
 
     if (!response.ok) {
       const errorBody = await response.text();

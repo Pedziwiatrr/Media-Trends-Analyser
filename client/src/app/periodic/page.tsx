@@ -1,45 +1,57 @@
+import { parseSearchParams, toQueryString } from '@/utils/urlUtils';
 import { ClientWrapper } from './ClientWrapper';
-import { getPeriodicTaskId, checkTaskStatus } from './api';
+import { checkTaskStatus, startPeriodicTask } from './api';
+import { redirect } from 'next/navigation';
 
 type HomeProps = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
 export default async function Home({ searchParams }: HomeProps) {
-  const params = await searchParams;
+  const rawParams = await searchParams;
+  const filters = parseSearchParams(rawParams);
 
-  const paramsKey = new URLSearchParams(
-    params as Record<string, string>
-  ).toString();
-
-  const hasFilters = Object.keys(params).length > 0;
+  const hasFilters = filters.source.length > 0 || filters.category.length > 0;
 
   let initialData = null;
-  let taskId: string | null = null;
   let initialError: string | null = null;
+  let taskId = typeof rawParams.id === 'string' ? rawParams.id : null;
+
+  let redirectTo: string | null = null;
 
   if (hasFilters) {
     try {
-      taskId = await getPeriodicTaskId(params);
+      if (taskId) {
+        const task = await checkTaskStatus(taskId);
 
-      const response = await checkTaskStatus(taskId);
+        if (task.status === 'completed' && task.result) {
+          initialData = task.result;
+        } else if (task.status === 'failed') {
+          initialError = 'Report generation failed on the server.';
+        } else if (task.status === 'not_found') {
+          console.warn(`Task ${taskId} expired. Regenerating...`);
+          taskId = null;
+        }
+      }
 
-      if (response.status === 'completed' && response.result) {
-        initialData = response.result;
-      } else if (response.status === 'failed') {
-        initialError = 'Report generation failed on the server.';
+      if (!taskId) {
+        const newTaskId = await startPeriodicTask(filters);
+
+        const queryString = toQueryString(filters);
+
+        redirectTo = `/periodic?${queryString}&id=${newTaskId}`;
       }
     } catch (error) {
-      console.error('Periodic Report Initiation Error:', error);
-      initialError =
-        error instanceof Error
-          ? error.message
-          : 'Failed to initiate report generation.';
+      console.error('Periodic Page Error:', error);
+      initialError = 'Failed to initiate report generation.';
     }
   }
 
-  const startDate = typeof params.from === 'string' ? params.from : '';
-  const endDate = typeof params.to === 'string' ? params.to : '';
+  if (redirectTo) {
+    redirect(redirectTo);
+  }
+
+  const paramsKey = JSON.stringify(filters);
 
   return (
     <ClientWrapper
@@ -47,9 +59,8 @@ export default async function Home({ searchParams }: HomeProps) {
       initialData={initialData}
       taskId={taskId}
       initialError={initialError}
-      startDate={startDate}
-      endDate={endDate}
-      searchParamsKey={paramsKey}
+      startDate={filters.from}
+      endDate={filters.to}
     />
   );
 }
