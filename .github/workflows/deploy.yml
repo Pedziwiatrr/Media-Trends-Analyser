@@ -40,9 +40,9 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }} << 'EOF'
             cd ~/media-trends-analyser
 
-            docker-compose pull
+            docker compose pull
 
-            docker-compose up -d --force-recreate --no-build
+            docker compose up -d --force-recreate --no-build
 
             docker image prune -f
           EOF
