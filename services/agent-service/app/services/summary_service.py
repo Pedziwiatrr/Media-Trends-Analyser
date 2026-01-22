@@ -1,3 +1,5 @@
+import asyncio
+from functools import partial
 from datetime import date, datetime, timedelta
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
@@ -16,28 +18,63 @@ from app.agents.agent_config import AgentSettings
 
 def create_summary_agent() -> SummaryAgent:
     settings = AgentSettings()
-    model = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0)
+    model = ChatGoogleGenerativeAI(
+        model="gemini-3-flash-preview",
+        temperature=0,
+        model_kwargs={"response_mime_type": "application/json"},
+    )
     return SummaryAgent(model, settings)
 
 
-def fetch_articles(db: Session, summary_date: date) -> list[Article]:
+def fetch_articles_by_source(
+    db: Session, summary_date: date, source: str
+) -> list[Article]:
     start_date = datetime.combine(summary_date, datetime.min.time())
     end_date = start_date + timedelta(days=1)
 
-    articles = (
+    return (
         db.query(Article)
-        .filter(Article.published_at >= start_date)
-        .filter(Article.published_at < end_date)
+        .filter(
+            Article.published_at >= start_date,
+            Article.published_at < end_date,
+            Article.source == source,
+        )
         .all()
     )
 
-    if not articles:
+
+def fetch_all_articles_grouped(
+    db: Session, summary_date: date
+) -> dict[str, list[Article]]:
+    settings = AgentSettings()
+    result = {}
+
+    for source in settings.sources:
+        articles = fetch_articles_by_source(db, summary_date, source)
+        if articles:
+            result[source] = articles
+
+    if not result:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="No articles found for the specified date",
         )
 
-    return articles
+    return result
+
+
+def process_source_summary(
+    agent: SummaryAgent,
+    source: str,
+    articles: list[ArticleSchema],
+    summary_date: date,
+) -> tuple[str, dict]:
+    partial_summary = agent.get_daily_summary_for_source(
+        articles=articles,
+        source=source,
+        summary_date=summary_date,
+    )
+    return source, partial_summary
 
 
 def convert_articles_to_schema(articles: list[Article]) -> list[ArticleSchema]:
@@ -134,21 +171,53 @@ def convert_categories_to_percentages(
     }
 
 
-def convert_timeline_to_percentages(categories_timeline: list[dict]) -> list[dict]:
+def fill_dates_in_categories(
+    categories_timeline: list[dict],
+    start_date: date,
+    end_date: date,
+    categories: list[str],
+) -> list[dict]:
     result = []
+    current_date = start_date
 
-    for day_data in categories_timeline:
-        category_values = {cat: val for cat, val in day_data.items() if cat != "date"}
-        percentages = convert_dict_to_percentages(category_values)
+    while current_date <= end_date:
+        date_str = current_date.isoformat()
 
-        day = {"date": day_data["date"]}
-        day.update(percentages)
-        result.append(day)
+        existing_entry = next(
+            (item for item in categories_timeline if item["date"] == date_str), None
+        )
+
+        if existing_entry:
+            result.append(existing_entry)
+        else:
+            empty_entry = {"date": date_str}
+            empty_entry.update({cat: 0 for cat in categories})
+            result.append(empty_entry)
+
+        current_date += timedelta(days=1)
 
     return result
 
 
-def get_daily_summary(summary_date: date, db: Session) -> DailySummaryResponse:
+def fill_dates_in_events(
+    event_timeline: dict[str, str],
+    start_date: date,
+    end_date: date,
+) -> dict[str, str]:
+    result = {}
+    current_date = start_date
+
+    while current_date <= end_date:
+        date_str = current_date.isoformat()
+        result[date_str] = event_timeline.get(date_str, "")
+        current_date += timedelta(days=1)
+
+    return result
+
+
+async def get_daily_summary_async(
+    summary_date: date, db: Session
+) -> DailySummaryResponse:
     existing_summary = (
         db.query(DailySummary).filter(DailySummary.date == summary_date).first()
     )
@@ -159,26 +228,62 @@ def get_daily_summary(summary_date: date, db: Session) -> DailySummaryResponse:
             detail=f"Daily summary for {summary_date} already exists",
         )
 
-    articles = fetch_articles(db, summary_date)
-    articles_conv = convert_articles_to_schema(articles)
+    articles_by_source = fetch_all_articles_grouped(db, summary_date)
 
     agent = create_summary_agent()
-    daily_summary = agent.get_daily_summary(
-        articles=articles_conv, summary_date=summary_date
+    settings = AgentSettings()
+
+    articles_schema_by_source = {
+        source: convert_articles_to_schema(articles)
+        for source, articles in articles_by_source.items()
+    }
+
+    loop = asyncio.get_event_loop()
+
+    tasks = [
+        loop.run_in_executor(
+            None,
+            partial(
+                process_source_summary,
+                agent,
+                source,
+                articles_schema_by_source.get(source, []),
+                summary_date,
+            ),
+        )
+        for source in settings.sources
+    ]
+
+    results = await asyncio.gather(*tasks)
+
+    merged_summaries = {}
+    merged_categories = {}
+    merged_references = {}
+
+    for source, result in results:
+        if result:
+            merged_summaries[source] = result.get("summaries", {}).get(source, {})
+            merged_categories[source] = result.get("categories", {}).get(source, {})
+            merged_references[source] = result.get("references", {}).get(source, {})
+        else:
+            merged_summaries[source] = {cat: "" for cat in settings.article_categories}
+            merged_categories[source] = {cat: 0 for cat in settings.article_categories}
+            merged_references[source] = {cat: [] for cat in settings.article_categories}
+
+    db_summary = DailySummary(
+        date=summary_date,
+        summaries=merged_summaries,
+        categories=merged_categories,
     )
-
-    references_data = daily_summary.references
-
-    db_summary = DailySummary(**daily_summary.model_dump(exclude={"references"}))
     db.add(db_summary)
     db.flush()
 
-    update_article_references(db, db_summary, references_data, summary_date)
+    update_article_references(db, db_summary, merged_references, summary_date)
 
     db.commit()
     db.refresh(db_summary)
 
-    db_summary.references = references_data
+    db_summary.references = merged_references
 
     return db_summary
 
@@ -223,19 +328,34 @@ def get_periodic_summary(
         end_date=end,
     )
 
-    periodic_summary.references = replace_article_ids_with_urls(
+    references_with_urls = replace_article_ids_with_urls(
         db, periodic_summary.references
     )
 
-    periodic_summary.categories_timeline = convert_timeline_to_percentages(
-        periodic_summary.categories_timeline
+    categories_timeline_filled = fill_dates_in_categories(
+        periodic_summary.categories_timeline, start, end, categories
     )
 
-    periodic_summary.category_totals = convert_totals_to_percentages(
+    event_timeline_filled = fill_dates_in_events(
+        periodic_summary.event_timeline, start, end
+    )
+
+    category_totals_percentages = convert_totals_to_percentages(
         periodic_summary.category_totals
     )
 
-    return periodic_summary
+    return PeriodicSummaryResponse(
+        start_date=periodic_summary.start_date,
+        end_date=periodic_summary.end_date,
+        main_summary=periodic_summary.main_summary,
+        categories_timeline=categories_timeline_filled,
+        category_totals=category_totals_percentages,
+        trends=periodic_summary.trends,
+        key_insights=periodic_summary.key_insights,
+        source_highlights=periodic_summary.source_highlights,
+        event_timeline=event_timeline_filled,
+        references=references_with_urls,
+    )
 
 
 def get_recent_daily_summaries(db: Session) -> list[dict]:
@@ -278,4 +398,19 @@ def get_recent_daily_summaries(db: Session) -> list[dict]:
 
         current_date -= timedelta(days=1)
 
-    return result
+    start_idx = None
+    for i in range(len(result)):
+        if result[i]["has_data"]:
+            start_idx = i
+            break
+
+    end_idx = None
+    for i in range(len(result) - 1, -1, -1):
+        if result[i]["has_data"]:
+            end_idx = i
+            break
+
+    if start_idx is None or end_idx is None:
+        return []
+
+    return result[start_idx : end_idx + 1]
