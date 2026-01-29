@@ -56,32 +56,32 @@ class SummaryAgent:
               - In "references": set the value to an empty list [].
               
             EXPECTED_OUTPUT_STRUCTURE:
-            {
-              "summaries": {
+            {{
+              "summaries": {{
                 "Sport": "",
                 "Culture": "",
                 "Economy": "",
                 "Society": "",
                 "Politics": "",
                 "Technology": ""
-              },
-              "categories": {
+              }},
+              "categories": {{
                 "Sport": 0,
                 "Culture": 0,
                 "Economy": 0,
                 "Society": 0,
                 "Politics": 0,
                 "Technology": 0
-              },
-              "references": {
+              }},
+              "references": {{
                 "Sport": [],
                 "Culture": [],
                 "Economy": [],
                 "Society": [],
                 "Politics": [],
                 "Technology": []
-              }
-            }
+              }}
+            }}
 
             IMPORTANT: Return ONLY raw JSON. Do NOT wrap it in markdown code blocks. Do NOT use ```json or ``` markers.
         """
