@@ -51,11 +51,11 @@ The application uses Large Language Models (currently Gemini) to generate daily 
 
 The system consists of independent microservices:
 
-1.  **Data Ingestion Service:** Aggregates data from external RSS feeds and APIs.
-2.  **Agent Service:** Handles AI logic, summarization, and text processing.
-3.  **Database:** Stores metadata and generated summaries.
-4.  **API Gateway:** Manages traffic and security.
-5.  **Browser Client:** The user interface.
+1. **Data Ingestion Service:** Aggregates data from external RSS feeds and APIs.
+2. **Agent Service:** Handles AI logic, summarization, and text processing.
+3. **Database:** Stores metadata and generated summaries.
+4. **API Gateway:** Manages traffic and security.
+5. **Browser Client:** The user interface.
 
 ## How to Run Locally
 
@@ -64,13 +64,14 @@ The system consists of independent microservices:
 - Docker & Docker Compose installed.
 - **Node.js & npm** (required to run the Client).
 
-### Steps
+### 1. Setup & Configuration
 
 1.  **Clone the repository:**
 
     ```bash
     git clone https://github.com/Kwasus33/Media-Trends-Analyser
     cd Media-Trends-Analyser
+    chmod +x run_clean.sh run_demo.sh
     ```
 
 2.  **Configure Environment Variables:**
@@ -92,7 +93,7 @@ The system consists of independent microservices:
     cp services/agent-service/.env.example services/agent-service/.env
     ```
 
-    **Note:** To generate _new_ reports using AI, you must add a valid `GOOGLE_API_KEY` inside `services/agent-service/.env`.
+    > **Important:** To generate _new_ reports using AI, you must add a valid `GOOGLE_API_KEY` inside `services/agent-service/.env`.
 
     **C. Client Configuration:**
     Create a `.env` file inside the `client` directory:
@@ -102,40 +103,41 @@ The system consists of independent microservices:
     VM_SECRET=your_secret_key_here
     ```
 
-3.  **Database Setup (Optional Demo Data):**
+### 2. Run the Backend (Docker)
 
-    By default, the application starts with an **empty database**.
-    If you want to populate it with **archival mock data** for demonstration purposes:
-    Rename the seed file in the database folder:
+We provide utility scripts to automatically handle database setup and Docker networking. Choose one of the modes below:
 
-    ```bash
-    mv database/seed_data.sql.example database/seed_data.sql
-    ```
+**Option A: Run with Demo Data (showcase)**
+Starts the system pre-populated with archival data (January 2026).
 
-4.  **Run the Backend (Docker):**
+```bash
+./run_demo.sh
+```
 
-    ```bash
-    docker compose up --build
-    ```
+**Option B: Run with Empty Database (fresh system ready for new data scraping).**
 
-5.  **Run the Client (Frontend):**
-    Open a new terminal, navigate to the client directory:
+```
+./run_clean.sh
+```
 
-    ```bash
-    cd client
-    npm install
-    npm run dev
-    ```
+### 3. Run the Client (Frontend)
 
-    _The application interface will be available at `http://localhost:3000`._
+Open a new terminal, navigate to the client directory:
 
-    **Note:** If you enabled the demo data but the dashboard still appears empty, Next.js might be serving cached data. Clear the cache by running:
+```bash
+cd client
+npm install
+npm run dev
+```
 
-    ```bash
-     rm -rf .next
-    ```
+_The application interface will be available at `http://localhost:3000`._
 
-    and restart `npm run dev`.
+**Troubleshooting:** If you switch between Demo and Clean modes and see incorrect data, clear the Next.js cache and restart the client:
+
+```bash
+rm -rf .next
+npm run dev
+```
 
 ## Legal Disclaimer
 
