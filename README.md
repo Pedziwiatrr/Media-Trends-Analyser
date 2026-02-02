@@ -92,28 +92,50 @@ The system consists of independent microservices:
     cp services/agent-service/.env.example services/agent-service/.env
     ```
 
+    **Note:** To generate _new_ reports using AI, you must add a valid `GOOGLE_API_KEY` inside `services/agent-service/.env`.
+
     **C. Client Configuration:**
     Create a `.env` file inside the `client` directory:
 
     ```env
-    API_URL=http://localhost
+    NEXT_PUBLIC_API_URL=http://localhost
     VM_SECRET=your_secret_key_here
     ```
 
-3.  **Run the Backend (Docker):**
+3.  **Database Setup (Optional Demo Data):**
+
+    By default, the application starts with an **empty database**.
+    If you want to populate it with **archival mock data** for demonstration purposes:
+    Rename the seed file in the database folder:
 
     ```bash
-    docker-compose up --build
+    mv database/seed_data.sql.example database/seed_data.sql
     ```
 
-4.  **Run the Client (Frontend):**
+4.  **Run the Backend (Docker):**
+
+    ```bash
+    docker compose up --build
+    ```
+
+5.  **Run the Client (Frontend):**
     Open a new terminal, navigate to the client directory:
+
     ```bash
     cd client
     npm install
     npm run dev
     ```
+
     _The application interface will be available at `http://localhost:3000`._
+
+    **Note:** If you enabled the demo data but the dashboard still appears empty, Next.js might be serving cached data. Clear the cache by running:
+
+    ```bash
+     rm -rf .next
+    ```
+
+    and restart `npm run dev`.
 
 ## Legal Disclaimer
 
