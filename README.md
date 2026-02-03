@@ -2,7 +2,7 @@
 
 ## Project Demo
 
-https://github.com/user-attachments/assets/ea745338-5183-44e2-8f24-aa33a688e812
+[Project's demo](https://github.com/user-attachments/assets/75b203fe-764b-42bb-aa96-14491eb987f3)
 
 ## Team
 
